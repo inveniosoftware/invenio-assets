@@ -25,6 +25,18 @@
 API Docs
 ========
 
-invenio_assets
---------------
+.. automodule:: invenio_assets.ext
+   :members:
+   :undoc-members:
 
+.. automodule:: invenio_assets.bower
+   :members:
+   :undoc-members:
+
+.. automodule:: invenio_assets.filters
+   :members:
+   :undoc-members:
+
+.. automodule:: invenio_assets.cli
+   :members:
+   :undoc-members:

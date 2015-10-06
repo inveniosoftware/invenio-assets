@@ -22,9 +22,29 @@
 # waive the privileges and immunities granted to it by virtue of its status
 # as an Intergovernmental Organization or submit itself to any jurisdiction.
 
-
 """Pytest configuration."""
 
 from __future__ import absolute_import, print_function
 
 import pytest
+from flask import Flask
+from flask_cli import FlaskCLI, ScriptInfo
+
+from invenio_assets import InvenioAssets
+
+
+@pytest.fixture()
+def app():
+    """Flask application fixture."""
+    app = Flask(__name__)
+    FlaskCLI(app)
+    return app
+
+
+@pytest.fixture()
+def script_info():
+    """Get ScriptInfo object for testing CLI."""
+    app = Flask(__name__)
+    FlaskCLI(app)
+    InvenioAssets(app)
+    return ScriptInfo(create_app=lambda info: app)
