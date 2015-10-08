@@ -28,6 +28,7 @@ from __future__ import absolute_import, print_function
 
 import json
 import logging
+import os
 
 import click
 from flask import current_app
@@ -70,19 +71,42 @@ def bower(bower_json, output_file):
         "dependencies": {},
     }
 
+    # Load base file
     if bower_json:
         output = dict(output, **json.load(bower_json))
 
+    # Iterate over bundles
     for bundle in current_app.extensions['invenio-assets'].env:
         if hasattr(bundle, 'bower'):
             output['dependencies'].update(bundle.bower)
 
-    options = dict(indent=4)
-
+    # Write to instance folder if output file is not specified
     if output_file is None:
-        click.echo(json.dumps(output, **options))
-    else:
-        json.dump(output, output_file, **options)
+        if not os.path.exists(current_app.instance_path):
+            os.makedirs(current_app.instance_path)
+        output_file = open(
+            os.path.join(current_app.instance_path, "bower.json"),
+            "w")
+
+    click.echo("Writing {0}".format(output_file.name))
+    json.dump(output, output_file, indent=4)
+    output_file.close()
+
+    # Write .bowerrc
+    bowerrc = os.path.join(
+        os.path.dirname(output_file.name),
+        ".bowerrc")
+
+    if not os.path.exists(bowerrc):
+        click.echo("Writing {0}".format(bowerrc))
+
+        static_path = os.path.relpath(
+            os.path.join(current_app.static_folder, "bower_components"),
+            current_app.instance_path
+        )
+
+        with open(bowerrc, 'w') as f:
+            f.write(json.dumps(dict(directory=static_path)))
 
 
 @click.group()

@@ -61,6 +61,14 @@ def test_init_post(app):
     assert 'COLLECT_STATIC_ROOT' in app.config
 
 
+def test_init_cli(app):
+    """Test cli registration."""
+    assets = InvenioAssets(app)
+    assert len(app.cli.commands) == 0
+    assets.init_cli(app.cli)
+    assert len(app.cli.commands) == 3
+
+
 def test_assets_usage(app):
     """Test assets usage."""
     class Ext(object):

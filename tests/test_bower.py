@@ -56,34 +56,52 @@ def test_cli(script_info):
     assets.env.register('test1', BowerBundle(bower=deps))
     assert len(assets.env) == 1
 
-    # Test simple output
-    result = runner.invoke(bower, obj=script_info)
-    assert result.exit_code == 0
+    expected = {
+        "name": app.name,
+        "dependencies": {
+            "boostrap": "3.0.0",
+        },
+        "version": "",
+    }
 
-    bower_json = json.loads(result.output)
-    assert bower_json['dependencies'] == deps
-    assert bower_json['version'] == ''
-    assert bower_json['name'] == app.name
+    # Test default output
+    with runner.isolated_filesystem():
+        result = runner.invoke(bower, obj=script_info)
+        assert result.exit_code == 0
+
+        filepath = os.path.join(app.instance_path, 'bower.json')
+        assert os.path.exists(filepath)
+
+        with open(filepath) as f:
+            bower_json = json.loads(f.read())
+        assert bower_json == expected
 
     # Test writing bower.json file.
     with runner.isolated_filesystem():
         result = runner.invoke(bower, ['-o', 'bower.json'], obj=script_info)
         assert result.exit_code == 0
-        assert os.path.exists('bower.json')
+
+        filepath = os.path.join('bower.json')
+        assert os.path.exists(filepath)
 
         with open('bower.json') as f:
-            bower_json_file = json.loads(f.read())
-        assert bower_json == bower_json_file
+            bower_json = json.loads(f.read())
+        assert bower_json == expected
 
     # Test merging a base another file.
+    newdep = {'font-awesome': '4.0'}
+    expected['dependencies'].update(newdep)
     with runner.isolated_filesystem():
-        newdep = {'font-awesome': '4.0'}
-        bower_json['dependencies'].update(newdep)
-
         with open('base.json', 'wt') as f:
             f.write(json.dumps({'dependencies': newdep}))
 
-        result = runner.invoke(bower, ['-i', 'base.json'], obj=script_info)
+        result = runner.invoke(
+            bower, ['-i', 'base.json', '-o', 'bower.json'], obj=script_info)
         assert result.exit_code == 0
-        bower_json_base = json.loads(result.output)
-        assert bower_json == bower_json_base
+
+        filepath = os.path.join('bower.json')
+        assert os.path.exists(filepath)
+
+        with open('bower.json') as f:
+            bower_json = json.loads(f.read())
+        assert bower_json == expected

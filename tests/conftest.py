@@ -26,6 +26,9 @@
 
 from __future__ import absolute_import, print_function
 
+import shutil
+import tempfile
+
 import pytest
 from flask import Flask
 from flask_cli import FlaskCLI, ScriptInfo
@@ -42,9 +45,15 @@ def app():
 
 
 @pytest.fixture()
-def script_info():
+def script_info(request):
     """Get ScriptInfo object for testing CLI."""
-    app = Flask(__name__)
+    instance_path = tempfile.mkdtemp()
+    app = Flask(__name__, instance_path=instance_path)
     FlaskCLI(app)
     InvenioAssets(app)
+
+    def teardown():
+        shutil.rmtree(instance_path)
+
+    request.addfinalizer(teardown)
     return ScriptInfo(create_app=lambda info: app)
