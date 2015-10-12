@@ -19,7 +19,6 @@ from webassets.filter.requirejs import RequireJSFilter as RequireJSFilterBase
 
 
 class RequireJSFilter(RequireJSFilterBase):
-
     """Optimize AMD-style modularized JavaScript into a single asset.
 
     Adds support for exclusion of files already in defined in other bundles.
@@ -48,7 +47,6 @@ class RequireJSFilter(RequireJSFilterBase):
 
 
 class CleanCSSFilter(ExternalTool):
-
     """Minify css using cleancss.
 
     Implements opener capable of rebasing relative CSS URLs against

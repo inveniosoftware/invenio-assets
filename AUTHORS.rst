@@ -27,4 +27,4 @@ Authors
 
 Media assets management for Invenio.
 
-- CERN <info@invenio-software.org>
+- Lars Holm Nielsen <lars.holm.nielsen@cern.ch>
