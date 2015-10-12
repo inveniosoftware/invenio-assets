@@ -63,9 +63,8 @@ def test_init_post(app):
 
 def test_init_cli(app):
     """Test cli registration."""
-    assets = InvenioAssets(app)
     assert len(app.cli.commands) == 0
-    assets.init_cli(app.cli)
+    InvenioAssets(app)
     assert len(app.cli.commands) == 3
 
 

@@ -15,7 +15,6 @@ from flask_assets import Bundle as BundleBase
 
 
 class BowerBundle(BundleBase):
-
     """Bundle extension with a name and bower dependencies.
 
     The bower dependencies are used to generate a bower.json file.

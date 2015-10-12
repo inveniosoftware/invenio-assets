@@ -28,19 +28,21 @@ from __future__ import absolute_import, print_function
 
 from flask_assets import Environment
 from flask_collect import Collect
+from pkg_resources import iter_entry_points
 
 from .cli import assets as assets_cmd
 from .cli import bower, collect
 
 
 class InvenioAssets(object):
-
     """Invenio asset extension."""
 
-    def __init__(self, app=None, **kwargs):
+    def __init__(self, app=None, entrypoint='invenio_assets.bundles',
+                 **kwargs):
         """Extension initialization."""
         self.env = Environment()
         self.collect = Collect()
+        self.entrypoint = entrypoint
 
         if app:
             self.init_app(app, **kwargs)
@@ -50,9 +52,9 @@ class InvenioAssets(object):
         self.init_config(app)
         self.env.init_app(app)
         self.collect.init_app(app)
-
-        # TODO: write .bowerrc to app.instance_folder
-        # bower command can by default write to app.instance_folder/bower.json
+        self.init_cli(app.cli)
+        if self.entrypoint:
+            self.load_entrypoint(self.entrypoint)
         app.extensions['invenio-assets'] = self
 
     def init_config(self, app):
@@ -67,3 +69,8 @@ class InvenioAssets(object):
         cli.add_command(assets_cmd)
         cli.add_command(bower)
         cli.add_command(collect)
+
+    def load_entrypoint(self, entrypoint):
+        """Load entrypoint."""
+        for ep in iter_entry_points(entrypoint):
+            self.env.register(ep.name, ep.load())
