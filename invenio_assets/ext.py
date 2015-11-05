@@ -26,9 +26,9 @@
 
 from __future__ import absolute_import, print_function
 
+import pkg_resources
 from flask_assets import Environment
 from flask_collect import Collect
-from pkg_resources import iter_entry_points
 
 from .cli import assets as assets_cmd
 from .cli import bower, collect
@@ -72,5 +72,5 @@ class InvenioAssets(object):
 
     def load_entrypoint(self, entrypoint):
         """Load entrypoint."""
-        for ep in iter_entry_points(entrypoint):
+        for ep in pkg_resources.iter_entry_points(entrypoint):
             self.env.register(ep.name, ep.load())

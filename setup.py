@@ -42,6 +42,7 @@ tests_require = [
     'pytest-cov>=1.8.0',
     'pytest-pep8>=1.0.6',
     'pytest>=2.8.0',
+    'mock>=1.3.0',
 ]
 
 extras_require = {
@@ -63,6 +64,7 @@ install_requires = [
     'Flask-Assets>=0.11',
     'Flask-Collect>=1.2.2',
     'Flask-CLI>=0.2.1',
+    'webassets>=0.11.1'
 ]
 
 packages = find_packages()

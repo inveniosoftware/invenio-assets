@@ -26,6 +26,7 @@
 
 from __future__ import absolute_import, print_function
 
+import os
 import shutil
 import tempfile
 
@@ -34,6 +35,7 @@ from flask import Flask
 from flask_cli import FlaskCLI, ScriptInfo
 
 from invenio_assets import InvenioAssets
+from invenio_assets.bower import BowerBundle
 
 
 @pytest.fixture()
@@ -47,13 +49,48 @@ def app():
 @pytest.fixture()
 def script_info(request):
     """Get ScriptInfo object for testing CLI."""
+    initial_dir = os.getcwd()
     instance_path = tempfile.mkdtemp()
     app = Flask(__name__, instance_path=instance_path)
     FlaskCLI(app)
     InvenioAssets(app)
+    os.chdir(instance_path)
 
     def teardown():
         shutil.rmtree(instance_path)
+        os.chdir(initial_dir)
+
+    request.addfinalizer(teardown)
+    return ScriptInfo(create_app=lambda info: app)
+
+
+@pytest.fixture()
+def script_info_assets(request):
+    """Get ScriptInfo object for testing CLI."""
+    initial_dir = os.getcwd()
+    instance_path = tempfile.mkdtemp()
+    app = Flask(__name__, instance_path=instance_path)
+    FlaskCLI(app)
+    InvenioAssets(app)
+    os.chdir(instance_path)
+
+    class Ext(object):
+        def __init__(self, app):
+            assets = app.extensions['invenio-assets']
+            assets.env.register('testbundle', BowerBundle(
+                'test.css',
+                output='testbundle.css'))
+    static_dir = os.path.join(os.path.dirname(__file__), 'static')
+    if not os.path.exists(static_dir):
+        os.makedirs(static_dir)
+    test_css = open(os.path.join(static_dir, 'test.css'), 'w+')
+    test_css.write("Test")
+
+    Ext(app)
+
+    def teardown():
+        shutil.rmtree(instance_path)
+        os.chdir(initial_dir)
 
     request.addfinalizer(teardown)
     return ScriptInfo(create_app=lambda info: app)

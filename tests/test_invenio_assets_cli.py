@@ -21,3 +21,31 @@
 # In applying this license, CERN does not
 # waive the privileges and immunities granted to it by virtue of its status
 # as an Intergovernmental Organization or submit itself to any jurisdiction.
+
+
+"""Test Invenio Assets module."""
+
+from __future__ import absolute_import, print_function
+
+import os
+
+from click.testing import CliRunner
+
+from invenio_assets.cli import assets, collect
+
+
+def test_invenio_assets_assets(script_info_assets):
+    """Test assets command in assets CLI."""
+    runner = CliRunner()
+    result = runner.invoke(assets, ['build'], obj=script_info_assets)
+    assert result.exit_code == 0
+
+    result = runner.invoke(collect, [], obj=script_info_assets)
+
+    path = os.path.join(
+        os.path.join(os.path.dirname(__file__), 'static'), 'testbundle.css')
+    assert result.exit_code == 0
+    assert os.path.isfile(path)
+
+    result = runner.invoke(assets, ['clean'], obj=script_info_assets)
+    result.exit_code == 0
