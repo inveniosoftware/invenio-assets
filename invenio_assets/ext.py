@@ -60,7 +60,6 @@ class InvenioAssets(object):
     def init_config(self, app):
         """Initialize configuration."""
         app.config.setdefault("REQUIREJS_BASEURL", app.static_folder)
-        app.config.setdefault("REQUIREJS_CONFIG", 'js/settings.js')
         app.config.setdefault('COLLECT_STATIC_ROOT', app.static_folder)
         app.config.setdefault('COLLECT_STORAGE', 'flask_collect.storage.link')
 

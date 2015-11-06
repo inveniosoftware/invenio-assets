@@ -14,5 +14,4 @@ Configuration
 =============
 
 * ``REQUIREJS_BASEURL``
-* ``REQUIREJS_CONFIG``
 * ``COLLECT_STATIC_ROOT``

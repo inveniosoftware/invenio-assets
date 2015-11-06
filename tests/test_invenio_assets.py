@@ -68,7 +68,6 @@ def test_init(app):
     assert assets.env
     assert assets.collect
     assert app.config['REQUIREJS_BASEURL'] == app.static_folder
-    assert app.config['REQUIREJS_CONFIG']
     assert app.config['COLLECT_STATIC_ROOT'] == app.static_folder
 
 
