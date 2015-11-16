@@ -29,7 +29,7 @@ API Docs
    :members:
    :undoc-members:
 
-.. automodule:: invenio_assets.bower
+.. automodule:: invenio_assets.npm
    :members:
    :undoc-members:
 

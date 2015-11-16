@@ -31,7 +31,7 @@ from flask_assets import Environment
 from flask_collect import Collect
 
 from .cli import assets as assets_cmd
-from .cli import bower, collect
+from .cli import collect, npm
 
 
 class InvenioAssets(object):
@@ -66,7 +66,7 @@ class InvenioAssets(object):
     def init_cli(self, cli):
         """Initialize CLI."""
         cli.add_command(assets_cmd)
-        cli.add_command(bower)
+        cli.add_command(npm)
         cli.add_command(collect)
 
     def load_entrypoint(self, entrypoint):

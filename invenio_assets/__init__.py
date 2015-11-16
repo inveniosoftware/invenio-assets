@@ -52,14 +52,14 @@ Command-line interface
 Invenio Assets installs three commands on your application:
 
  * ``assets`` - Assets building commands.
- * ``bower`` - Generation of bower.json.
+ * ``npm`` - Generation of package.json.
  * ``collect`` - Collect static files.
 
 
 .. code-block:: console
 
-   $ inveniomanage bower -o bower.json
-   $ bower install
+   $ inveniomanage npm -o package.json
+   $ npm install
    $ inveniomanage assets build
    $ inveniomanage collect
 
@@ -67,12 +67,12 @@ Invenio Assets installs three commands on your application:
 
 from __future__ import absolute_import, print_function
 
-from .bower import BowerBundle
 from .ext import InvenioAssets
 from .filters import CleanCSSFilter, RequireJSFilter
+from .npm import NpmBundle
 from .proxy import current_assets
 from .version import __version__
 
 __all__ = (
-    '__version__', 'BowerBundle', 'CleanCSSFilter', 'InvenioAssets',
+    '__version__', 'CleanCSSFilter', 'InvenioAssets', 'NpmBundle',
     'RequireJSFilter', 'current_assets')

@@ -35,7 +35,7 @@ from flask import Flask
 from flask_cli import FlaskCLI, ScriptInfo
 
 from invenio_assets import InvenioAssets
-from invenio_assets.bower import BowerBundle
+from invenio_assets.npm import NpmBundle
 
 
 @pytest.fixture()
@@ -77,7 +77,7 @@ def script_info_assets(request):
     class Ext(object):
         def __init__(self, app):
             assets = app.extensions['invenio-assets']
-            assets.env.register('testbundle', BowerBundle(
+            assets.env.register('testbundle', NpmBundle(
                 'test.css',
                 output='testbundle.css'))
     static_dir = os.path.join(os.path.dirname(__file__), 'static')

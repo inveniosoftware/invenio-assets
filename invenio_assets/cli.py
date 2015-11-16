@@ -53,13 +53,13 @@ def _webassets_cmd(cmd):
 
 
 @click.command()
-@click.option("-i", "--bower-json", help="base input file", default=None,
+@click.option("-i", "--package-json", help="base input file", default=None,
               type=click.File('r'))
-@click.option("-o", "--output-file", help="write bower.json to output file",
+@click.option("-o", "--output-file", help="write package.json to output file",
               metavar="FILENAME", type=click.File('w'))
 @with_appcontext
-def bower(bower_json, output_file):
-    """Generate a bower.json file."""
+def npm(package_json, output_file):
+    """Generate a package.json file."""
     try:
         version = get_distribution(current_app.name).version
     except DistributionNotFound:
@@ -72,41 +72,25 @@ def bower(bower_json, output_file):
     }
 
     # Load base file
-    if bower_json:
-        output = dict(output, **json.load(bower_json))
+    if package_json:
+        output = dict(output, **json.load(package_json))
 
     # Iterate over bundles
     for bundle in current_app.extensions['invenio-assets'].env:
-        if hasattr(bundle, 'bower'):
-            output['dependencies'].update(bundle.bower)
+        if hasattr(bundle, 'npm'):
+            output['dependencies'].update(bundle.npm)
 
-    # Write to instance folder if output file is not specified
+    # Write to static folder if output file is not specified
     if output_file is None:
-        if not os.path.exists(current_app.instance_path):
-            os.makedirs(current_app.instance_path)
+        if not os.path.exists(current_app.static_folder):
+            os.makedirs(current_app.static_folder)
         output_file = open(
-            os.path.join(current_app.instance_path, "bower.json"),
+            os.path.join(current_app.static_folder, "package.json"),
             "w")
 
     click.echo("Writing {0}".format(output_file.name))
     json.dump(output, output_file, indent=4)
     output_file.close()
-
-    # Write .bowerrc
-    bowerrc = os.path.join(
-        os.path.dirname(output_file.name),
-        ".bowerrc")
-
-    if not os.path.exists(bowerrc):
-        click.echo("Writing {0}".format(bowerrc))
-
-        static_path = os.path.relpath(
-            os.path.join(current_app.static_folder, "bower_components"),
-            current_app.instance_path
-        )
-
-        with open(bowerrc, 'w') as f:
-            f.write(json.dumps(dict(directory=static_path)))
 
 
 @click.group()

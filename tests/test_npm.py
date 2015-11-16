@@ -22,7 +22,7 @@
 # waive the privileges and immunities granted to it by virtue of its status
 # as an Intergovernmental Organization or submit itself to any jurisdiction.
 
-"""Test BowerBundle."""
+"""Test NpmBundle."""
 
 from __future__ import absolute_import, print_function
 
@@ -31,29 +31,29 @@ import os
 
 from click.testing import CliRunner
 
-from invenio_assets import BowerBundle
-from invenio_assets.cli import bower
+from invenio_assets import NpmBundle
+from invenio_assets.cli import npm
 
 
 def test_init():
     """Test version import."""
-    bundle = BowerBundle(
+    bundle = NpmBundle(
         'testfile.css',
-        bower={
+        npm={
             "bootstrap": "3.0.0"
         }
     )
-    assert bundle.bower == {"bootstrap": "3.0.0"}
+    assert bundle.npm == {"bootstrap": "3.0.0"}
 
 
 def test_cli(script_info):
-    """Test bower CLI."""
+    """Test npm CLI."""
     deps = {"boostrap": "3.0.0"}
 
     runner = CliRunner()
     app = script_info.load_app()
     assets = app.extensions['invenio-assets']
-    assets.env.register('test1', BowerBundle(bower=deps))
+    assets.env.register('test1', NpmBundle(npm=deps))
     assert len(assets.env) == 1
 
     expected = {
@@ -66,27 +66,27 @@ def test_cli(script_info):
 
     # Test default output
     with runner.isolated_filesystem():
-        result = runner.invoke(bower, obj=script_info)
+        result = runner.invoke(npm, obj=script_info)
         assert result.exit_code == 0
 
-        filepath = os.path.join(app.instance_path, 'bower.json')
+        filepath = os.path.join(app.static_folder, 'package.json')
         assert os.path.exists(filepath)
 
         with open(filepath) as f:
-            bower_json = json.loads(f.read())
-        assert bower_json == expected
+            package_json = json.loads(f.read())
+        assert package_json == expected
 
-    # Test writing bower.json file.
+    # Test writing package.json file.
     with runner.isolated_filesystem():
-        result = runner.invoke(bower, ['-o', 'bower.json'], obj=script_info)
+        result = runner.invoke(npm, ['-o', 'package.json'], obj=script_info)
         assert result.exit_code == 0
 
-        filepath = os.path.join('bower.json')
+        filepath = os.path.join('package.json')
         assert os.path.exists(filepath)
 
-        with open('bower.json') as f:
-            bower_json = json.loads(f.read())
-        assert bower_json == expected
+        with open('package.json') as f:
+            package_json = json.loads(f.read())
+        assert package_json == expected
 
     # Test merging a base another file.
     newdep = {'font-awesome': '4.0'}
@@ -96,12 +96,12 @@ def test_cli(script_info):
             f.write(json.dumps({'dependencies': newdep}))
 
         result = runner.invoke(
-            bower, ['-i', 'base.json', '-o', 'bower.json'], obj=script_info)
+            npm, ['-i', 'base.json', '-o', 'package.json'], obj=script_info)
         assert result.exit_code == 0
 
-        filepath = os.path.join('bower.json')
+        filepath = os.path.join('package.json')
         assert os.path.exists(filepath)
 
-        with open('bower.json') as f:
-            bower_json = json.loads(f.read())
-        assert bower_json == expected
+        with open('package.json') as f:
+            package_json = json.loads(f.read())
+        assert package_json == expected
