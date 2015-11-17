@@ -34,6 +34,7 @@ from flask_assets import Bundle
 
 from invenio_assets import NpmBundle
 from invenio_assets.cli import npm
+from invenio_assets.npm import extract_deps
 
 
 def test_init():
@@ -112,3 +113,17 @@ def test_cli(script_info):
         with open('package.json') as f:
             package_json = json.loads(f.read())
         assert package_json == expected
+
+
+def test_extract_deps():
+    """Test bundles with conflicts."""
+    bundle = Bundle(
+        NpmBundle(npm={"jquery": "~2"}),
+        NpmBundle(npm={"jquery": "~1.11"})
+    )
+
+    expected = {
+        "jquery": "~2"
+    }
+
+    assert expected == extract_deps([bundle])

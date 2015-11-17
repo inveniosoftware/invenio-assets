@@ -64,6 +64,7 @@ install_requires = [
     'Flask-Assets>=0.11',
     'Flask-Collect>=1.2.2',
     'Flask-CLI>=0.2.1',
+    'node-semver>=0.1.1',
     'webassets>=0.11.1'
 ]
 
