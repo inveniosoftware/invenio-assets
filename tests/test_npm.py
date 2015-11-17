@@ -30,6 +30,7 @@ import json
 import os
 
 from click.testing import CliRunner
+from flask_assets import Bundle
 
 from invenio_assets import NpmBundle
 from invenio_assets.cli import npm
@@ -48,18 +49,24 @@ def test_init():
 
 def test_cli(script_info):
     """Test npm CLI."""
-    deps = {"boostrap": "3.0.0"}
+
+    deps = {"bootstrap": "3.0.0"}
+    bundle = Bundle(
+        NpmBundle(
+            npm=deps
+        )
+    )
 
     runner = CliRunner()
     app = script_info.load_app()
     assets = app.extensions['invenio-assets']
-    assets.env.register('test1', NpmBundle(npm=deps))
+    assets.env.register('test1', bundle)
     assert len(assets.env) == 1
 
     expected = {
         "name": app.name,
         "dependencies": {
-            "boostrap": "3.0.0",
+            "bootstrap": "3.0.0",
         },
         "version": "",
     }

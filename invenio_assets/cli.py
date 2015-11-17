@@ -32,6 +32,7 @@ import os
 
 import click
 from flask import current_app
+from flask_assets import Bundle
 from flask_cli import with_appcontext
 from pkg_resources import DistributionNotFound, get_distribution
 
@@ -50,6 +51,17 @@ def _webassets_cmd(cmd):
     cmdenv = CommandLineEnvironment(current_app.jinja_env.assets_environment,
                                     logger)
     getattr(cmdenv, cmd)()
+
+
+def _extract_deps(bundle):
+    """Extract the dependencies from the bundle and its sub-bundles."""
+    deps = {}
+    if hasattr(bundle, 'npm'):
+        deps.update(bundle.npm)
+    for content in bundle.contents:
+        if isinstance(content, Bundle):
+            deps.update(_extract_deps(content))
+    return deps
 
 
 @click.command()
@@ -77,8 +89,7 @@ def npm(package_json, output_file):
 
     # Iterate over bundles
     for bundle in current_app.extensions['invenio-assets'].env:
-        if hasattr(bundle, 'npm'):
-            output['dependencies'].update(bundle.npm)
+        output['dependencies'].update(_extract_deps(bundle))
 
     # Write to static folder if output file is not specified
     if output_file is None:
