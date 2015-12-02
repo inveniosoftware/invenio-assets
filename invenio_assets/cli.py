@@ -29,6 +29,7 @@ from __future__ import absolute_import, print_function
 import json
 import logging
 import os
+import re
 
 import click
 from flask import current_app
@@ -68,7 +69,7 @@ def npm(package_json, output_file):
 
     output = {
         "name": current_app.name,
-        "version": version,
+        "version": re.sub('[a-z]', '', version),
         "dependencies": {},
     }
 
