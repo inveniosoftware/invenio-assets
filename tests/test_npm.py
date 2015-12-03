@@ -34,7 +34,7 @@ from flask_assets import Bundle
 
 from invenio_assets import NpmBundle
 from invenio_assets.cli import npm
-from invenio_assets.npm import extract_deps
+from invenio_assets.npm import extract_deps, make_semver
 
 
 def test_init():
@@ -127,3 +127,30 @@ def test_extract_deps():
     }
 
     assert expected == extract_deps([bundle])
+
+
+def test_make_semver():
+    """Test make semver."""
+    tests = [
+        ('1.0.dev456', '1.0.0-dev456'),
+        ('1.0a1', '1.0.0-a1'),
+        ('1.0a2.dev456', '1.0.0-a2.dev456'),
+        ('1.0a12.dev456', '1.0.0-a12.dev456'),
+        ('1.0a12', '1.0.0-a12'),
+        ('1.0b1.dev456', '1.0.0-b1.dev456'),
+        ('1.0b2', '1.0.0-b2'),
+        ('1.0b2.post345.dev456', '1.0.0-b2.dev456'),
+        ('1.0b2.post345', '1.0.0-b2'),
+        ('1.0rc1.dev456', '1.0.0-rc1.dev456'),
+        ('1.0rc1', '1.0.0-rc1'),
+        ('1.0', '1.0.0'),
+        ('1', '1.0.0'),
+        ('1.0+abc.5', '1.0.0+abc.5'),
+        ('1.0+abc.7', '1.0.0+abc.7'),
+        ('1.0+5', '1.0.0+5'),
+        ('1.0.post456.dev34', '1.0.0-dev34'),
+        ('1.0.post456', '1.0.0'),
+        ('1.1.dev1', '1.1.0-dev1'),
+    ]
+    for pyver, expected_semver in tests:
+        assert make_semver(pyver) == expected_semver

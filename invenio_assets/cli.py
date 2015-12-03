@@ -29,14 +29,13 @@ from __future__ import absolute_import, print_function
 import json
 import logging
 import os
-import re
 
 import click
 from flask import current_app
 from flask_cli import with_appcontext
 from pkg_resources import DistributionNotFound, get_distribution
 
-from .npm import extract_deps
+from .npm import extract_deps, make_semver
 from .proxy import current_assets
 
 
@@ -69,7 +68,7 @@ def npm(package_json, output_file):
 
     output = {
         "name": current_app.name,
-        "version": re.sub('[a-z]', '', version),
+        "version": make_semver(version) if version else version,
         "dependencies": {},
     }
 
