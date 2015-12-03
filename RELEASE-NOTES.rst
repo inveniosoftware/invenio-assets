@@ -2,7 +2,7 @@
  Invenio-Assets v1.0.0
 =======================
 
-Invenio-Assets v1.0.0 was released on November 18, 2015.
+Invenio-Assets v1.0.0 was released on December 4, 2015.
 
 About
 -----
