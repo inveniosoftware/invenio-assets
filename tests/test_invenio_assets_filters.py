@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 #
 # This file is part of Invenio.
-# Copyright (C) 2015 CERN.
+# Copyright (C) 2015, 2016 CERN.
 #
 # Invenio is free software; you can redistribute it
 # and/or modify it under the terms of the GNU General Public License as
@@ -28,7 +28,6 @@
 from __future__ import absolute_import, print_function
 
 from flask import Flask
-from flask_cli import FlaskCLI
 from webassets.test import TempEnvironmentHelper
 
 from invenio_assets import InvenioAssets
@@ -60,7 +59,7 @@ class TestInvenioAssetsRequireJSFilter(TempEnvironmentHelper):
                                  output='out_1.js')
         bundle_1.build()
 
-        assert self.get('out_1.js') == 'more(),define("foo",function(){});\n;'
+        assert self.get('out_1.js') == 'more(),define("foo",function(){});\n'
 
 
 class TestInvenioAssetsCleanCSSFilter(TempEnvironmentHelper):
@@ -78,7 +77,9 @@ class TestInvenioAssetsCleanCSSFilter(TempEnvironmentHelper):
     def test_clean_CSS(self):
         """Test method of Clean CSS filter."""
         app = Flask(__name__)
-        FlaskCLI(app)
+        if not hasattr(app, 'cli'):
+            from flask_cli import FlaskCLI
+            FlaskCLI(app)
         InvenioAssets(app)
         with app.app_context():
             bundle = self.mkbundle('foo.css',

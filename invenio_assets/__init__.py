@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 #
 # This file is part of Invenio.
-# Copyright (C) 2015 CERN.
+# Copyright (C) 2015, 2016 CERN.
 #
 # Invenio is free software; you can redistribute it
 # and/or modify it under the terms of the GNU General Public License as
@@ -25,12 +25,13 @@
 """Media assets management for Invenio.
 
 First make sure you have Flask application with Click support (meaning
-Flask 1.0+ or alternatively use the Flask-CLI extension):
+Flask 0.11+ or alternatively use the Flask-CLI extension):
 
     >>> from flask import Flask
-    >>> from flask_cli import FlaskCLI
     >>> app = Flask('myapp')
-    >>> cli = FlaskCLI(app)
+    >>> if not hasattr(app, 'cli'):
+    ...     from flask_cli import FlaskCLI
+    ...     FlaskCLI(app)
 
 Next, initialize your extension:
 

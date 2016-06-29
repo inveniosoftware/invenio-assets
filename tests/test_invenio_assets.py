@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 #
 # This file is part of Invenio.
-# Copyright (C) 2015 CERN.
+# Copyright (C) 2015, 2016 CERN.
 #
 # Invenio is free software; you can redistribute it
 # and/or modify it under the terms of the GNU General Public License as
@@ -86,7 +86,9 @@ def test_init_post(app):
 def test_init_cli(app):
     """Test cli registration."""
     assert len(app.cli.commands) == 0
-    InvenioAssets(app)
+    ext = InvenioAssets()
+    ext.init_app(app)
+    ext.init_cli(app.cli)
     assert len(app.cli.commands) == 3
 
 

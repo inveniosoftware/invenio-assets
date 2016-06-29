@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 #
 # This file is part of Invenio.
-# Copyright (C) 2015 CERN.
+# Copyright (C) 2015, 2016 CERN.
 #
 # Invenio is free software; you can redistribute it
 # and/or modify it under the terms of the GNU General Public License as
@@ -32,11 +32,15 @@ import os
 
 import click
 from flask import current_app
-from flask_cli import with_appcontext
 from pkg_resources import DistributionNotFound, get_distribution
 
 from .npm import extract_deps, make_semver
 from .proxy import current_assets
+
+try:
+    from flask.cli import with_appcontext
+except ImportError:
+    from flask_cli import with_appcontext
 
 
 #

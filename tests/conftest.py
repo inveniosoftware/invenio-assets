@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 #
 # This file is part of Invenio.
-# Copyright (C) 2015 CERN.
+# Copyright (C) 2015, 2016 CERN.
 #
 # Invenio is free software; you can redistribute it
 # and/or modify it under the terms of the GNU General Public License as
@@ -32,47 +32,46 @@ import tempfile
 
 import pytest
 from flask import Flask
-from flask_cli import FlaskCLI, ScriptInfo
 
 from invenio_assets import InvenioAssets
 from invenio_assets.npm import NpmBundle
 
+try:
+    from flask.cli import ScriptInfo
+except ImportError:
+    from flask_cli import ScriptInfo
 
-@pytest.fixture()
+
+@pytest.yield_fixture()
 def app():
     """Flask application fixture."""
-    app = Flask(__name__)
-    FlaskCLI(app)
-    return app
-
-
-@pytest.fixture()
-def script_info(request):
-    """Get ScriptInfo object for testing CLI."""
     initial_dir = os.getcwd()
     instance_path = tempfile.mkdtemp()
+
     app = Flask(__name__, instance_path=instance_path)
-    FlaskCLI(app)
-    InvenioAssets(app)
-    os.chdir(instance_path)
+    if not hasattr(app, 'cli'):
+        from flask_cli import FlaskCLI
+        FlaskCLI(app)
 
-    def teardown():
-        shutil.rmtree(instance_path)
-        os.chdir(initial_dir)
+    yield app
 
-    request.addfinalizer(teardown)
-    return ScriptInfo(create_app=lambda info: app)
+    shutil.rmtree(instance_path)
+    os.chdir(initial_dir)
 
 
-@pytest.fixture()
-def script_info_assets(request):
+@pytest.yield_fixture()
+def script_info(app):
     """Get ScriptInfo object for testing CLI."""
-    initial_dir = os.getcwd()
-    instance_path = tempfile.mkdtemp()
-    app = Flask(__name__, instance_path=instance_path)
-    FlaskCLI(app)
     InvenioAssets(app)
-    os.chdir(instance_path)
+    os.chdir(app.instance_path)
+    yield ScriptInfo(create_app=lambda info: app)
+
+
+@pytest.yield_fixture()
+def script_info_assets(app):
+    """Get ScriptInfo object for testing CLI."""
+    InvenioAssets(app)
+    os.chdir(app.instance_path)
 
     class Ext(object):
         def __init__(self, app):
@@ -80,17 +79,14 @@ def script_info_assets(request):
             assets.env.register('testbundle', NpmBundle(
                 'test.css',
                 output='testbundle.css'))
+
     static_dir = os.path.join(os.path.dirname(__file__), 'static')
     if not os.path.exists(static_dir):
         os.makedirs(static_dir)
+
     test_css = open(os.path.join(static_dir, 'test.css'), 'w+')
     test_css.write("Test")
 
     Ext(app)
 
-    def teardown():
-        shutil.rmtree(instance_path)
-        os.chdir(initial_dir)
-
-    request.addfinalizer(teardown)
-    return ScriptInfo(create_app=lambda info: app)
+    yield ScriptInfo(create_app=lambda info: app)
