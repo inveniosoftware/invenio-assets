@@ -1,8 +1,8 @@
-=======================
- Invenio-Assets v1.0.0
-=======================
+=========================
+ Invenio-Assets v1.0.0a5
+=========================
 
-Invenio-Assets v1.0.0 was released on June 29, 2016.
+Invenio-Assets v1.0.0a5 was released on June 29, 2016.
 
 About
 -----
@@ -19,7 +19,7 @@ What's new
 Installation
 ------------
 
-   $ pip install invenio-assets==1.0.0
+   $ pip install invenio-assets==1.0.0a5
 
 Documentation
 -------------
