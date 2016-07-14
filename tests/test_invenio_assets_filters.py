@@ -77,9 +77,6 @@ class TestInvenioAssetsCleanCSSFilter(TempEnvironmentHelper):
     def test_clean_CSS(self):
         """Test method of Clean CSS filter."""
         app = Flask(__name__)
-        if not hasattr(app, 'cli'):
-            from flask_cli import FlaskCLI
-            FlaskCLI(app)
         InvenioAssets(app)
         with app.app_context():
             bundle = self.mkbundle('foo.css',

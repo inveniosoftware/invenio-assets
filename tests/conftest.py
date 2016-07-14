@@ -32,14 +32,10 @@ import tempfile
 
 import pytest
 from flask import Flask
+from flask.cli import ScriptInfo
 
 from invenio_assets import InvenioAssets
 from invenio_assets.npm import NpmBundle
-
-try:
-    from flask.cli import ScriptInfo
-except ImportError:
-    from flask_cli import ScriptInfo
 
 
 @pytest.yield_fixture()
@@ -49,9 +45,6 @@ def app():
     instance_path = tempfile.mkdtemp()
 
     app = Flask(__name__, instance_path=instance_path)
-    if not hasattr(app, 'cli'):
-        from flask_cli import FlaskCLI
-        FlaskCLI(app)
 
     yield app
 

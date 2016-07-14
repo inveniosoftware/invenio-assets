@@ -24,14 +24,10 @@
 
 """Media assets management for Invenio.
 
-First make sure you have Flask application with Click support (meaning
-Flask 0.11+ or alternatively use the Flask-CLI extension):
+First make sure you have Flask application with Click support:
 
     >>> from flask import Flask
     >>> app = Flask('myapp')
-    >>> if not hasattr(app, 'cli'):
-    ...     from flask_cli import FlaskCLI
-    ...     FlaskCLI(app)
 
 Next, initialize your extension:
 
@@ -50,12 +46,11 @@ After having initialized the extension you can register bundles:
 
 Command-line interface
 ~~~~~~~~~~~~~~~~~~~~~~
-Invenio Assets installs three commands on your application:
+Invenio Assets installs three Flask commands on your application:
 
  * ``assets`` - Assets building commands.
  * ``npm`` - Generation of package.json.
  * ``collect`` - Collect static files.
-
 
 .. code-block:: console
 

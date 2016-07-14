@@ -85,11 +85,11 @@ def test_init_post(app):
 
 def test_init_cli(app):
     """Test cli registration."""
-    assert len(app.cli.commands) == 0
-    ext = InvenioAssets()
-    ext.init_app(app)
-    ext.init_cli(app.cli)
-    assert len(app.cli.commands) == 3
+    from flask.cli import cli
+    cli._load_plugin_commands()
+    assert 'assets' in cli.commands
+    assert 'collect' in cli.commands
+    assert 'npm' in cli.commands
 
 
 def test_assets_usage(app):
