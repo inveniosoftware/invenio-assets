@@ -38,6 +38,8 @@ from pkg_resources import DistributionNotFound, get_distribution
 from .npm import extract_deps, make_semver
 from .proxy import current_assets
 
+__all__ = ('assets', 'collect', 'npm', )
+
 
 #
 # Assets commands

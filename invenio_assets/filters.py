@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 #
 # This file is part of Flask-AppExts
-# Copyright (C) 2015 CERN.
+# Copyright (C) 2015, 2016 CERN.
 #
 # Flask-AppExts is free software; you can redistribute it and/or
 # modify it under the terms of the Revised BSD License; see LICENSE
@@ -16,6 +16,8 @@ import os
 from flask import current_app
 from webassets.filter import ExternalTool
 from webassets.filter.requirejs import RequireJSFilter as RequireJSFilterBase
+
+__all__ = ('RequireJSFilter', 'CleanCSSFilter', )
 
 
 class RequireJSFilter(RequireJSFilterBase):

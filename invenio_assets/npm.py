@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 #
 # This file is part of Invenio.
-# Copyright (C) 2015 CERN.
+# Copyright (C) 2015, 2016 CERN.
 #
 # Invenio is free software; you can redistribute it
 # and/or modify it under the terms of the GNU General Public License as
@@ -32,6 +32,8 @@ import semver
 from flask_assets import Bundle as BundleBase
 from pkg_resources import parse_version
 
+__all__ = ('NpmBundle', 'extract_deps', 'make_semver', )
+
 
 class NpmBundle(BundleBase):
     """Bundle extension with a name and npm dependencies.
@@ -47,7 +49,7 @@ class NpmBundle(BundleBase):
         :param npm: npm dependencies
         :type npm: dict
         """
-        self.npm = options.pop("npm", {})
+        self.npm = options.pop('npm', {})
         super(NpmBundle, self).__init__(*contents, **options)
 
 
@@ -76,8 +78,9 @@ def extract_deps(bundles, log=None):
         deps[package] = semver.max_satisfying(versions, '*', True)
 
         if log and len(versions) > 1:
-            log("Warn: {} version {} resolved to: {}"
-                .format(repr(package), versions, repr(deps[package])))
+            log('Warn: {0} version {1} resolved to: {2}'.format(
+                repr(package), versions, repr(deps[package])
+            ))
 
     return deps
 
@@ -101,17 +104,17 @@ def make_semver(version_str):
 
     prerelease = []
     if v._version.pre:
-        prerelease.append("".join(str(x) for x in v._version.pre))
+        prerelease.append(''.join(str(x) for x in v._version.pre))
     if v._version.dev:
-        prerelease.append("".join(str(x) for x in v._version.dev))
-    prerelease = ".".join(prerelease)
+        prerelease.append(''.join(str(x) for x in v._version.dev))
+    prerelease = '.'.join(prerelease)
 
     # Create semver
-    version = "{0}.{1}.{2}".format(major, minor, patch)
+    version = '{0}.{1}.{2}'.format(major, minor, patch)
 
     if prerelease:
-        version += "-{0}".format(prerelease)
+        version += '-{0}'.format(prerelease)
     if v.local:
-        version += "+{0}".format(v.local)
+        version += '+{0}'.format(v.local)
 
     return version

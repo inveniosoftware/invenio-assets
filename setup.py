@@ -61,7 +61,7 @@ setup_requires = [
 
 install_requires = [
     'Flask>=0.11',
-    'Flask-Assets>=0.11',
+    'Flask-Assets>=0.11,<0.12',  # 0.12 will install Flask command 'assets'
     'Flask-Collect==1.2.2',
     'node-semver>=0.1.1',
     'webassets>=0.11.1'

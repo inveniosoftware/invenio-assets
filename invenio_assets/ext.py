@@ -33,6 +33,8 @@ from flask_collect import Collect
 from .cli import assets as assets_cmd
 from .cli import collect, npm
 
+__all__ = ('InvenioAssets', )
+
 
 class InvenioAssets(object):
     """Invenio asset extension."""
@@ -57,23 +59,11 @@ class InvenioAssets(object):
             self.load_entrypoint(self.entrypoint)
         app.extensions['invenio-assets'] = self
 
-        try:
-            from flask import cli
-        except ImportError:
-            # Flask<0.11 needs manual command registration.
-            self.init_cli(app.cli)
-
     def init_config(self, app):
         """Initialize configuration."""
         app.config.setdefault('REQUIREJS_BASEURL', app.static_folder)
         app.config.setdefault('COLLECT_STATIC_ROOT', app.static_folder)
         app.config.setdefault('COLLECT_STORAGE', 'flask_collect.storage.link')
-
-    def init_cli(self, cli):
-        """Initialize CLI."""
-        cli.add_command(assets_cmd)
-        cli.add_command(npm)
-        cli.add_command(collect)
 
     def load_entrypoint(self, entrypoint):
         """Load entrypoint."""

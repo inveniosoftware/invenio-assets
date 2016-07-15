@@ -24,7 +24,18 @@
 
 """Media assets management for Invenio.
 
-First make sure you have Flask application with Click support:
+Invenio-Assets helps you with integration of webassets, installation of NPM
+packages, and process of collecting static files.
+
+If you want to learn details about package dependencies, please see:
+
+ * `Flask-Assets <http://flask-assets.readthedocs.io/en/latest/>`_
+ * `Flask-Collect <http://flask-collect.readthedocs.io/en/latest/>`_
+ * `NPM <https://nodejs.org/en/download/>`_
+
+Initialization
+--------------
+First create a Flask application:
 
     >>> from flask import Flask
     >>> app = Flask('myapp')
@@ -34,6 +45,17 @@ Next, initialize your extension:
     >>> from invenio_assets import InvenioAssets
     >>> assets = InvenioAssets(app)
 
+During initalization two Flask extensions ``flask_assets.Environment`` and
+:class:`flask_collect.Collect` are instantiated and configured. Also bundles
+specified in entry point group called `'invenio_assets.bundles'` are
+:ref:`automatically registered <entry-points-loading>`.
+
+Bundles
+-------
+Webassets package provides class ``Bundle`` for creating collection of files
+that you would like to process together by applying filters. For more
+information follow `webassets documentation
+<https://webassets.readthedocs.io/en/latest/bundles.html#bundles>`_.
 
 Registering bundles
 ~~~~~~~~~~~~~~~~~~~
@@ -43,10 +65,67 @@ After having initialized the extension you can register bundles:
     >>> assets.env.register('mybundle', Bundle())
     <Bundle ...>
 
+.. _entry-points-loading:
+
+Entry points loading
+~~~~~~~~~~~~~~~~~~~~
+Invenio-Assets will automatically load bundles defined by the entry point
+groups ``invenio_assets.bundles``.
+
+Example:
+
+.. code-block:: python
+
+   # setup.py
+   setup(
+       # ...
+       entry_points={
+           'invenio_assets.bundles': [
+               'mybundle = mypackage.bundles:mybundle',
+           ],
+           # ...
+        }
+        # ...
+    )
+
+Above is equivalent to:
+
+.. code-block:: python
+
+   from mypackage.bundles import mybundle
+   assets.env.register('mybundle', mybundle)
+
+NPM dependencies
+~~~~~~~~~~~~~~~~
+There is a special bundle extension where you can define NPM dependencies
+used to generate ``package.json`` file:
+
+    >>> from invenio_assets import NpmBundle
+    >>> mycss = NpmBundle(
+    ...     filters='scss, cleancss',
+    ...     output='my.css',
+    ...     npm={
+    ...         'almond': '~0.3.1',
+    ...         'bootstrap-sass': '~3.3.5',
+    ...         'font-awesome': '~4.4.0',
+    ...     }
+    ... )
+    >>> assets.env.register('mycss', mycss)
+    <NpmBundle ...>
+
+To extract the dependencies from the bundle use
+:func:`~invenio_assets.npm.extract_deps` and pass an instance of webassets
+environment:
+
+    >>> from invenio_assets.npm import extract_deps
+    >>> deps = extract_deps(assets.env)
+    >>> deps['bootstrap-sass']
+    '~3.3.5'
 
 Command-line interface
-~~~~~~~~~~~~~~~~~~~~~~
-Invenio Assets installs three Flask commands on your application:
+----------------------
+Invenio-Assets makes sure that following three Flask commands are available
+on your application:
 
  * ``assets`` - Assets building commands.
  * ``npm`` - Generation of package.json.
@@ -70,5 +149,10 @@ from .proxy import current_assets
 from .version import __version__
 
 __all__ = (
-    '__version__', 'CleanCSSFilter', 'InvenioAssets', 'NpmBundle',
-    'RequireJSFilter', 'current_assets')
+    '__version__',
+    'CleanCSSFilter',
+    'InvenioAssets',
+    'NpmBundle',
+    'RequireJSFilter',
+    'current_assets',
+)
