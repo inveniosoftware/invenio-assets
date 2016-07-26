@@ -1,15 +1,13 @@
 =========================
- Invenio-Assets v1.0.0a5
+ Invenio-Assets v1.0.0b1
 =========================
 
-Invenio-Assets v1.0.0a5 was released on June 29, 2016.
+Invenio-Assets v1.0.0b1 was released on July 26, 2016.
 
 About
 -----
 
 Media assets management for Invenio.
-
-*This is an experimental developer preview release.*
 
 What's new
 ----------
@@ -19,18 +17,18 @@ What's new
 Installation
 ------------
 
-   $ pip install invenio-assets==1.0.0a5
+   $ pip install invenio-assets==1.0.0b1
 
 Documentation
 -------------
 
-   http://pythonhosted.org/invenio-assets/
+   https://pythonhosted.org/invenio-assets/
 
 Happy hacking and thanks for flying Invenio-Assets.
 
 | Invenio Development Team
 |   Email: info@inveniosoftware.org
 |   IRC: #invenio on irc.freenode.net
-|   Twitter: http://twitter.com/inveniosoftware
+|   Twitter: https://twitter.com/inveniosoftware
 |   GitHub: https://github.com/inveniosoftware/invenio-assets
 |   URL: http://inveniosoftware.org
