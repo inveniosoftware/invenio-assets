@@ -35,6 +35,7 @@ include .editorconfig
 include *.rst
 include *.sh
 include *.txt
+include *.yml
 include LICENSE
 include babel.ini
 include pytest.ini
