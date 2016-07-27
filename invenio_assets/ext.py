@@ -39,33 +39,54 @@ __all__ = ('InvenioAssets', )
 class InvenioAssets(object):
     """Invenio asset extension."""
 
-    def __init__(self, app=None, entrypoint='invenio_assets.bundles',
-                 **kwargs):
-        """Extension initialization."""
+    def __init__(self, app=None, **kwargs):
+        r"""Extension initialization.
+
+        :param app: An instance of :class:`~flask.Flask`.
+        :param \**kwargs: Keyword arguments are passed to ``init_app`` method.
+        """
         self.env = Environment()
         self.collect = Collect()
-        self.entrypoint = entrypoint
 
         if app:
             self.init_app(app, **kwargs)
 
-    def init_app(self, app, **kwargs):
-        """Initialize application object."""
+    def init_app(self, app, entry_point_group='invenio_assets.bundles',
+                 **kwargs):
+        """Initialize application object.
+
+        :param app: An instance of :class:`~flask.Flask`.
+        :param entry_point_group: A name of entry point group used to load
+            ``webassets`` bundles.
+
+        .. versionchanged:: 1.0.0b2
+           The *entrypoint* has been renamed to *entry_point_group*.
+        """
         self.init_config(app)
         self.env.init_app(app)
         self.collect.init_app(app)
 
-        if self.entrypoint:
-            self.load_entrypoint(self.entrypoint)
+        if entry_point_group:
+            self.load_entrypoint(entry_point_group)
         app.extensions['invenio-assets'] = self
 
     def init_config(self, app):
-        """Initialize configuration."""
+        """Initialize configuration.
+
+        :param app: An instance of :class:`~flask.Flask`.
+        """
         app.config.setdefault('REQUIREJS_BASEURL', app.static_folder)
         app.config.setdefault('COLLECT_STATIC_ROOT', app.static_folder)
         app.config.setdefault('COLLECT_STORAGE', 'flask_collect.storage.link')
 
-    def load_entrypoint(self, entrypoint):
-        """Load entrypoint."""
-        for ep in pkg_resources.iter_entry_points(entrypoint):
+    def load_entrypoint(self, entry_point_group):
+        """Load entrypoint.
+
+        :param entry_point_group: A name of entry point group used to load
+            ``webassets`` bundles.
+
+        .. versionchanged:: 1.0.0b2
+           The *entrypoint* has been renamed to *entry_point_group*.
+        """
+        for ep in pkg_resources.iter_entry_points(entry_point_group):
             self.env.register(ep.name, ep.load())

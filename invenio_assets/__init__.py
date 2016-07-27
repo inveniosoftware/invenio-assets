@@ -145,7 +145,7 @@ from __future__ import absolute_import, print_function
 from .ext import InvenioAssets
 from .filters import CleanCSSFilter, RequireJSFilter
 from .npm import NpmBundle
-from .proxy import current_assets
+from .proxies import current_assets
 from .version import __version__
 
 __all__ = (

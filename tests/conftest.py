@@ -78,7 +78,7 @@ def script_info_assets(app):
         os.makedirs(static_dir)
 
     test_css = open(os.path.join(static_dir, 'test.css'), 'w+')
-    test_css.write("Test")
+    test_css.write('Test')
 
     Ext(app)
 

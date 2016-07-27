@@ -22,7 +22,21 @@
 # waive the privileges and immunities granted to it by virtue of its status
 # as an Intergovernmental Organization or submit itself to any jurisdiction.
 
-"""Click command-line interface for assets and collect."""
+"""Click command-line interface for assets and collect.
+
+For detailed information about installed command you can execute:
+
+.. code-block:: console
+
+    $ flask --help
+    ...
+    Commands:
+    assets   Web assets commands.
+    collect  Collect static files.
+    npm      Generate a package.json file.
+    run      Runs a development server.
+    shell    Runs a shell in the app context.
+"""
 
 from __future__ import absolute_import, print_function
 
@@ -36,7 +50,7 @@ from flask.cli import with_appcontext
 from pkg_resources import DistributionNotFound, get_distribution
 
 from .npm import extract_deps, make_semver
-from .proxy import current_assets
+from .proxies import current_assets
 
 __all__ = ('assets', 'collect', 'npm', )
 
@@ -45,7 +59,10 @@ __all__ = ('assets', 'collect', 'npm', )
 # Assets commands
 #
 def _webassets_cmd(cmd):
-    """Helper to run a webassets command."""
+    """Helper to run a webassets command.
+
+    :param cmd: Command name.
+    """
     from webassets.script import CommandLineEnvironment
     logger = logging.getLogger('webassets')
     logger.addHandler(logging.StreamHandler())
@@ -56,22 +73,22 @@ def _webassets_cmd(cmd):
 
 
 @click.command()
-@click.option("-i", "--package-json", help="base input file", default=None,
+@click.option('-i', '--package-json', help='base input file', default=None,
               type=click.File('r'))
-@click.option("-o", "--output-file", help="write package.json to output file",
-              metavar="FILENAME", type=click.File('w'))
+@click.option('-o', '--output-file', help='write package.json to output file',
+              metavar='FILENAME', type=click.File('w'))
 @with_appcontext
 def npm(package_json, output_file):
     """Generate a package.json file."""
     try:
         version = get_distribution(current_app.name).version
     except DistributionNotFound:
-        version = ""
+        version = ''
 
     output = {
-        "name": current_app.name,
-        "version": make_semver(version) if version else version,
-        "dependencies": {},
+        'name': current_app.name,
+        'version': make_semver(version) if version else version,
+        'dependencies': {},
     }
 
     # Load base file
@@ -88,10 +105,10 @@ def npm(package_json, output_file):
         if not os.path.exists(current_app.static_folder):
             os.makedirs(current_app.static_folder)
         output_file = open(
-            os.path.join(current_app.static_folder, "package.json"),
-            "w")
+            os.path.join(current_app.static_folder, 'package.json'),
+            'w')
 
-    click.echo("Writing {0}".format(output_file.name))
+    click.echo('Writing {0}'.format(output_file.name))
     json.dump(output, output_file, indent=4)
     output_file.close()
 

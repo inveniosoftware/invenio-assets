@@ -28,11 +28,20 @@ API Docs
 .. automodule:: invenio_assets.ext
    :members:
 
-.. automodule:: invenio_assets.npm
-   :members:
+Filters
+-------
 
 .. automodule:: invenio_assets.filters
    :members:
+
+NPM
+---
+
+.. automodule:: invenio_assets.npm
+   :members:
+
+Command Line Interface
+----------------------
 
 .. automodule:: invenio_assets.cli
    :members:

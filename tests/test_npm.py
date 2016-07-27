@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 #
 # This file is part of Invenio.
-# Copyright (C) 2015 CERN.
+# Copyright (C) 2015, 2016 CERN.
 #
 # Invenio is free software; you can redistribute it
 # and/or modify it under the terms of the GNU General Public License as
@@ -42,16 +42,16 @@ def test_init():
     bundle = NpmBundle(
         'testfile.css',
         npm={
-            "bootstrap": "3.0.0"
+            'bootstrap': '3.0.0'
         }
     )
-    assert bundle.npm == {"bootstrap": "3.0.0"}
+    assert bundle.npm == {'bootstrap': '3.0.0'}
 
 
 def test_cli(script_info):
     """Test npm CLI."""
 
-    deps = {"bootstrap": "3.0.0"}
+    deps = {'bootstrap': '3.0.0'}
     bundle = Bundle(
         NpmBundle(
             npm=deps
@@ -65,11 +65,11 @@ def test_cli(script_info):
     assert len(assets.env) == 1
 
     expected = {
-        "name": app.name,
-        "dependencies": {
-            "bootstrap": "3.0.0",
+        'name': app.name,
+        'dependencies': {
+            'bootstrap': '3.0.0',
         },
-        "version": "",
+        'version': '',
     }
 
     # Test default output
@@ -118,12 +118,12 @@ def test_cli(script_info):
 def test_extract_deps():
     """Test bundles with conflicts."""
     bundle = Bundle(
-        NpmBundle(npm={"jquery": "~2"}),
-        NpmBundle(npm={"jquery": "~1.11"})
+        NpmBundle(npm={'jquery': '~2'}),
+        NpmBundle(npm={'jquery': '~1.11'})
     )
 
     expected = {
-        "jquery": "~2"
+        'jquery': '~2'
     }
 
     assert expected == extract_deps([bundle])

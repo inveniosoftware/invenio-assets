@@ -27,7 +27,12 @@ class RequireJSFilter(RequireJSFilterBase):
     """
 
     def __init__(self, *args, **kwargs):
-        """Initialize filter."""
+        r"""Initialize filter.
+
+        :param \*args: Arguments are forwarded to parent class.
+        :param \**kwargs: Keyword arguments are forwarded to parent class
+            except the *exclude* keyword.
+        """
         self.excluded_bundles = kwargs.pop('exclude', [])
         super(RequireJSFilter, self).__init__(*args, **kwargs)
 
@@ -44,7 +49,7 @@ class RequireJSFilter(RequireJSFilterBase):
 
         if excluded_files:
             self.argv.append(
-                "exclude={0}".format(",".join(excluded_files))
+                'exclude={0}'.format(','.join(excluded_files))
             )
 
 
