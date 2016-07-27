@@ -34,3 +34,4 @@ Media assets management for Invenio.
 - Sami Hiltunen <sami.mikael.hiltunen@cern.ch>
 - Tibor Simko <tibor.simko@cern.ch>
 - Yoan Blanc <yoan@dosimple.ch>
+- Ivan Masar <helix84@centrum.sk>
