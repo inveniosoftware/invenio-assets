@@ -35,3 +35,4 @@ Media assets management for Invenio.
 - Tibor Simko <tibor.simko@cern.ch>
 - Yoan Blanc <yoan@dosimple.ch>
 - Ivan Masár <helix84@centrum.sk>
+- Alizee Pace <alizee.pace@gmail.com>

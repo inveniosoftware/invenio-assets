@@ -138,8 +138,8 @@ html_theme_options = {
     'github_banner': True,
     'show_powered_by': False,
     'extra_nav_links': {
-        'invenio-assets@GitHub': 'http://github.com/inveniosoftware/invenio-assets',
-        'invenio-assets@PyPI': 'http://pypi.python.org/pypi/invenio-assets/',
+        'invenio-assets@GitHub': 'https://github.com/inveniosoftware/invenio-assets',
+        'invenio-assets@PyPI': 'https://pypi.python.org/pypi/invenio-assets/',
     }
 }
 
@@ -331,6 +331,7 @@ texinfo_documents = [
 # Example configuration for intersphinx: refer to the Python standard library.
 intersphinx_mapping = {
     'https://docs.python.org/': None,
+    # FIXME HTTPS certificate is invalid
     'flask': ('http://flask.pocoo.org/docs/latest/', None),
     'flask_assets': ('https://flask-assets.readthedocs.io/en/latest/', None),
     'flask_collect': ('https://flask-collect.readthedocs.io/en/latest/', None),

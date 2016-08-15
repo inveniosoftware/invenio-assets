@@ -29,8 +29,8 @@ packages, and process of collecting static files.
 
 If you want to learn details about package dependencies, please see:
 
- * `Flask-Assets <http://flask-assets.readthedocs.io/en/latest/>`_
- * `Flask-Collect <http://flask-collect.readthedocs.io/en/latest/>`_
+ * `Flask-Assets <https://flask-assets.readthedocs.io/en/latest/>`_
+ * `Flask-Collect <https://flask-collect.readthedocs.io/en/latest/>`_
  * `NPM <https://nodejs.org/en/download/>`_
 
 Initialization
