@@ -30,9 +30,6 @@ import pkg_resources
 from flask_assets import Environment
 from flask_collect import Collect
 
-from .cli import assets as assets_cmd
-from .cli import collect, npm
-
 __all__ = ('InvenioAssets', )
 
 

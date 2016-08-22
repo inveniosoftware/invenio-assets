@@ -52,26 +52,12 @@ from pkg_resources import DistributionNotFound, get_distribution
 from .npm import extract_deps, make_semver
 from .proxies import current_assets
 
-__all__ = ('assets', 'collect', 'npm', )
+__all__ = ('collect', 'npm', )
 
 
 #
 # Assets commands
 #
-def _webassets_cmd(cmd):
-    """Helper to run a webassets command.
-
-    :param cmd: Command name.
-    """
-    from webassets.script import CommandLineEnvironment
-    logger = logging.getLogger('webassets')
-    logger.addHandler(logging.StreamHandler())
-    logger.setLevel(logging.DEBUG)
-    cmdenv = CommandLineEnvironment(current_app.jinja_env.assets_environment,
-                                    logger)
-    getattr(cmdenv, cmd)()
-
-
 @click.command()
 @click.option('-i', '--package-json', help='base input file', default=None,
               type=click.File('r'))
@@ -111,32 +97,6 @@ def npm(package_json, output_file):
     click.echo('Writing {0}'.format(output_file.name))
     json.dump(output, output_file, indent=4)
     output_file.close()
-
-
-@click.group()
-def assets():
-    """Web assets commands."""
-
-
-@assets.command()
-@with_appcontext
-def build():
-    """Build bundles."""
-    _webassets_cmd('build')
-
-
-@assets.command()
-@with_appcontext
-def clean():
-    """Clean bundles."""
-    _webassets_cmd('clean')
-
-
-@assets.command()
-@with_appcontext
-def watch():
-    """Watch bundles for file changes."""
-    _webassets_cmd('watch')
 
 
 #
