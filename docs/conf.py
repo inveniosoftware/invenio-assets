@@ -336,3 +336,6 @@ intersphinx_mapping = {
     'flask_assets': ('https://flask-assets.readthedocs.io/en/latest/', None),
     'flask_collect': ('https://flask-collect.readthedocs.io/en/latest/', None),
 }
+
+# Autodoc configuraton.
+autoclass_content = 'both'
