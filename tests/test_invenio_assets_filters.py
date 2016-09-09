@@ -74,7 +74,7 @@ class TestInvenioAssetsCleanCSSFilter(TempEnvironmentHelper):
         """
     }
 
-    def test_clean_CSS(self):
+    def test_clean_CSS(self, static_dir):
         """Test method of Clean CSS filter."""
         app = Flask(__name__)
         InvenioAssets(app)

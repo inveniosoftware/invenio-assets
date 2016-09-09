@@ -26,9 +26,13 @@
 
 from __future__ import absolute_import, print_function
 
+from functools import partial
+
 import pkg_resources
 from flask_assets import Environment
 from flask_collect import Collect
+
+from .collect import collect_staticroot_removal
 
 __all__ = ('InvenioAssets', )
 
@@ -75,6 +79,8 @@ class InvenioAssets(object):
         app.config.setdefault('REQUIREJS_BASEURL', app.static_folder)
         app.config.setdefault('COLLECT_STATIC_ROOT', app.static_folder)
         app.config.setdefault('COLLECT_STORAGE', 'flask_collect.storage.link')
+        app.config.setdefault(
+            'COLLECT_FILTER', partial(collect_staticroot_removal, app))
 
     def load_entrypoint(self, entry_point_group):
         """Load entrypoint.
