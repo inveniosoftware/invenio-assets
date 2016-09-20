@@ -113,6 +113,25 @@ def test_cli(script_info):
         with open('package.json') as f:
             package_json = json.loads(f.read())
         assert package_json == expected
+    del expected['dependencies']['font-awesome']
+
+    # Test pinned file.
+    pinned_deps = {'bootstrap': '2.9.9'}
+    expected['dependencies'].update(pinned_deps)
+    with runner.isolated_filesystem():
+        with open('pinned.json', 'wt') as f:
+            f.write(json.dumps({'dependencies': pinned_deps}))
+
+        result = runner.invoke(
+            npm, ['-p', 'pinned.json', '-o', 'package.json'], obj=script_info)
+        assert result.exit_code == 0
+
+        filepath = os.path.join('package.json')
+        assert os.path.exists(filepath)
+
+        with open('package.json') as f:
+            package_json = json.loads(f.read())
+        assert package_json == expected
 
 
 def test_extract_deps():

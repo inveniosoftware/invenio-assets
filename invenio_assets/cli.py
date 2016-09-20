@@ -41,7 +41,6 @@ For detailed information about installed command you can execute:
 from __future__ import absolute_import, print_function
 
 import json
-import logging
 import os
 
 import click
@@ -63,8 +62,10 @@ __all__ = ('collect', 'npm', )
               type=click.File('r'))
 @click.option('-o', '--output-file', help='write package.json to output file',
               metavar='FILENAME', type=click.File('w'))
+@click.option('-p', '--pinned-file', help='pinned versions package file',
+              default=None, type=click.File('r'))
 @with_appcontext
-def npm(package_json, output_file):
+def npm(package_json, output_file, pinned_file):
     """Generate a package.json file."""
     try:
         version = get_distribution(current_app.name).version
@@ -85,6 +86,11 @@ def npm(package_json, output_file):
     deps = extract_deps(current_app.extensions['invenio-assets'].env,
                         click.echo)
     output['dependencies'].update(deps)
+
+    # Load pinned dependencies
+    if pinned_file:
+        output['dependencies'].update(
+            json.load(pinned_file).get('dependencies', {}))
 
     # Write to static folder if output file is not specified
     if output_file is None:
