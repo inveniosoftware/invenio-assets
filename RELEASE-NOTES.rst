@@ -22,7 +22,7 @@ Installation
 Documentation
 -------------
 
-   https://pythonhosted.org/invenio-assets/
+   https://invenio-assets.readthedocs.io/
 
 Happy hacking and thanks for flying Invenio-Assets.
 

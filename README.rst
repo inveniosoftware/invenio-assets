@@ -46,4 +46,4 @@ Media assets management for Invenio.
 *This is an experimental developer preview release.*
 
 * Free software: GPLv2 license
-* Documentation: https://pythonhosted.org/invenio-assets/
+* Documentation: https://invenio-assets.readthedocs.io/
