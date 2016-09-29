@@ -22,20 +22,13 @@
 # waive the privileges and immunities granted to it by virtue of its status
 # as an Intergovernmental Organization or submit itself to any jurisdiction.
 
-
-# TODO: Generate this manifest file by running the following commands:
-#
-#  git init
-#  git add -A
-#  pip install -e .[all]
-#  check-manifest -u
-
-include .dockerignore
-include .editorconfig
 include *.rst
 include *.sh
 include *.txt
 include *.yml
+include .dockerignore
+include .editorconfig
+include .lgtm MAINTAINERS
 include LICENSE
 include babel.ini
 include docs/requirements.txt
