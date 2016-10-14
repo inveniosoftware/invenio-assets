@@ -26,13 +26,15 @@
 
 from __future__ import absolute_import, print_function
 
+import json
 import os
 
+from babel.messages.pofile import read_po
 from flask import current_app
-from webassets.filter import ExternalTool
+from webassets.filter import ExternalTool, Filter
 from webassets.filter.requirejs import RequireJSFilter as RequireJSFilterBase
 
-__all__ = ('RequireJSFilter', 'CleanCSSFilter', )
+__all__ = ('AngularGettextFilter', 'RequireJSFilter', 'CleanCSSFilter', )
 
 
 class RequireJSFilter(RequireJSFilterBase):
@@ -100,3 +102,36 @@ class CleanCSSFilter(ExternalTool):
     def input(self, _in, out, **kw):
         """Input filtering."""
         self.subprocess([self.binary or 'cleancss'], out, _in)
+
+
+class AngularGettextFilter(Filter):
+    """Compile GNU gettext messages to angular-gettext module."""
+
+    name = 'angular-gettext'
+
+    options = {
+        'catalog_name': None,
+    }
+
+    def output(self, _in, out, **kwargs):
+        """Wrap translation in Angular module."""
+        out.write(
+            'angular.module("{0}", ["gettext"]).run('
+            '["gettextCatalog", function (gettextCatalog) {{'.format(
+                self.catalog_name
+            )
+        )
+        out.write(_in.read())
+        out.write('}]);')
+
+    def input(self, _in, out, **kwargs):
+        """Process individual translation file."""
+        catalog = read_po(_in)
+        out.write('gettextCatalog.setStrings("{0}", '.format(
+            catalog.language_team.split(' ')[0]
+        ))
+        out.write(json.dumps({
+            key: value.string for key, value in catalog._messages.items()
+            if key
+        }))
+        out.write(');')

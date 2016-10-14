@@ -31,7 +31,8 @@ from flask import Flask
 from webassets.test import TempEnvironmentHelper
 
 from invenio_assets import InvenioAssets
-from invenio_assets.filters import CleanCSSFilter, RequireJSFilter
+from invenio_assets.filters import AngularGettextFilter, CleanCSSFilter, \
+    RequireJSFilter
 
 
 class TestInvenioAssetsRequireJSFilter(TempEnvironmentHelper):
@@ -84,3 +85,49 @@ class TestInvenioAssetsCleanCSSFilter(TempEnvironmentHelper):
                                    output='out.css')
             bundle.build()
             assert self.get('out.css') == 'h1{font-family:Verdana;color:#FFF}'
+
+
+class TestInvenioAssetsAngularGettextFilter(TempEnvironmentHelper):
+    """"Test class checking the behaviour of CSS filter """
+    default_files = {
+        'messages-js.po': """
+# French translations for invenio-search-ui.
+# Copyright (C) 2016 CERN
+# This file is distributed under the same license as the invenio-assets
+# project.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2016.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: invenio-assets 1.0.0.dev20161014\n"
+"Report-Msgid-Bugs-To: info@inveniosoftware.org\n"
+"POT-Creation-Date: 2016-10-14 15:18+0200\n"
+"PO-Revision-Date: 2016-10-14 15:37+0200\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: fr\n"
+"Language-Team: fr <LL@li.org>\n"
+"Plural-Forms: nplurals=2; plural=(n > 1)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.3.4\n"
+
+msgid "Error:"
+msgstr "Erreur:"
+        """
+    }
+
+    def test_angular_gettext(self, static_dir):
+        """Test method of Clean CSS filter."""
+        app = Flask(__name__)
+        InvenioAssets(app)
+        with app.app_context():
+            bundle = self.mkbundle('messages-js.po',
+                                   filters=AngularGettextFilter(
+                                       catalog_name='testInvenioAssets'
+                                   ),
+                                   output='catalog.js')
+            bundle.build()
+            catalog = self.get('catalog.js')
+            assert 'testInvenioAssets' in catalog
+            assert 'Erreur' in catalog

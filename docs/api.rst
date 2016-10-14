@@ -40,6 +40,12 @@ NPM
 .. automodule:: invenio_assets.npm
    :members:
 
+Glob
+----
+
+.. automodule:: invenio_assets.glob
+   :members:
+
 Command Line Interface
 ----------------------
 

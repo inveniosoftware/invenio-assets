@@ -143,14 +143,17 @@ on your application:
 from __future__ import absolute_import, print_function
 
 from .ext import InvenioAssets
-from .filters import CleanCSSFilter, RequireJSFilter
+from .filters import AngularGettextFilter, CleanCSSFilter, RequireJSFilter
+from .glob import GlobBundle
 from .npm import NpmBundle
 from .proxies import current_assets
 from .version import __version__
 
 __all__ = (
     '__version__',
+    'AngularGettextFilter',
     'CleanCSSFilter',
+    'GlobBundle',
     'InvenioAssets',
     'NpmBundle',
     'RequireJSFilter',
