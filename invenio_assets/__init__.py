@@ -145,7 +145,7 @@ from __future__ import absolute_import, print_function
 from .ext import InvenioAssets
 from .filters import AngularGettextFilter, CleanCSSFilter, RequireJSFilter
 from .glob import GlobBundle
-from .npm import NpmBundle
+from .npm import LazyNpmBundle, NpmBundle
 from .proxies import current_assets
 from .version import __version__
 
@@ -155,6 +155,7 @@ __all__ = (
     'CleanCSSFilter',
     'GlobBundle',
     'InvenioAssets',
+    'LazyNpmBundle',
     'NpmBundle',
     'RequireJSFilter',
     'current_assets',

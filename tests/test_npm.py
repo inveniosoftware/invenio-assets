@@ -31,8 +31,9 @@ import os
 
 from click.testing import CliRunner
 from flask_assets import Bundle
+from speaklater import make_lazy_string
 
-from invenio_assets import NpmBundle
+from invenio_assets import LazyNpmBundle, NpmBundle
 from invenio_assets.cli import npm
 from invenio_assets.npm import extract_deps, make_semver
 
@@ -146,6 +147,17 @@ def test_extract_deps():
     }
 
     assert expected == extract_deps([bundle])
+
+
+def test_lazy_bundle():
+    """Test lazy bundle."""
+    bundle = LazyNpmBundle(
+        make_lazy_string(lambda: 'test{0}.js'.format(1)),
+        'test2.js'
+    )
+
+    expected = ['test1.js', 'test2.js']
+    assert expected == bundle.contents
 
 
 def test_make_semver():

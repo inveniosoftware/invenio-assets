@@ -31,8 +31,9 @@ from collections import defaultdict
 import semver
 from flask_assets import Bundle as BundleBase
 from pkg_resources import parse_version
+from speaklater import is_lazy_string
 
-__all__ = ('NpmBundle', 'extract_deps', 'make_semver', )
+__all__ = ('LazyNpmBundle', 'NpmBundle', 'extract_deps', 'make_semver', )
 
 
 class NpmBundle(BundleBase):
@@ -51,6 +52,19 @@ class NpmBundle(BundleBase):
         """
         self.npm = options.pop('npm', {})
         super(NpmBundle, self).__init__(*contents, **options)
+
+
+class LazyNpmBundle(NpmBundle):
+    """Magically evaluate lazy strings as file names."""
+
+    def _get_contents(self):
+        """Create strings from lazy strings."""
+        return [
+            str(value) if is_lazy_string(value) else value
+            for value in super(LazyNpmBundle, self)._get_contents()
+        ]
+
+    contents = property(_get_contents, NpmBundle._set_contents)
 
 
 def extract_deps(bundles, log=None):

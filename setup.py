@@ -61,10 +61,11 @@ setup_requires = [
 
 install_requires = [
     'Babel>=1.3',
-    'Flask>=0.11.1',
     'Flask-Assets>=0.12',
     'Flask-Collect==1.2.2',
+    'Flask>=0.11.1',
     'node-semver>=0.1.1',
+    'speaklater>=1.3',
     'webassets>=0.12',
 ]
 
