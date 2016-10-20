@@ -28,6 +28,7 @@ from __future__ import absolute_import, print_function
 
 import json
 import os
+import re
 
 from babel.messages.pofile import read_po
 from flask import current_app
@@ -104,6 +105,12 @@ class CleanCSSFilter(ExternalTool):
         self.subprocess([self.binary or 'cleancss'], out, _in)
 
 
+_re_language_code = re.compile(
+    r'"Language: (?P<language_code>[A-Za-z_]{2,}(_[A-Za-z]{2,})?)\n"'
+)
+"""Match language code group in PO file."""
+
+
 class AngularGettextFilter(Filter):
     """Compile GNU gettext messages to angular-gettext module."""
 
@@ -126,10 +133,12 @@ class AngularGettextFilter(Filter):
 
     def input(self, _in, out, **kwargs):
         """Process individual translation file."""
+        language_code = _re_language_code.search(_in.read()).group(
+            'language_code'
+        )
+        _in.seek(0)  # move at the begining after matching the language
         catalog = read_po(_in)
-        out.write('gettextCatalog.setStrings("{0}", '.format(
-            catalog.language_team.split(' ')[0]
-        ))
+        out.write('gettextCatalog.setStrings("{0}", '.format(language_code))
         out.write(json.dumps({
             key: value.string for key, value in catalog._messages.items()
             if key

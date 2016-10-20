@@ -105,7 +105,7 @@ msgstr ""
 "PO-Revision-Date: 2016-10-14 15:37+0200\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: fr\n"
-"Language-Team: fr <LL@li.org>\n"
+"Language-Team: French (http://www.transifex.com/inveniosoftware/)\n"
 "Plural-Forms: nplurals=2; plural=(n > 1)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
@@ -129,5 +129,6 @@ msgstr "Erreur:"
                                    output='catalog.js')
             bundle.build()
             catalog = self.get('catalog.js')
+            assert '"fr"' in catalog
             assert 'testInvenioAssets' in catalog
             assert 'Erreur' in catalog
