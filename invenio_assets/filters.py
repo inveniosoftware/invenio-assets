@@ -106,7 +106,7 @@ class CleanCSSFilter(ExternalTool):
 
 
 _re_language_code = re.compile(
-    r'"Language: (?P<language_code>[A-Za-z_]{2,}(_[A-Za-z]{2,})?)\n"'
+    r'"Language: (?P<language_code>[A-Za-z_]{2,}(_[A-Za-z]{2,})?)\\n"'
 )
 """Match language code group in PO file."""
 
@@ -141,6 +141,6 @@ class AngularGettextFilter(Filter):
         out.write('gettextCatalog.setStrings("{0}", '.format(language_code))
         out.write(json.dumps({
             key: value.string for key, value in catalog._messages.items()
-            if key
+            if key and value.string
         }))
         out.write(');')

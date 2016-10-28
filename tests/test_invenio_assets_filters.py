@@ -99,21 +99,24 @@ class TestInvenioAssetsAngularGettextFilter(TempEnvironmentHelper):
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: invenio-assets 1.0.0.dev20161014\n"
-"Report-Msgid-Bugs-To: info@inveniosoftware.org\n"
-"POT-Creation-Date: 2016-10-14 15:18+0200\n"
-"PO-Revision-Date: 2016-10-14 15:37+0200\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
-"Language: fr\n"
-"Language-Team: French (http://www.transifex.com/inveniosoftware/)\n"
-"Plural-Forms: nplurals=2; plural=(n > 1)\n"
-"MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=utf-8\n"
-"Content-Transfer-Encoding: 8bit\n"
-"Generated-By: Babel 2.3.4\n"
+"Project-Id-Version: invenio-assets 1.0.0.dev20161014\\n"
+"Report-Msgid-Bugs-To: info@inveniosoftware.org\\n"
+"POT-Creation-Date: 2016-10-14 15:18+0200\\n"
+"PO-Revision-Date: 2016-10-14 15:37+0200\\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\\n"
+"Language: fr\\n"
+"Language-Team: French (http://www.transifex.com/inveniosoftware/)\\n"
+"Plural-Forms: nplurals=2; plural=(n > 1)\\n"
+"MIME-Version: 1.0\\n"
+"Content-Type: text/plain; charset=utf-8\\n"
+"Content-Transfer-Encoding: 8bit\\n"
+"Generated-By: Babel 2.3.4\\n"
 
 msgid "Error:"
 msgstr "Erreur:"
+
+msgid "Missing"
+msgstr ""
         """
     }
 
@@ -132,3 +135,4 @@ msgstr "Erreur:"
             assert '"fr"' in catalog
             assert 'testInvenioAssets' in catalog
             assert 'Erreur' in catalog
+            assert 'Missing' not in catalog
