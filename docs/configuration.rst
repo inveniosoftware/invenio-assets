@@ -29,8 +29,12 @@ Default values are set for following configuration keys during the
 initialization:
 
 * ``REQUIREJS_BASEURL`` -  a directory that AMD modules will be loaded from.
+  See http://webassets.readthedocs.io/en/latest/builtin_filters.html#requirejs
+  for more information on how to configure requirejs.
   (default: ``app.static_folder``)
 * ``COLLECT_STATIC_ROOT`` - a path to folder for collecting static files.
+  See http://flask-collect.readthedocs.io/en/latest/config.html
   (default: ``app.static_folder``)
 * ``COLLECT_STORAGE`` - an import path to storage backend.
+  See http://flask-collect.readthedocs.io/en/latest/config.html
   (default: ``'flask_collect.storage.link'``)

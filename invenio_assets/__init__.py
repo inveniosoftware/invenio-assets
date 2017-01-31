@@ -138,6 +138,92 @@ on your application:
    $ inveniomanage assets build
    $ inveniomanage collect
 
+
+Customize RequireJS
+-------------------
+It is also possible to use RequireJS with a custom configuration. To do so,
+you first need to overwrite the ``REQUIREJS_CONFIG`` config variable, so it
+points to your setup file. See
+http://webassets.readthedocs.io/en/latest/builtin_filters.html#requirejs
+for more information on this variable.
+
+For instance in a ``config.py`` file:
+
+.. code-block:: python
+
+    # The RequireJS options file. The path is taken to be relative to
+    # the Enviroment.directory (by defualt is /static).
+    REQUIREJS_CONFIG = "js/myinstance-build.js"
+
+Then, put your config in your file ``static/js/myinstance-build.js``:
+
+.. code-block:: javascript
+
+    ({
+      preserveLicenseComments: false,
+      optimize: 'uglify2',
+      uglify2: {
+        output: {
+          beautify: false,
+          comments: false
+        },
+        compress: {
+          drop_console: true,
+          sequences: true,
+          dead_code: true,
+          conditionals: true,
+          booleans: true,
+          unused: true,
+          if_return: true,
+          join_vars: true
+        },
+        warnings: true,
+        mangle: true
+      },
+      mainConfigFile: ['./myinstance-settings.js']
+    });
+
+Finally, in your ``static/js/myinstance-settings.js``
+
+.. code-block:: javascript
+
+    require.config({
+      baseUrl: "/static/",
+      paths: {
+        angular: "node_modules/angular/angular"
+      },
+      shim: {
+        angular: {
+          exports: 'angular'
+        }
+      }
+    });
+
+That's all for the configuration. Now you can create a bundle that uses
+RequireJS as a filter for a file ``myinstance.js`` like this:
+
+.. code-block:: python
+
+    js = NpmBundle(
+        'js/myinstance.js',
+        filters='requirejs',
+        output="gen/myinstance.%(version)s.js",
+        npm={
+            'angular': '~1.4.9'
+        }
+    )
+
+And then in your ``myinstance.js`` script that uses RequireJS:
+
+.. code-block:: javascript
+
+    require([
+      "angular",
+      ], function(angular) {
+        // ....
+      }
+    );
+
 """
 
 from __future__ import absolute_import, print_function
