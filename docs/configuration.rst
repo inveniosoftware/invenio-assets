@@ -1,6 +1,6 @@
 ..
     This file is part of Invenio.
-    Copyright (C) 2015, 2016, 2017 CERN.
+    Copyright (C) 2017 CERN.
 
     Invenio is free software; you can redistribute it
     and/or modify it under the terms of the GNU General Public License as
@@ -21,19 +21,16 @@
     waive the privileges and immunities granted to it by virtue of its status
     as an Intergovernmental Organization or submit itself to any jurisdiction.
 
-Authors
-=======
 
-Media assets management for Invenio.
+Configuration
+=============
 
-- Alexander Ioannidis <a.ioannidis@cern.ch>
-- Alizee Pace <alizee.pace@gmail.com>
-- Harris Tzovanakis <me@drjova.com>
-- Ivan Masár <helix84@centrum.sk>
-- Javier Delgado <javier.delgado.fernandez@cern.ch>
-- Jiri Kuncar <jiri.kuncar@cern.ch>
-- Lars Holm Nielsen <lars.holm.nielsen@cern.ch>
-- Rémi Ducceschi <remi.ducceschi@gmail.com>
-- Sami Hiltunen <sami.mikael.hiltunen@cern.ch>
-- Tibor Simko <tibor.simko@cern.ch>
-- Yoan Blanc <yoan@dosimple.ch>
+Default values are set for following configuration keys during the
+initialization:
+
+* ``REQUIREJS_BASEURL`` -  a directory that AMD modules will be loaded from.
+  (default: ``app.static_folder``)
+* ``COLLECT_STATIC_ROOT`` - a path to folder for collecting static files.
+  (default: ``app.static_folder``)
+* ``COLLECT_STORAGE`` - an import path to storage backend.
+  (default: ``'flask_collect.storage.link'``)

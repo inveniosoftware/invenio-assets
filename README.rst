@@ -1,6 +1,6 @@
 ..
     This file is part of Invenio.
-    Copyright (C) 2015 CERN.
+    Copyright (C) 2015, 2016, 2017 CERN.
 
     Invenio is free software; you can redistribute it
     and/or modify it under the terms of the GNU General Public License as
@@ -40,10 +40,13 @@
 .. image:: https://img.shields.io/github/license/inveniosoftware/invenio-assets.svg
         :target: https://github.com/inveniosoftware/invenio-assets/blob/master/LICENSE
 
+Media assets management for Invenio web interface.
 
-Media assets management for Invenio.
+* Provides the creation of JavaScript and CSS bundles.
+
+* Allows the use of filters to create such bundles (like `scss`).
 
 *This is an experimental developer preview release.*
 
-* Free software: GPLv2 license
-* Documentation: https://invenio-assets.readthedocs.io/
+Further documentation is available on
+https://invenio-assets.readthedocs.io/

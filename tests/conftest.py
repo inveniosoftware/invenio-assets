@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 #
 # This file is part of Invenio.
-# Copyright (C) 2015, 2016 CERN.
+# Copyright (C) 2015, 2016, 2017 CERN.
 #
 # Invenio is free software; you can redistribute it
 # and/or modify it under the terms of the GNU General Public License as
@@ -41,12 +41,10 @@ from invenio_assets.npm import NpmBundle
 
 @pytest.yield_fixture()
 def instance_path():
-    """Instance path."""
-    instance_path = tempfile.mkdtemp()
-
-    yield instance_path
-
-    shutil.rmtree(instance_path)
+    """Temporary instance path."""
+    path = tempfile.mkdtemp()
+    yield path
+    shutil.rmtree(path)
 
 
 @pytest.yield_fixture()
