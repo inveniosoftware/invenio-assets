@@ -80,11 +80,14 @@ class TestInvenioAssetsCleanCSSFilter(TempEnvironmentHelper):
         app = Flask(__name__)
         InvenioAssets(app)
         with app.app_context():
+            filter = CleanCSSFilter()
+            result = 'h1{font-family:Verdana;color:#fff}'
             bundle = self.mkbundle('foo.css',
-                                   filters=CleanCSSFilter(),
+                                   filters=filter,
                                    output='out.css')
             bundle.build()
-            assert self.get('out.css') == 'h1{font-family:Verdana;color:#FFF}'
+            # v4 returns #fff while v3 returns #FFF
+            assert self.get('out.css').lower() == result
 
 
 class TestInvenioAssetsAngularGettextFilter(TempEnvironmentHelper):

@@ -29,13 +29,15 @@ from __future__ import absolute_import, print_function
 import json
 import os
 import re
+from subprocess import PIPE, Popen
 
 from babel.messages.pofile import read_po
 from flask import current_app
 from webassets.filter import ExternalTool, Filter
 from webassets.filter.requirejs import RequireJSFilter as RequireJSFilterBase
 
-__all__ = ('AngularGettextFilter', 'RequireJSFilter', 'CleanCSSFilter', )
+__all__ = ('AngularGettextFilter', 'RequireJSFilter', 'CleanCSSFilter',
+           'CleanCSS3Filter', 'CleanCSS4Filter', )
 
 
 class RequireJSFilter(RequireJSFilterBase):
@@ -71,14 +73,18 @@ class RequireJSFilter(RequireJSFilterBase):
             )
 
 
-class CleanCSSFilter(ExternalTool):
-    """Minify css using cleancss.
+class BaseCleanCSSFilter(ExternalTool):
+    """Minify CSS using cleancss.
 
     Implements opener capable of rebasing relative CSS URLs against
     ``COLLECT_STATIC_ROOT``.
+
+    If you want to use the version 4 of cleancss, please look at the class
+    :class:`CleanCSS4Filter`.
     """
 
-    name = 'cleancssurl'
+    name = None  #: Override in subclass
+    rebase_opt = None  #: Override in subclass
     method = 'open'
     options = {
         'binary': 'CLEANCSS_BIN',
@@ -86,13 +92,14 @@ class CleanCSSFilter(ExternalTool):
 
     def setup(self):
         """Initialize filter just before it will be used."""
-        super(CleanCSSFilter, self).setup()
+        super(BaseCleanCSSFilter, self).setup()
         self.root = current_app.config.get('COLLECT_STATIC_ROOT')
 
     def open(self, out, source_path, **kw):
         """Open source."""
         self.subprocess(
-            [self.binary or 'cleancss', '--root', self.root, source_path],
+            [self.binary or 'cleancss', self.rebase_opt, self.root,
+             source_path],
             out
         )
 
@@ -103,6 +110,35 @@ class CleanCSSFilter(ExternalTool):
     def input(self, _in, out, **kw):
         """Input filtering."""
         self.subprocess([self.binary or 'cleancss'], out, _in)
+
+
+class CleanCSS3Filter(BaseCleanCSSFilter):
+    """Minify CSS using cleancss version 3."""
+
+    name = 'cleancss3url'
+    rebase_opt = '--root'
+
+
+class CleanCSS4Filter(BaseCleanCSSFilter):
+    """Minify CSS using cleancss version 4."""
+
+    name = 'cleancss4url'
+    rebase_opt = '--rebaseTo'
+
+
+class CleanCSSFilter(BaseCleanCSSFilter):
+    """Minify CSS using cleancss (either version 3 or 4)."""
+
+    name = 'cleancssurl'
+
+    @property
+    def rebase_opt(self):
+        """Determine which option name to use."""
+        # out = b"MAJOR.MINOR.REVISION" // b"3.4.19" or b"4.0.0"
+        out, err = Popen(['cleancss', '--version'], stdout=PIPE).communicate()
+        ver = int(out[:out.index(b'.')])
+        return CleanCSS3Filter.rebase_opt if ver == 3 else \
+            CleanCSS4Filter.rebase_opt
 
 
 _re_language_code = re.compile(
