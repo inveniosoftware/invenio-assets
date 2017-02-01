@@ -42,6 +42,9 @@ env:
   - REQUIREMENTS=lowest
   - REQUIREMENTS=release
   - REQUIREMENTS=devel
+  - REQUIREMENTS=lowest CLEANCSS=3.4.19
+  - REQUIREMENTS=release CLEANCSS=3.4.19
+  - REQUIREMENTS=devel CLEANCSS=3.4.19
 
 python:
   - "2.7"
@@ -64,7 +67,9 @@ install:
   - "travis_retry pip install -r .travis-${REQUIREMENTS}-requirements.txt"
   - "travis_retry pip install -e .[all]"
   - "npm update"
-  - "npm install --silent clean-css@3.4.19 requirejs"
+  - "npm install --silent clean-css@${CLEANCSS} requirejs"
+  # If clean-css v. 4+, we need to install clean-css-cli. It will fail if we use v. 3.
+  - "npm install --silent clean-css-cli@${CLEANCSS} || true"
 
 script:
   - "./run-tests.sh"
