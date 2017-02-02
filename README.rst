@@ -47,7 +47,5 @@ Media assets management for Invenio web interface.
 * Provides CLI for installing and building media assets for Invenio via
   integration with NPM.
 
-*This is an experimental developer preview release.*
-
 Further documentation is available on
 https://invenio-assets.readthedocs.io/
