@@ -42,9 +42,10 @@
 
 Media assets management for Invenio web interface.
 
-* Provides the creation of JavaScript and CSS bundles.
+* Provides the processing and bundling of JavaScript and CSS files.
 
-* Allows the use of filters to create such bundles (like `scss`).
+* Provides CLI for installing and building media assets for Invenio via
+  integration with NPM.
 
 *This is an experimental developer preview release.*
 

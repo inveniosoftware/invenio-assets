@@ -45,23 +45,24 @@ Next, initialize your extension:
     >>> from invenio_assets import InvenioAssets
     >>> assets = InvenioAssets(app)
 
-During initalization two Flask extensions ``flask_assets.Environment`` and
+During initalization two Flask extensions :class:`flask_assets.Environment` and
 :class:`flask_collect.Collect` are instantiated and configured. Also bundles
-specified in entry point group called `'invenio_assets.bundles'` are
+specified in the entry point group called ``invenio_assets.bundles`` are
 :ref:`automatically registered <entry-points-loading>`.
 
 Bundles
 -------
-Webassets package provides class ``Bundle`` for creating collection of files
-that you would like to process together by applying filters. For more
-information follow `webassets documentation
+The Flask-Assets package provides (via webassets) a class
+:class:`flask_assets.Bundle` for creating collection of files that you would
+like to process together by applying filters. For more information see the
+`webassets documentation
 <https://webassets.readthedocs.io/en/latest/bundles.html#bundles>`_.
 
 Registering bundles
 ~~~~~~~~~~~~~~~~~~~
 After having initialized the extension you can register bundles:
 
-    >>> from webassets import Bundle
+    >>> from flask_assets import Bundle
     >>> assets.env.register('mybundle', Bundle())
     <Bundle ...>
 
@@ -113,7 +114,7 @@ used to generate ``package.json`` file:
     >>> assets.env.register('mycss', mycss)
     <NpmBundle ...>
 
-To extract the dependencies from the bundle use
+To extract the dependencies from the bundles use
 :func:`~invenio_assets.npm.extract_deps` and pass an instance of webassets
 environment:
 
@@ -131,6 +132,9 @@ on your application:
  * ``npm`` - Generation of package.json.
  * ``collect`` - Collect static files.
 
+Usually you use above commands to install and build your assets in the
+following manner:
+
 .. code-block:: console
 
    $ inveniomanage npm -o package.json
@@ -141,13 +145,18 @@ on your application:
 
 Customize RequireJS
 -------------------
-It is also possible to use RequireJS with a custom configuration. To do so,
-you first need to overwrite the ``REQUIREJS_CONFIG`` config variable, so it
-points to your setup file. See
-http://webassets.readthedocs.io/en/latest/builtin_filters.html#requirejs
-for more information on this variable.
 
-For instance in a ``config.py`` file:
+.. note::
+
+   This section assumes prior working knowledge with RequireJS.
+
+
+In more advanced use cases you may need to override the RequireJS configuration
+in order to define e.g a custom shim config to integrate non-AMD ready modules
+with RequireJS.
+
+First overwrite the ``REQUIREJS_CONFIG`` config variable, so it points to your
+new RequireJS config file. E.g. in your instance's ``config.py`` file:
 
 .. code-block:: python
 
@@ -155,7 +164,7 @@ For instance in a ``config.py`` file:
     # the Enviroment.directory (by defualt is /static).
     REQUIREJS_CONFIG = "js/myinstance-build.js"
 
-Then, put your config in your file ``static/js/myinstance-build.js``:
+Put your RequireJS config in the build file ``static/js/myinstance-build.js``:
 
 .. code-block:: javascript
 
@@ -183,7 +192,11 @@ Then, put your config in your file ``static/js/myinstance-build.js``:
       mainConfigFile: ['./myinstance-settings.js']
     });
 
-Finally, in your ``static/js/myinstance-settings.js``
+Note, that the build file specifies a new settings file
+``myinstance-settings.js`` (path relative to build file).
+
+Now, add your settings file ``static/js/myinstance-settings.js`` where you can
+define the custom shims:
 
 .. code-block:: javascript
 
@@ -223,7 +236,6 @@ And then in your ``myinstance.js`` script that uses RequireJS:
         // ....
       }
     );
-
 """
 
 from __future__ import absolute_import, print_function
