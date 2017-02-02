@@ -87,7 +87,7 @@ class TestInvenioAssetsCleanCSSFilter(TempEnvironmentHelper):
                                    output='out.css')
             bundle.build()
             # v4 returns #fff while v3 returns #FFF
-            assert self.get('out.css').lower() == result
+            assert self.get('out.css').lower() == result.lower()
 
 
 class TestInvenioAssetsAngularGettextFilter(TempEnvironmentHelper):
