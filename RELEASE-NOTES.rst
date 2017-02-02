@@ -1,8 +1,8 @@
 =========================
- Invenio-Assets v1.0.0b4
+ Invenio-Assets v1.0.0b5
 =========================
 
-Invenio-Assets v1.0.0b4 was released on October 19, 2016.
+Invenio-Assets v1.0.0b5 was released on February 2, 2017.
 
 About
 -----
@@ -17,7 +17,7 @@ What's new
 Installation
 ------------
 
-   $ pip install invenio-assets==1.0.0b4
+   $ pip install invenio-assets==1.0.0b5
 
 Documentation
 -------------
