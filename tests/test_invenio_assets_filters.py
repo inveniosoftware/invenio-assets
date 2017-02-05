@@ -51,7 +51,7 @@ class TestInvenioAssetsRequireJSFilter(TempEnvironmentHelper):
     def test_require_js(self):
         """Test method of RequireJS filter."""
         bundle_0 = self.mkbundle('bar.js',
-                                 filters=RequireJSFilter(),
+                                 filters='requirejsexclude',
                                  output='out_0.js')
         bundle_0.build()
 
@@ -80,7 +80,7 @@ class TestInvenioAssetsCleanCSSFilter(TempEnvironmentHelper):
         app = Flask(__name__)
         InvenioAssets(app)
         with app.app_context():
-            filter = CleanCSSFilter()
+            filter = 'cleancssurl'
             result = 'h1{font-family:Verdana;color:#fff}'
             bundle = self.mkbundle('foo.css',
                                    filters=filter,
