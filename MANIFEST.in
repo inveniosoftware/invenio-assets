@@ -6,20 +6,25 @@
 # Invenio is free software; you can redistribute it and/or modify it
 # under the terms of the MIT License; see LICENSE file for more details.
 
+include .dockerignore
+include .editorconfig
+include .lgtm MAINTAINERS
 include *.rst
 include *.sh
 include *.txt
 include *.yml
-include .dockerignore
-include .editorconfig
-include LICENSE
 include babel.ini
 include docs/requirements.txt
+include LICENSE
 include pytest.ini
 recursive-include docs *.bat
 recursive-include docs *.py
 recursive-include docs *.rst
 recursive-include docs Makefile
+recursive-include invenio_assets *.babelrc
+recursive-include invenio_assets *.eslintignore
+recursive-include invenio_assets *.js
+recursive-include invenio_assets *.json
 recursive-include misc *.py
 recursive-include misc *.rst
 recursive-include tests *.py
