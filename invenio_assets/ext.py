@@ -31,6 +31,7 @@ from functools import partial
 import pkg_resources
 from flask_assets import Environment
 from flask_collect import Collect
+from flask_webpackext import FlaskWebpackExt
 
 from .collect import collect_staticroot_removal
 
@@ -48,6 +49,7 @@ class InvenioAssets(object):
         """
         self.env = Environment()
         self.collect = Collect()
+        self.webpack = FlaskWebpackExt()
 
         if app:
             self.init_app(app, **kwargs)
@@ -66,9 +68,11 @@ class InvenioAssets(object):
         self.init_config(app)
         self.env.init_app(app)
         self.collect.init_app(app)
+        self.webpack.init_app(app)
 
         if entry_point_group:
             self.load_entrypoint(entry_point_group)
+
         app.extensions['invenio-assets'] = self
 
     def init_config(self, app):
@@ -81,6 +85,8 @@ class InvenioAssets(object):
         app.config.setdefault('COLLECT_STORAGE', 'flask_collect.storage.link')
         app.config.setdefault(
             'COLLECT_FILTER', partial(collect_staticroot_removal, app))
+        app.config.setdefault(
+            'WEBPACKEXT_PROJECT', 'invenio_assets.webpack:project')
 
     def load_entrypoint(self, entry_point_group):
         """Load entrypoint.
