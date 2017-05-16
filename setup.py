@@ -46,6 +46,7 @@ install_requires = [
     'Babel>=1.3',
     'Flask-Assets>=0.12',
     'Flask-Collect==1.2.2',
+    'Flask-WebpackExt>=0.1.0',
     'Flask>=0.11.1',
     'node-semver>=0.1.1,<0.2.0',  # FIXME troubleshooting#22
     'speaklater>=1.3',
