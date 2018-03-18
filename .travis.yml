@@ -17,7 +17,6 @@ language: python
 matrix:
   fast_finish: true
   allow_failures:
-    - python: pypy
     - env: REQUIREMENTS=devel
 
 cache:
@@ -31,7 +30,6 @@ env:
 python:
   - "2.7"
   - "3.5"
-  - "pypy"
 
 addons:
   apt:
