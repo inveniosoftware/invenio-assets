@@ -12,7 +12,6 @@ include *.txt
 include *.yml
 include .dockerignore
 include .editorconfig
-include .lgtm MAINTAINERS
 include LICENSE
 include babel.ini
 include docs/requirements.txt
