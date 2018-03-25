@@ -9,6 +9,9 @@
  Invenio-Assets
 ================
 
+.. image:: https://img.shields.io/github/license/inveniosoftware/invenio-assets.svg
+        :target: https://github.com/inveniosoftware/invenio-assets/blob/master/LICENSE
+
 .. image:: https://img.shields.io/travis/inveniosoftware/invenio-assets.svg
         :target: https://travis-ci.org/inveniosoftware/invenio-assets
 
