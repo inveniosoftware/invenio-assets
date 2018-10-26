@@ -13,6 +13,7 @@ packages, and process of collecting static files.
 
 If you want to learn details about package dependencies, please see:
 
+ * `Flask-WebpackExt <https://flask-webpackext.readthedocs.io/en/latest/>`_
  * `Flask-Assets <https://flask-assets.readthedocs.io/en/latest/>`_
  * `Flask-Collect <https://flask-collect.readthedocs.io/en/latest/>`_
  * `NPM <https://nodejs.org/en/download/>`_
@@ -31,8 +32,24 @@ Next, initialize your extension:
 
 During initalization two Flask extensions :class:`flask_assets.Environment` and
 :class:`flask_collect.Collect` are instantiated and configured. Also bundles
-specified in the entry point group called ``invenio_assets.bundles`` are
+specified in the entry point groups called ``invenio_assets.bundles`` and
+``invenio_assets.webpack`` are
 :ref:`automatically registered <entry-points-loading>`.
+
+Flask-WebpackExt
+----------------
+
+Bundles
+~~~~~~~
+
+
+
+Command-line interface
+~~~~~~~~~~~~~~~~~~~~~~
+
+
+Flask-Assets
+------------
 
 Bundles
 -------
