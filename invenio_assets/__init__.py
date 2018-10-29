@@ -11,13 +11,6 @@
 Invenio-Assets helps you with integration of webassets, installation of NPM
 packages, and process of collecting static files.
 
-If you want to learn details about package dependencies, please see:
-
- * `Flask-WebpackExt <https://flask-webpackext.readthedocs.io/en/latest/>`_
- * `Flask-Assets <https://flask-assets.readthedocs.io/en/latest/>`_
- * `Flask-Collect <https://flask-collect.readthedocs.io/en/latest/>`_
- * `NPM <https://nodejs.org/en/download/>`_
-
 Initialization
 --------------
 First create a Flask application:
@@ -31,36 +24,93 @@ Next, initialize your extension:
     >>> assets = InvenioAssets(app)
 
 During initalization two Flask extensions :class:`flask_assets.Environment` and
-:class:`flask_collect.Collect` are instantiated and configured. Also bundles
-specified in the entry point groups called ``invenio_assets.bundles`` and
-``invenio_assets.webpack`` are
-:ref:`automatically registered <entry-points-loading>`.
+:class:`flask_collect.Collect` are instantiated and configured.
 
-Flask-WebpackExt
-----------------
+In order to build the assets, you can choose between using:
+
+* :ref:`Flask-WebpackExt <use-flask-webpackext>`;
+* :ref:`Flask-Assets <use-flask-assets>` (it will be deprecated soon.
+  See the `blog post <https://inveniosoftware.org/blog/invenio-v300-released/>`_
+  for more information).
+
+Bundles specified in the entry point groups called
+``invenio_assets.webpack`` (if you are using Flask-WebpackExt) and
+``invenio_assets.bundles`` (if you are using Flask-Assets) are
+automatically registered by Invenio-Assets.
+
+.. _use-flask-webpackext:
+
+Using Flask-WebpackExt
+----------------------
 
 Bundles
 ~~~~~~~
+The `Flask-WebpackExt <https://flask-webpackext.readthedocs.io/en/latest/>`_
+package provides a class
+:class:`flask_webpackext.project.WebpackBundle` for declaring the needed assets and
+NPM dependencies of each one of your modules.
 
+.. code-block:: python
 
+     from flask_webpackext import WebpackBundle
+     bundle1 = WebpackBundle(
+         __name__,
+         './modules/module1/static',
+         entry={
+             'module1-app': './js/module1-app.js',
+         },
+         dependencies={
+             'jquery': '^3.2.1'
+         }
+     )
+
+The NPM dependencies defined in the bundles will be used to generate the
+``package.json`` file.
+
+Entry points loading
+++++++++++++++++++++
+
+Invenio-Assets will automatically load bundles defined by the entry point
+group ``invenio_assets.webpack``.
+
+Example:
+
+.. code-block:: python
+
+   # setup.py
+   setup(
+       # ...
+       entry_points={
+           'invenio_assets.webpack': [
+               'mybundle = mypackage.bundles:mybundle',
+           ],
+           # ...
+        }
+        # ...
+    )
 
 Command-line interface
 ~~~~~~~~~~~~~~~~~~~~~~
 
+.. _use-flask-assets:
 
-Flask-Assets
-------------
+Using Flask-Assets
+------------------
+.. warning:: It will be deprecated soon.
+  See the `blog post <https://inveniosoftware.org/blog/invenio-v300-released/>`_
+  for more information.
 
 Bundles
--------
-The Flask-Assets package provides (via webassets) a class
+~~~~~~~
+The `Flask-Assets <https://flask-assets.readthedocs.io/en/latest/>`_ package
+provides (via webassets) a class
 :class:`flask_assets.Bundle` for creating collection of files that you would
 like to process together by applying filters. For more information see the
 `webassets documentation
 <https://webassets.readthedocs.io/en/latest/bundles.html#bundles>`_.
 
 Registering bundles
-~~~~~~~~~~~~~~~~~~~
++++++++++++++++++++
 After having initialized the extension you can register bundles:
 
     >>> from flask_assets import Bundle
@@ -70,7 +120,7 @@ After having initialized the extension you can register bundles:
 .. _entry-points-loading:
 
 Entry points loading
-~~~~~~~~~~~~~~~~~~~~
+++++++++++++++++++++
 Invenio-Assets will automatically load bundles defined by the entry point
 groups ``invenio_assets.bundles``.
 
@@ -98,7 +148,7 @@ Above is equivalent to:
    assets.env.register('mybundle', mybundle)
 
 NPM dependencies
-~~~~~~~~~~~~~~~~
+++++++++++++++++
 There is a special bundle extension where you can define NPM dependencies
 used to generate ``package.json`` file:
 
@@ -125,7 +175,7 @@ environment:
     '~3.3.5'
 
 Command-line interface
-----------------------
+~~~~~~~~~~~~~~~~~~~~~~
 Invenio-Assets makes sure that following three Flask commands are available
 on your application:
 
@@ -145,7 +195,7 @@ following manner:
 
 
 Customize RequireJS
--------------------
+~~~~~~~~~~~~~~~~~~~
 
 .. note::
 

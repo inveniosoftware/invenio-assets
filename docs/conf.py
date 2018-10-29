@@ -321,6 +321,7 @@ intersphinx_mapping = {
     'flask': ('http://flask.pocoo.org/docs/latest/', None),
     'flask_assets': ('https://flask-assets.readthedocs.io/en/latest/', None),
     'flask_collect': ('https://flask-collect.readthedocs.io/en/latest/', None),
+    'flask_webpackext': ('https://flask-webpackext.readthedocs.io/en/latest/', None),
 }
 
 # Autodoc configuraton.
