@@ -92,6 +92,28 @@ Example:
 Command-line interface
 ~~~~~~~~~~~~~~~~~~~~~~
 
+We can now build the assets:
+
+.. code-block:: console
+
+    $ flask webpack buildall
+
+The command will copy all files from the src folder to the application instance folder designated
+for the Webpack project, download the npm packages and run Webpack to build our assets.
+
+Alternatively, we can execute each build step separately with the following flask webpack commands:
+
+    * ``create`` - Copy all sources to the working directory.
+    * ``build`` - Run npm install command and download all dependencies.
+    * ``install`` - Run npm run build and execute what you have defined in the `package.json`.
+
+Additionally if we have some static files we should collect them:
+
+.. code-block:: console
+
+    $ flask collect -v
+
+
 .. _use-flask-assets:
 
 Using Flask-Assets
