@@ -5,33 +5,51 @@
  * Invenio is free software; you can redistribute it and/or modify it
  * under the terms of the MIT License; see LICENSE file for more details.
  */
-var path = require('path')
-var config = require('./config')
-var webpack = require('webpack')
-var ExtractTextPlugin = require('extract-text-webpack-plugin')
-var OptimizeCSSPlugin = require('optimize-css-assets-webpack-plugin')
-var ManifestPlugin = require('webpack-manifest-plugin')
 
-cssLoader = {
-  loader: 'css-loader',
-  options: {
-    minimize: process.env.NODE_ENV === 'production',
-    sourceMap: true
-  }
-}
-
-extractSass = new ExtractTextPlugin({
-    filename: "css/[name].[contenthash].css",
-});
+const CleanWebpackPlugin = require('clean-webpack-plugin');
+const config = require('./config');
+const ManifestPlugin = require('webpack-manifest-plugin');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
+const safePostCssParser = require('postcss-safe-parser');
+const webpack = require('webpack');
 
 var webpackConfig = {
   entry: config.entry,
   context: config.build.context,
+  resolve: {
+    extensions: ['*', '.js']
+  },
   output: {
     path: config.build.assetsPath,
     filename: 'js/[name].[chunkhash].js',
     chunkFilename: 'js/[id].[chunkhash].js',
     publicPath: config.build.assetsURL
+  },
+  optimization: {
+    minimizer: [
+      new OptimizeCSSAssetsPlugin({
+        cssProcessorOptions: {
+          parser: safePostCssParser,
+          map: false
+        }
+      })
+    ],
+    splitChunks: {
+      cacheGroups: {
+        commons: {
+          test: /[\\/]node_modules[\\/]/,
+          name: "vendor",
+          chunks: "initial",
+        },
+      },
+      chunks: 'all',
+    },
+    // Extract webpack runtime and module manifest to its own file in order to
+    // prevent vendor hash from being updated whenever app bundle is updated.
+    runtimeChunk: {
+      name: 'manifest'
+    }
   },
   module: {
     rules: [
@@ -46,55 +64,71 @@ var webpackConfig = {
           }]
       },
       {
-        test: /\.js$/,
-        loader: 'eslint-loader',
-        enforce: "pre",
-        options: {
-          formatter: require('eslint-friendly-formatter')
-        }
-      },
-      {
-        test: /\.js$/,
-        loader: 'babel-loader',
-        exclude: /node_modules/
-      },
-      {
-        test: /\.css$/,
+        test: /\.(js|jsx)$/,
+        exclude: /node_modules/,
         use: [
-          cssLoader
+          {
+            loader: 'babel-loader',
+          }
+        ],
+      },
+      {
+        test: /\.(js|jsx)$/,
+        enforce: "pre",
+        exclude: /node_modules/,
+        use: [
+          {
+            options: {
+              formatter: require('eslint-friendly-formatter'),
+              eslintPath: require.resolve('eslint'),
+            },
+            loader: require.resolve('eslint-loader'),
+          }
         ]
       },
       {
-        test: /\.scss$/,
-        use: extractSass.extract({
-          use: [
-            cssLoader,
+        test: /\.(scss|css)$/,
+        use: [
+          MiniCssExtractPlugin.loader,
             {
-              loader: "sass-loader",
-              options: {
-                sourceMap: true
-              }
+                loader: "css-loader",
+                options: {
+                    minimize: {
+                        safe: true
+                    }
+                }
+            },
+            {
+                loader: "sass-loader",
+                options: {}
             }
-          ]
-        })
+        ]
       },
       // Inline images smaller than 10k
       {
         test: /\.(png|jpe?g|gif|svg)(\?.*)?$/,
-        loaders: 'url-loader',
-        options: {
-          limit: 10000,
-          name: 'img/[name].[hash:7].[ext]'
-        }
+        use: [
+          {
+            loader: require.resolve('url-loader'),
+            options: {
+              limit: 10000,
+              name: 'img/[name].[hash:7].[ext]'
+            }
+          }
+        ],
       },
       // Inline webfonts smaller than 10k
       {
         test: /\.(woff2?|eot|ttf|otf)(\?.*)?$/,
-        loader: 'url-loader',
-        options: {
-          limit: 10000,
-          name: 'fonts/[name].[hash:7].[ext]'
-        }
+        use: [
+          {
+            loader: require.resolve('file-loader'),
+            options: {
+              limit: 10000,
+              name: 'fonts/[name].[hash:7].[ext]'
+            }
+          }
+        ],
       }
     ]
   },
@@ -104,47 +138,20 @@ var webpackConfig = {
     new webpack.DefinePlugin({
       'process.env': process.env.NODE_ENV
     }),
+    new MiniCssExtractPlugin({
+      // Options similar to the same options in webpackOptions.output
+      // both options are optional
+      filename: "css/[name].[contenthash].css",
+      chunkFilename: "css/[name].[contenthash].css",
+    }),
+    // Removes the dist folder before each run.
+    new CleanWebpackPlugin(config.build.assetsPath, {allowExternal: true}),
     // Automatically inject jquery
     new webpack.ProvidePlugin({
         jQuery: 'jquery/src/jquery',
         $: 'jquery/src/jquery',
         jquery: 'jquery/src/jquery',
         'window.jQuery': 'jquery/src/jquery'
-    }),
-    // Compress JavaScript
-    new webpack.optimize.UglifyJsPlugin({
-      compress: {
-        warnings: false
-      },
-      sourceMap: true
-    }),
-    // Extract CSS into its own file
-    extractSass,
-    new ExtractTextPlugin({
-      filename: 'css/[name].[contenthash].css'
-    }),
-    // Compress extracted CSS. We are using this plugin so that possible
-    // duplicated CSS from different components can be deduped.
-    new OptimizeCSSPlugin(),
-    // Split vendor js into its own file
-    new webpack.optimize.CommonsChunkPlugin({
-      name: 'vendor',
-      minChunks: function (module, count) {
-        // Any required modules inside node_modules are extracted to vendor.
-        return (
-          module.resource &&
-          /\.js$/.test(module.resource) &&
-          module.resource.indexOf(
-            path.join(__dirname, '../node_modules')
-          ) === 0
-        )
-      }
-    }),
-    // Extract webpack runtime and module manifest to its own file in order to
-    // prevent vendor hash from being updated whenever app bundle is updated.
-    new webpack.optimize.CommonsChunkPlugin({
-      name: 'manifest',
-      chunks: ['vendor']
     }),
     // Write manifest file which Python will read.
     new ManifestPlugin({
