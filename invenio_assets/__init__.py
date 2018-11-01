@@ -28,9 +28,10 @@ During initalization two Flask extensions :class:`flask_assets.Environment` and
 
 In order to build the assets, you can choose between using:
 
-* :ref:`Flask-WebpackExt <use-flask-webpackext>`;
-* :ref:`Flask-Assets <use-flask-assets>` (it will be deprecated soon.
-  See the `blog post <https://inveniosoftware.org/blog/invenio-v300-released/>`_
+* :ref:`Flask-WebpackExt <use-flask-webpackext>`
+* :ref:`Flask-Assets <use-flask-assets>` (The AMD build system is deprecated,
+  please use Webpack with the ``webpack`` command. See the
+  `blog post <https://inveniosoftware.org/blog/invenio-v300-released/>`_
   for more information).
 
 Bundles specified in the entry point groups called
@@ -47,22 +48,23 @@ Bundles
 ~~~~~~~
 The `Flask-WebpackExt <https://flask-webpackext.readthedocs.io/en/latest/>`_
 package provides a class
-:class:`flask_webpackext.project.WebpackBundle` for declaring the needed assets and
-NPM dependencies of each one of your modules.
+:class:`flask_webpackext.project.WebpackBundle` for declaring the needed
+assets and NPM dependencies of each one of your modules.
 
 .. code-block:: python
 
-     from flask_webpackext import WebpackBundle
-     bundle1 = WebpackBundle(
-         __name__,
-         './modules/module1/static',
-         entry={
-             'module1-app': './js/module1-app.js',
-         },
-         dependencies={
-             'jquery': '^3.2.1'
-         }
-     )
+    from flask_webpackext import WebpackBundle
+    bundle1 = WebpackBundle(
+        __name__,
+        './modules/module1/static',
+        entry={
+            'module1-app': './js/module1-app.js',
+        },
+        dependencies={
+            'jquery': '^3.2.1'
+        }
+    )
+
 
 The NPM dependencies defined in the bundles will be used to generate the
 ``package.json`` file.
@@ -98,14 +100,16 @@ We can now build the assets:
 
     $ flask webpack buildall
 
-The command will copy all files from the src folder to the application instance folder designated
-for the Webpack project, download the npm packages and run Webpack to build our assets.
+The command will copy all files from the src folder to the application
+instance folder designated for the Webpack project, download the npm packages
+and run Webpack to build our assets.
 
-Alternatively, we can execute each build step separately with the following flask webpack commands:
+Alternatively, we can execute each build step separately with the following
+flask webpack commands:
 
     * ``create`` - Copy all sources to the working directory.
-    * ``build`` - Run npm install command and download all dependencies.
-    * ``install`` - Run npm run build and execute what you have defined in the `package.json`.
+    * ``install`` - Run npm install command and download all dependencies.
+    * ``build`` - Run npm run build.
 
 Additionally if we have some static files we should collect them:
 
@@ -118,8 +122,9 @@ Additionally if we have some static files we should collect them:
 
 Using Flask-Assets
 ------------------
-.. warning:: It will be deprecated soon.
-  See the `blog post <https://inveniosoftware.org/blog/invenio-v300-released/>`_
+.. warning:: The AMD build system is deprecated, please use Webpack
+  with the ``webpack`` command. See the
+  `blog post <https://inveniosoftware.org/blog/invenio-v300-released/>`_
   for more information.
 
 Bundles
@@ -198,8 +203,8 @@ environment:
 
 Command-line interface
 ~~~~~~~~~~~~~~~~~~~~~~
-Invenio-Assets makes sure that following three Flask commands are available
-on your application:
+Invenio-Assets makes sure that the following three Flask commands are
+available on your application:
 
  * ``assets`` - Assets building commands.
  * ``npm`` - Generation of package.json.
