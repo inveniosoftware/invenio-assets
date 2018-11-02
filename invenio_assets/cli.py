@@ -26,16 +26,37 @@ from __future__ import absolute_import, print_function
 
 import json
 import os
+import warnings
+from functools import partial
 
 import click
 from flask import current_app
 from flask.cli import with_appcontext
+from flask_assets import assets
 from pkg_resources import DistributionNotFound, get_distribution
 
 from .npm import extract_deps, make_semver
 from .proxies import current_assets
 
 __all__ = ('collect', 'npm', )
+
+
+def amd_build_deprecation_warning():
+    """Add deprecation warning for AMD assets build system."""
+    warnings.warn('The AMD build system is deprecated, please use Webpack '
+                  'with the webpack command.', PendingDeprecationWarning)
+    click.secho('The AMD build system is deprecated, please use Webpack '
+                'with the webpack command.', fg='yellow')
+
+
+for _, assets_cmd in assets.commands.items():
+    original_callback = assets_cmd.callback
+
+    def add_deprecation_warning(cmd_callback, *args, **kwargs):
+        amd_build_deprecation_warning()
+        cmd_callback(*args, **kwargs)
+
+    assets_cmd.callback = partial(add_deprecation_warning, original_callback)
 
 
 #
@@ -51,6 +72,7 @@ __all__ = ('collect', 'npm', )
 @with_appcontext
 def npm(package_json, output_file, pinned_file):
     """Generate a package.json file."""
+    amd_build_deprecation_warning()
     try:
         version = get_distribution(current_app.name).version
     except DistributionNotFound:

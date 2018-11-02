@@ -78,6 +78,7 @@ setup(
         'flask.commands': [
             'collect = invenio_assets.cli:collect',
             'npm = invenio_assets.cli:npm',
+            'assets = invenio_assets.cli:assets'
         ],
         'invenio_base.apps': [
             'invenio_assets = invenio_assets:InvenioAssets',
