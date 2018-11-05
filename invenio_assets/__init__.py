@@ -48,7 +48,7 @@ Bundles
 ~~~~~~~
 The `Flask-WebpackExt <https://flask-webpackext.readthedocs.io/en/latest/>`_
 package provides a class
-:class:`flask_webpackext.project.WebpackBundle` for declaring the needed
+:class:`flask_webpackext.bundle.WebpackBundle` for declaring the needed
 assets and NPM dependencies of each one of your modules.
 
 .. code-block:: python
@@ -64,7 +64,6 @@ assets and NPM dependencies of each one of your modules.
             'jquery': '^3.2.1'
         }
     )
-
 
 The NPM dependencies defined in the bundles will be used to generate the
 ``package.json`` file.
