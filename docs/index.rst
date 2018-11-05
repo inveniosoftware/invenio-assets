@@ -20,6 +20,13 @@ Invenio-Assets.
    configuration
    usage
 
+Upgrade to Webpack
+------------------
+
+.. toctree::
+   :maxdepth: 2
+
+   upgrade
 
 API Reference
 -------------
