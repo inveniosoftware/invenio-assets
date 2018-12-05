@@ -12,6 +12,7 @@ const ManifestPlugin = require('webpack-manifest-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 const safePostCssParser = require('postcss-safe-parser');
+const TerserPlugin = require('terser-webpack-plugin');
 const webpack = require('webpack');
 
 var webpackConfig = {
@@ -28,6 +29,10 @@ var webpackConfig = {
   },
   optimization: {
     minimizer: [
+      new TerserPlugin({
+        parallel: true,
+        cache: true
+      }),
       new OptimizeCSSAssetsPlugin({
         cssProcessorOptions: {
           parser: safePostCssParser,
