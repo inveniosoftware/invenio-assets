@@ -8,6 +8,8 @@
 Changes
 =======
 
+Version 1.1.1 (released 2018-12-14)
+
 Version 1.1.0 (released 2018-11-06)
 
 - Introduces webpack support.
