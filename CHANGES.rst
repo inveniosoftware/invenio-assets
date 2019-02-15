@@ -8,6 +8,10 @@
 Changes
 =======
 
+Version 1.1.2 (released 2019-02-15)
+
+- Removes NPM warnings.
+
 Version 1.1.1 (released 2018-12-14)
 
 Version 1.1.0 (released 2018-11-06)
