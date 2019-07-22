@@ -72,22 +72,21 @@ Entry points loading
 ++++++++++++++++++++
 
 Invenio-Assets will automatically load bundles defined by the entry point
-group ``invenio_assets.webpack``.
+group ``invenio_assets.webpack``. Example:
 
-Example:
-    .. code-block:: python
+.. code-block:: python
 
-       # setup.py
-       setup(
+   # setup.py
+   setup(
+       # ...
+       entry_points={
+           'invenio_assets.webpack': [
+               'mybundle = mypackage.bundles:mybundle',
+           ],
            # ...
-           entry_points={
-               'invenio_assets.webpack': [
-                   'mybundle = mypackage.bundles:mybundle',
-               ],
-               # ...
-            }
-            # ...
-        )
+        }
+        # ...
+    )
 
 Command-line interface
 ~~~~~~~~~~~~~~~~~~~~~~
@@ -147,29 +146,28 @@ After having initialized the extension you can register bundles:
 Entry points loading
 ++++++++++++++++++++
 Invenio-Assets will automatically load bundles defined by the entry point
-groups ``invenio_assets.bundles``.
+groups ``invenio_assets.bundles``. Example:
 
-Example:
-    .. code-block:: python
+.. code-block:: python
 
-       # setup.py
-       setup(
+   # setup.py
+   setup(
+       # ...
+       entry_points={
+           'invenio_assets.bundles': [
+               'mybundle = mypackage.bundles:mybundle',
+           ],
            # ...
-           entry_points={
-               'invenio_assets.bundles': [
-                   'mybundle = mypackage.bundles:mybundle',
-               ],
-               # ...
-            }
-            # ...
-        )
+        }
+        # ...
+    )
 
-    Above is equivalent to:
+Above is equivalent to:
 
-    .. code-block:: python
+.. code-block:: python
 
-       from mypackage.bundles import mybundle
-       assets.env.register('mybundle', mybundle)
+   from mypackage.bundles import mybundle
+   assets.env.register('mybundle', mybundle)
 
 NPM dependencies
 ++++++++++++++++
