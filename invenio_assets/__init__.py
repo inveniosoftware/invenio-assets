@@ -75,20 +75,19 @@ Invenio-Assets will automatically load bundles defined by the entry point
 group ``invenio_assets.webpack``.
 
 Example:
+    .. code-block:: python
 
-.. code-block:: python
-
-   # setup.py
-   setup(
-       # ...
-       entry_points={
-           'invenio_assets.webpack': [
-               'mybundle = mypackage.bundles:mybundle',
-           ],
+       # setup.py
+       setup(
            # ...
-        }
-        # ...
-    )
+           entry_points={
+               'invenio_assets.webpack': [
+                   'mybundle = mypackage.bundles:mybundle',
+               ],
+               # ...
+            }
+            # ...
+        )
 
 Command-line interface
 ~~~~~~~~~~~~~~~~~~~~~~
@@ -151,27 +150,26 @@ Invenio-Assets will automatically load bundles defined by the entry point
 groups ``invenio_assets.bundles``.
 
 Example:
+    .. code-block:: python
 
-.. code-block:: python
-
-   # setup.py
-   setup(
-       # ...
-       entry_points={
-           'invenio_assets.bundles': [
-               'mybundle = mypackage.bundles:mybundle',
-           ],
+       # setup.py
+       setup(
            # ...
-        }
-        # ...
-    )
+           entry_points={
+               'invenio_assets.bundles': [
+                   'mybundle = mypackage.bundles:mybundle',
+               ],
+               # ...
+            }
+            # ...
+        )
 
-Above is equivalent to:
+    Above is equivalent to:
 
-.. code-block:: python
+    .. code-block:: python
 
-   from mypackage.bundles import mybundle
-   assets.env.register('mybundle', mybundle)
+       from mypackage.bundles import mybundle
+       assets.env.register('mybundle', mybundle)
 
 NPM dependencies
 ++++++++++++++++
@@ -313,6 +311,7 @@ And then in your ``myinstance.js`` script that uses RequireJS:
         // ....
       }
     );
+
 """
 
 from __future__ import absolute_import, print_function
