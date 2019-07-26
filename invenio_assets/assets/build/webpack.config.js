@@ -124,6 +124,8 @@ var webpackConfig = {
         use: [
           {
             options: {
+              emitWarning: true,
+              quiet: true,
               formatter: require('eslint-friendly-formatter'),
               eslintPath: require.resolve('eslint'),
             },
@@ -204,7 +206,8 @@ var webpackConfig = {
       stripSrc: true,
       publicPath: config.build.assetsURL
     })
-  ]
+  ],
+  performance: { hints: false }
 }
 
 if (process.env.npm_config_report) {
