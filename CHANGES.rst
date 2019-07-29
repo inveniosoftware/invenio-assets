@@ -8,6 +8,10 @@
 Changes
 =======
 
+Version 1.1.3 (released 2019-07-29)
+
+- Turn off webpack warnings
+
 Version 1.1.2 (released 2019-02-15)
 
 - Removes NPM warnings.
