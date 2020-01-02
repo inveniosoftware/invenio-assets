@@ -5,8 +5,8 @@
   "author": "CERN <info@inveniosoftware.org>",
   "private": true,
   "scripts": {
-    "start": "webpack --watch --config ./build/webpack.config.js",
-    "build": "webpack --mode production --config ./build/webpack.config.js"
+    "start": "NODE_ENV=development webpack --watch --progress --config ./build/webpack.config.js",
+    "build": "NODE_ENV=production webpack --config ./build/webpack.config.js"
   },
   "dependencies": {},
   "devDependencies": {

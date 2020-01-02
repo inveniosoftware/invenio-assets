@@ -16,6 +16,7 @@ const TerserPlugin = require('terser-webpack-plugin');
 const webpack = require('webpack');
 
 var webpackConfig = {
+  mode: process.env.NODE_ENV,
   entry: config.entry,
   context: config.build.context,
   resolve: {
