@@ -216,4 +216,9 @@ if (process.env.npm_config_report) {
   webpackConfig.plugins.push(new BundleAnalyzerPlugin())
 }
 
+if (process.env.NODE_ENV === 'development') {
+  const LiveReloadPlugin = require('webpack-livereload-plugin');
+  webpackConfig.plugins.push(new LiveReloadPlugin());
+}
+
 module.exports = webpackConfig
