@@ -20,7 +20,8 @@ var webpackConfig = {
   entry: config.entry,
   context: config.build.context,
   resolve: {
-    extensions: ['*', '.js', '.jsx']
+    extensions: ['*', '.js', '.jsx'],
+    symlinks: false,
   },
   output: {
     path: config.build.assetsPath,
