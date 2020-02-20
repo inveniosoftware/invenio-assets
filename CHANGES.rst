@@ -8,6 +8,12 @@
 Changes
 =======
 
+Version 1.1.4 (released 2019-02-20)
+
+- Webpack Live-reload plugin.
+- Webpack `@templates` alias.
+- Webpack fix symlinks issue.
+
 Version 1.1.3 (released 2019-07-29)
 
 - Turn off webpack warnings
