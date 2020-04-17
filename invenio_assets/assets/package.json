@@ -6,7 +6,8 @@
   "private": true,
   "scripts": {
     "start": "NODE_PRESERVE_SYMLINKS=1 NODE_ENV=development webpack --watch --progress --config ./build/webpack.config.js",
-    "build": "NODE_PRESERVE_SYMLINKS=1 NODE_ENV=production webpack --config ./build/webpack.config.js"
+    "build": "NODE_PRESERVE_SYMLINKS=1 NODE_ENV=production webpack --config ./build/webpack.config.js",
+    "postinstall": "patch-package"
   },
   "dependencies": {},
   "devDependencies": {
@@ -46,6 +47,7 @@
     "node-sass": "^4.11.0",
     "optimize-css-assets-webpack-plugin": "5.0.1",
     "ora": "^3.0.0",
+    "patch-package": "^6.2.2",
     "postcss-flexbugs-fixes": "^4.1.0",
     "postcss-loader": "^3.0.0",
     "postcss-preset-env": "^6.4.0",

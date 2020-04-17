@@ -25,6 +25,7 @@ recursive-include invenio_assets *.babelrc
 recursive-include invenio_assets *.eslintignore
 recursive-include invenio_assets *.js
 recursive-include invenio_assets *.json
+recursive-include invenio_assets *.patch
 recursive-include misc *.py
 recursive-include misc *.rst
 recursive-include tests *.py
