@@ -191,7 +191,7 @@ var webpackConfig = {
       }
     ]
   },
-  // devtool: process.env.NODE_ENV === 'production' ? 'source-map' : 'cheap-source-map',
+  devtool: process.env.NODE_ENV === 'production' ? 'source-map' : 'inline-source-map',
   plugins: [
     // Pragmas
     new webpack.DefinePlugin({
