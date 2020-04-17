@@ -71,6 +71,10 @@ class InvenioAssets(object):
             'COLLECT_FILTER', partial(collect_staticroot_removal, app))
         app.config.setdefault(
             'WEBPACKEXT_PROJECT', 'invenio_assets.webpack:project')
+        if app.debug:  # for development use 2-level deep symlinking
+            from pywebpack.storage import LinkStorage
+            app.config.setdefault(
+                'WEBPACKEXT_STORAGE_CLS', partial(LinkStorage, depth=2))
 
     def load_entrypoint(self, entry_point_group):
         """Load entrypoint.
