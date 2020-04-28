@@ -1,12 +1,19 @@
 ..
     This file is part of Invenio.
-    Copyright (C) 2015-2018 CERN.
+    Copyright (C) 2015-2020 CERN.
 
     Invenio is free software; you can redistribute it and/or modify it
     under the terms of the MIT License; see LICENSE file for more details.
 
 Changes
 =======
+
+Version 1.1.5 (released 2020-04-28)
+
+* Webpack now uses by default in debug/development mode folder-level symlinking
+* Enabled source maps for Webpack development builds.
+* Patched the ``watchpack`` library to support symlink watching via using
+  ``patch-package``.
 
 Version 1.1.4 (released 2019-02-20)
 
