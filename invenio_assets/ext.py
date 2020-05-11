@@ -18,6 +18,7 @@ from flask_collect import Collect
 from flask_webpackext import FlaskWebpackExt
 
 from .collect import collect_staticroot_removal
+from .webpack import UniqueJinjaManifestLoader
 
 __all__ = ('InvenioAssets', )
 
@@ -69,8 +70,12 @@ class InvenioAssets(object):
         app.config.setdefault('COLLECT_STORAGE', 'flask_collect.storage.link')
         app.config.setdefault(
             'COLLECT_FILTER', partial(collect_staticroot_removal, app))
+
+        # Flask-WebpackExt config
         app.config.setdefault(
             'WEBPACKEXT_PROJECT', 'invenio_assets.webpack:project')
+        app.config.setdefault(
+            'WEBPACKEXT_MANIFEST_LOADER', UniqueJinjaManifestLoader)
         if app.debug:  # for development use 2-level deep symlinking
             from pywebpack.storage import LinkStorage
             app.config.setdefault(
