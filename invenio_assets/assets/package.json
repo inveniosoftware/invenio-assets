@@ -65,7 +65,7 @@
     "webpack-dev-middleware": "^3.4.0",
     "webpack-hot-middleware": "^2.24.3",
     "webpack-livereload-plugin": "^2.2.0",
-    "webpack-manifest-plugin": "2.0.4",
+    "webpack-bundle-tracker": "^1.0.0-alpha.1",
     "webpack-merge": "^4.1.5",
     "webpack-yam-plugin": "^1.0.1"
   },

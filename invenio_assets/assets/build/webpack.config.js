@@ -9,7 +9,7 @@
 const path = require("path");
 const CleanWebpackPlugin = require("clean-webpack-plugin");
 const config = require("./config");
-const ManifestPlugin = require("webpack-manifest-plugin");
+const BundleTracker = require("webpack-bundle-tracker");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const OptimizeCSSAssetsPlugin = require("optimize-css-assets-webpack-plugin");
 const safePostCssParser = require("postcss-safe-parser");
@@ -213,11 +213,11 @@ var webpackConfig = {
       "window.jQuery": "jquery/src/jquery"
     }),
     // Write manifest file which Python will read.
-    new ManifestPlugin({
-      fileName: "manifest.json",
-      stripSrc: true,
-      publicPath: config.build.assetsURL
-    })
+    new BundleTracker({
+      path: config.build.assetsPath,
+      filename: './manifest.json',
+      publicPath: config.build.assetsURL,
+    }),
   ],
   performance: { hints: false }
 };
