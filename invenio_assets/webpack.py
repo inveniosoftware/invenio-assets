@@ -11,6 +11,14 @@
 from __future__ import absolute_import, print_function
 
 import os
+from collections import OrderedDict
+
+from flask import current_app, request
+from flask_webpackext import WebpackBundle, WebpackBundleProject
+from flask_webpackext.manifest import JinjaManifest, JinjaManifestLoader
+from markupsafe import Markup
+from pywebpack import ManifestEntry, UnsupportedExtensionError, \
+    bundles_from_entry_point
 
 project = WebpackBundleProject(
     __name__,
@@ -69,3 +77,44 @@ class WebpackThemeBundle(object):
         """Proxy to the active theme's bundle dependencies."""
         return self._active_theme_bundle.dependencies
 
+
+class UniqueJinjaManifestEntry(ManifestEntry):
+    """Manifest entry which avoids double output of chunks."""
+
+    def __html__(self):
+        """Output chunk HTML tags that haven't been yet output."""
+        if not hasattr(request, '_jinja_webpack_entries'):
+            setattr(request, '_jinja_webpack_entries', {
+                '.js': OrderedDict(),
+                '.css': OrderedDict(),
+            })
+
+        output = []
+
+        # For debugging add from which entry the chunk came
+        if current_app.debug:
+            output.append('<!-- {} -->'.format(self.name))
+        for p in self._paths:
+            _, ext = os.path.splitext(p.lower())
+            # If we haven't come across the chunk yet, we add it to the output
+            if p not in request._jinja_webpack_entries[ext]:
+                tpl = self.templates.get(ext)
+                if tpl is None:
+                    raise UnsupportedExtensionError(p)
+                output.append(tpl.format(p))
+
+            # Mark the we have already output the chunk
+            request._jinja_webpack_entries[ext][p] = None
+        return Markup('\n'.join(output))
+
+
+class UniqueJinjaManifestLoader(JinjaManifestLoader):
+    """Factory which uses the Jinja manifest entry."""
+
+    def __init__(self, manifest_cls=JinjaManifest,
+                 entry_cls=UniqueJinjaManifestEntry):
+        """Initialize manifest loader."""
+        super(UniqueJinjaManifestLoader, self).__init__(
+            manifest_cls=manifest_cls,
+            entry_cls=entry_cls
+        )

@@ -83,13 +83,6 @@ var webpackConfig = {
       })
     ],
     splitChunks: {
-      cacheGroups: {
-        commons: {
-          test: /[\\/]node_modules[\\/]/,
-          name: "vendor",
-          chunks: "initial"
-        }
-      },
       chunks: "all"
     },
     // Extract webpack runtime and module manifest to its own file in order to
