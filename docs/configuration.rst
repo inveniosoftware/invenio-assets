@@ -10,10 +10,6 @@ Configuration
 
 Default values are set for following configuration variables:
 
-* ``REQUIREJS_BASEURL`` -  directory that AMD modules will be loaded from (see
-  `webassets
-  <http://webassets.readthedocs.io/en/latest/builtin_filters.html#requirejs>`_
-  for details). Default: ``app.static_folder``.
 * ``COLLECT_STATIC_ROOT`` - path to folder where static files will be
   collected to (see
   `Flask-Collect <http://flask-collect.readthedocs.io/en/latest/config.html>`_
@@ -27,3 +23,6 @@ Default values are set for following configuration variables:
 Note, normally in a production environment you should change
 ``COLLECT_STORAGE`` to ``flask_collect.storage.file`` in order to copy files
 instead of symlinking them.
+
+For Webpack related configuration please see `Flask-WebpackExt
+<https://flask-webpackext.readthedocs.io/en/latest/configuration.html>`_

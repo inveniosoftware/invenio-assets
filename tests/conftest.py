@@ -20,7 +20,6 @@ from flask import Blueprint, Flask
 from flask.cli import ScriptInfo
 
 from invenio_assets import InvenioAssets
-from invenio_assets.npm import NpmBundle
 
 
 @pytest.yield_fixture()
@@ -84,10 +83,6 @@ def script_info_assets(app, static_dir, testcss):
     class Ext(object):
         def __init__(self, app):
             assets = app.extensions['invenio-assets']
-            assets.env.register(
-                'testbundle',
-                NpmBundle('test.css', output='testbundle.css')
-            )
             app.register_blueprint(blueprint)
 
     Ext(app)

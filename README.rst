@@ -21,12 +21,12 @@
 .. image:: https://img.shields.io/pypi/v/invenio-assets.svg
         :target: https://pypi.org/pypi/invenio-assets
 
-Media assets management for Invenio web interface.
+Media assets management for Invenio.
 
 * Provides the processing and bundling of JavaScript and CSS files.
 
 * Provides CLI for installing and building media assets for Invenio via
-  integration with NPM.
+  integration with Webpack and NPM.
 
 Further documentation is available on
 https://invenio-assets.readthedocs.io/

@@ -8,6 +8,11 @@
 Changes
 =======
 
+Version 1.2.0 (released 2020-05-13)
+
+* Removes support for Flask-Assets and Webassets which was deprecated with
+  the release of Invenio v3.0.
+
 Version 1.1.5 (released 2020-04-28)
 
 * Webpack now uses by default in debug/development mode folder-level symlinking
