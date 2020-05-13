@@ -8,8 +8,6 @@
 
 """Click command-line interface for assets and collect."""
 
-from __future__ import absolute_import, print_function
-
 import json
 import os
 import warnings

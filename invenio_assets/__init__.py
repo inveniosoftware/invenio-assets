@@ -106,8 +106,6 @@ Additionally if we have some static files we should collect them:
     $ flask collect -v
 """
 
-from __future__ import absolute_import, print_function
-
 from .ext import InvenioAssets
 from .proxies import current_assets
 from .version import __version__
