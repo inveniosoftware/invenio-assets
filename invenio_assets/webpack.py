@@ -95,6 +95,8 @@ class UniqueJinjaManifestEntry(ManifestEntry):
         for p in self._paths:
             _, ext = os.path.splitext(p.lower())
             # If we haven't come across the chunk yet, we add it to the output
+            if ext not in request._jinja_webpack_entries:
+                raise UnsupportedExtensionError(p)
             if p not in request._jinja_webpack_entries[ext]:
                 tpl = self.templates.get(ext)
                 if tpl is None:
