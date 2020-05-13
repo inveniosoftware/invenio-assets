@@ -1,15 +1,12 @@
 # -*- coding: utf-8 -*-
 #
 # This file is part of Invenio.
-# Copyright (C) 2016-2018 CERN.
+# Copyright (C) 2016-2020 CERN.
 #
 # Invenio is free software; you can redistribute it and/or modify it
 # under the terms of the MIT License; see LICENSE file for more details.
 
 """Media asset management for Invenio."""
-
-from __future__ import absolute_import, print_function
-
 
 def collect_staticroot_removal(app, blueprints):
     """Remove collect's static root folder from list."""

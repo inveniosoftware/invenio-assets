@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 #
 # This file is part of Invenio.
-# Copyright (C) 2015-2018 CERN.
+# Copyright (C) 2015-2020 CERN.
 #
 # Invenio is free software; you can redistribute it and/or modify it
 # under the terms of the MIT License; see LICENSE file for more details.
@@ -9,11 +9,9 @@
 
 """Test Invenio Assets module."""
 
-from __future__ import absolute_import, print_function
-
-from mock import patch
-
 from invenio_assets import InvenioAssets
+from mock import patch
+from pywebpack.storage import FileStorage, LinkStorage
 
 
 def test_version():
@@ -41,6 +39,7 @@ def test_init_post(app):
     assert assets.webpack
     assert 'COLLECT_STATIC_ROOT' in app.config
     assert 'WEBPACKEXT_PROJECT' in app.config
+    assert app.config['WEBPACKEXT_STORAGE_CLS'] == FileStorage
 
 
 def test_init_cli(app):
@@ -49,3 +48,11 @@ def test_init_cli(app):
     cli._load_plugin_commands()
     assert 'collect' in cli.commands
     assert 'webpack' in cli.commands
+
+
+def test_init_debug(app):
+    """Test module initialization with debug enabled."""
+    app.debug = True
+    InvenioAssets(app)
+    # Storage class changed to LinkStorage when in debug mode.
+    assert app.config['WEBPACKEXT_STORAGE_CLS'] != FileStorage
