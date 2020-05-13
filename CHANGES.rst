@@ -10,6 +10,12 @@ Changes
 
 Version 1.2.0 (released 2020-05-13)
 
+* Uses ``webpack-bundle-tracker`` for the generating the Webpack manifest.
+* Disables the vendor chunk grouping in Webpack config. Since now the manifest
+  exposes entry chunk dependencies, the newly added
+  ``UniqueJinjaManifestLoader`` renders (only once) each chunk.
+* Adds a ``WebpackThemeBundle`` which uses the ``APP_THEME`` variable to
+  determine which bundle will be used.
 * Removes support for Flask-Assets and Webassets which was deprecated with
   the release of Invenio v3.0.
 
