@@ -24,7 +24,10 @@ var webpackConfig = {
     extensions: ["*", ".js", ".jsx"],
     symlinks: false,
     alias: {
-      "@templates": path.resolve(config.build.context, "templates")
+      "@templates": path.resolve(config.build.context, "templates"),
+      // Semantic-UI LESS config resolving alias
+      // TODO: This would be better injected via config from Flask...
+      "../../theme.config$": path.resolve(config.build.context, "less/invenio_theme/theme.config"),
     }
   },
   output: {
@@ -153,6 +156,24 @@ var webpackConfig = {
           {
             loader: "sass-loader",
             options: {}
+          }
+        ]
+      },
+      {
+        test: /\.(less)$/,
+        use: [
+          MiniCssExtractPlugin.loader,
+          {
+            loader: "css-loader",
+            options: {
+              minimize: {
+                safe: true
+              }
+            }
+          },
+          {
+            loader: "less-loader",
+              options: {}
           }
         ]
       },
