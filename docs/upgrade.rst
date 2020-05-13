@@ -8,6 +8,11 @@
 Upgrade to Webpack
 ==================
 
+.. note::
+
+    Invenio-Assets v1.2.0 removed support for AMD/RequireJS and Flask-Assets
+    build system.
+
 In order to upgrade your module from AMD to Webpack, follow the steps below.
 
 Move files to the ``assets`` folder

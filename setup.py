@@ -38,19 +38,14 @@ for reqs in extras_require.values():
     extras_require['all'].extend(reqs)
 
 setup_requires = [
-    'Babel>=1.3',
     'pytest-runner>=2.6.2',
 ]
 
 install_requires = [
-    'Babel>=1.3',
-    'Flask-Assets>=0.12',
     'Flask-Collect==1.2.2',
     'Flask-WebpackExt>=1.0.0',
-    'Flask>=0.11.1',
+    'invenio-base>=1.2.3',
     'node-semver>=0.1.1,<0.2.0',  # FIXME troubleshooting#22
-    'speaklater>=1.3',
-    'webassets>=0.12',
 ]
 
 packages = find_packages()
@@ -78,8 +73,6 @@ setup(
     entry_points={
         'flask.commands': [
             'collect = invenio_assets.cli:collect',
-            'npm = invenio_assets.cli:npm',
-            'assets = invenio_assets.cli:assets'
         ],
         'invenio_base.apps': [
             'invenio_assets = invenio_assets:InvenioAssets',

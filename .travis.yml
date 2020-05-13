@@ -49,7 +49,6 @@ install:
   - "travis_retry pip install -r .travis-${REQUIREMENTS}-requirements.txt"
   - "travis_retry pip install -e .[all]"
   - "npm update"
-  - "npm install --global --silent clean-css clean-css-cli requirejs"
 
 script:
   - "./run-tests.sh"
