@@ -24,25 +24,25 @@ def test_webpack_theme_bundle(app):
                 'theme': './theme-bootstrap3.css',
             }
         ),
-        'semanticui': dict(
+        'semantic-ui': dict(
             entry={
-                'theme': './theme-semanticui.css',
+                'theme': './theme-semantic-ui.css',
             }
         ),
     }
 
     # Test that bundles are created for each theme.
     bundle = WebpackThemeBundle(
-        'tests', 'assets', default='semanticui', themes=themes)
+        'tests', 'assets', default='semantic-ui', themes=themes)
     assert isinstance(bundle.themes['bootstrap3'], WebpackBundle)
-    assert isinstance(bundle.themes['semanticui'], WebpackBundle)
+    assert isinstance(bundle.themes['semantic-ui'], WebpackBundle)
 
     # Test that default theme is used.
     with app.app_context():
-        assert bundle._active_theme_bundle == bundle.themes['semanticui']
-        assert bundle.path == bundle.themes['semanticui'].path
-        assert bundle.entry == bundle.themes['semanticui'].entry
-        assert bundle.dependencies == bundle.themes['semanticui'].dependencies
+        assert bundle._active_theme_bundle == bundle.themes['semantic-ui']
+        assert bundle.path == bundle.themes['semantic-ui'].path
+        assert bundle.entry == bundle.themes['semantic-ui'].entry
+        assert bundle.dependencies == bundle.themes['semantic-ui'].dependencies
 
     # Test that APP_THEME overrides default theme.
     app.config['APP_THEME'] = ['bootstrap3']
