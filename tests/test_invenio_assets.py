@@ -9,9 +9,10 @@
 
 """Test Invenio Assets module."""
 
-from invenio_assets import InvenioAssets
 from mock import patch
 from pywebpack.storage import FileStorage, LinkStorage
+
+from invenio_assets import InvenioAssets
 
 
 def test_version():
