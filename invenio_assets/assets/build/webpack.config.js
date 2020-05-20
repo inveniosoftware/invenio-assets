@@ -16,6 +16,16 @@ const safePostCssParser = require("postcss-safe-parser");
 const TerserPlugin = require("terser-webpack-plugin");
 const webpack = require("webpack");
 
+// Load aliases from config and resolve their full path
+let aliases = {};
+if (config.aliases) {
+  aliases = Object.fromEntries(
+    Object.entries(config.aliases).map(
+      ([alias, alias_path]) => [alias, path.resolve(config.build.context, alias_path)]
+    )
+  )
+}
+
 var webpackConfig = {
   mode: process.env.NODE_ENV,
   entry: config.entry,
@@ -23,12 +33,7 @@ var webpackConfig = {
   resolve: {
     extensions: ["*", ".js", ".jsx"],
     symlinks: false,
-    alias: {
-      "@templates": path.resolve(config.build.context, "templates"),
-      // Semantic-UI LESS config resolving alias
-      // TODO: This would be better injected via config from Flask...
-      "../../theme.config$": path.resolve(config.build.context, "less/invenio_theme/theme.config"),
-    }
+    alias: aliases,
   },
   output: {
     path: config.build.assetsPath,

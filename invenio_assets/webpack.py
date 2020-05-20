@@ -60,20 +60,9 @@ class WebpackThemeBundle(object):
             if theme in self.themes:
                 return self.themes[theme]
 
-    @property
-    def path(self):
-        """Proxy to the active theme's bundle path."""
-        return self._active_theme_bundle.path
-
-    @property
-    def entry(self):
-        """Proxy to the active theme's bundle entry."""
-        return self._active_theme_bundle.entry
-
-    @property
-    def dependencies(self):
-        """Proxy to the active theme's bundle dependencies."""
-        return self._active_theme_bundle.dependencies
+    def __getattr__(self, attr):
+        """Proxy all attributes to the active theme bundle."""
+        return getattr(self._active_theme_bundle, attr)
 
 
 class UniqueJinjaManifestEntry(ManifestEntry):
