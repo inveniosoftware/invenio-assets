@@ -12,4 +12,4 @@ This file is imported by ``invenio_assets.__init__``,
 and parsed by ``setup.py``.
 """
 
-__version__ = '1.2.0'
+__version__ = '1.2.1'

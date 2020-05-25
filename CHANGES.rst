@@ -8,6 +8,10 @@
 Changes
 =======
 
+Version 1.2.1 (released 2020-05-25)
+
+* Adds support for adding Webpack aliases to theme bundles.
+
 Version 1.2.0 (released 2020-05-13)
 
 * Uses ``webpack-bundle-tracker`` for the generating the Webpack manifest.
