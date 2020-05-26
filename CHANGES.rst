@@ -8,6 +8,10 @@
 Changes
 =======
 
+Version 1.2.2 (released 2020-05-26)
+
+* Fixes an issue with attribute access and application context errors.
+
 Version 1.2.1 (released 2020-05-25)
 
 * Adds support for adding Webpack aliases to theme bundles.
