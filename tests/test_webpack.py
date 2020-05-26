@@ -16,6 +16,24 @@ from invenio_assets.webpack import UniqueJinjaManifestEntry, \
     UniqueJinjaManifestLoader, WebpackThemeBundle
 
 
+def test_webpack_theme_bundle_outside_app():
+    """Access a bundle property outside app context."""
+    # Test that bundles are created for each theme.
+    bundle = WebpackThemeBundle(
+        'tests',
+        'assets',
+        default='semantic-ui',
+        themes={
+            'semantic-ui': dict(
+                entry={
+                    'theme': './theme-semantic-ui.css',
+                }
+            ),
+        }
+    )
+    pytest.raises(AttributeError, getattr, bundle, 'path')
+
+
 def test_webpack_theme_bundle(app):
     """Test WebpackThemeBundle."""
     themes = {

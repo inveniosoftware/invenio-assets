@@ -62,7 +62,13 @@ class WebpackThemeBundle(object):
 
     def __getattr__(self, attr):
         """Proxy all attributes to the active theme bundle."""
-        return getattr(self._active_theme_bundle, attr)
+        try:
+            return getattr(self._active_theme_bundle, attr)
+        except RuntimeError:
+            raise AttributeError(
+                '{}.{} is invalid because you are working outside an '
+                'application context.'.format(self.__class__.__name__, attr)
+            )
 
 
 class UniqueJinjaManifestEntry(ManifestEntry):
