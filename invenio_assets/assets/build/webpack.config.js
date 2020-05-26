@@ -226,10 +226,10 @@ var webpackConfig = {
     new CleanWebpackPlugin(config.build.assetsPath, { allowExternal: true }),
     // Automatically inject jquery
     new webpack.ProvidePlugin({
-      jQuery: "jquery/src/jquery",
-      $: "jquery/src/jquery",
-      jquery: "jquery/src/jquery",
-      "window.jQuery": "jquery/src/jquery"
+      jQuery: "jquery",
+      $: "jquery",
+      jquery: "jquery",
+      "window.jQuery": "jquery"
     }),
     // Write manifest file which Python will read.
     new BundleTracker({
