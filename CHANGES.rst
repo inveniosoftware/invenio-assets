@@ -8,6 +8,10 @@
 Changes
 =======
 
+Version 1.2.3 (released 2020-05-27)
+
+* Fixes an alias issue with jQuery.
+
 Version 1.2.2 (released 2020-05-26)
 
 * Fixes an issue with attribute access and application context errors.
