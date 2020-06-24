@@ -8,6 +8,11 @@
 Changes
 =======
 
+Version 1.2.4 (released 2020-06-24)
+
+* Pins less-loader to version 6.1.0.
+  See https://github.com/inveniosoftware/invenio-assets/issues/130.
+
 Version 1.2.3 (released 2020-05-27)
 
 * Fixes an alias issue with jQuery.
