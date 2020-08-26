@@ -7,7 +7,7 @@
  */
 
 const path = require("path");
-const CleanWebpackPlugin = require("clean-webpack-plugin");
+const { CleanWebpackPlugin } = require("clean-webpack-plugin");
 const config = require("./config");
 const BundleTracker = require("webpack-bundle-tracker");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
@@ -106,12 +106,10 @@ var webpackConfig = {
         use: [
           {
             loader: "expose-loader",
-            options: "jQuery"
+            options: {
+              exposes: ["$", "jQuery"]
+            }
           },
-          {
-            loader: "expose-loader",
-            options: "$"
-          }
         ]
       },
       {
@@ -148,43 +146,15 @@ var webpackConfig = {
       },
       {
         test: /\.(scss|css)$/,
-        use: [
-          MiniCssExtractPlugin.loader,
-          {
-            loader: "css-loader",
-            options: {
-              minimize: {
-                safe: true
-              }
-            }
-          },
-          {
-            loader: "sass-loader",
-            options: {}
-          }
-        ]
+        use: [MiniCssExtractPlugin.loader, "css-loader", "sass-loader"]
       },
       {
         test: /\.(less)$/,
-        use: [
-          MiniCssExtractPlugin.loader,
-          {
-            loader: "css-loader",
-            options: {
-              minimize: {
-                safe: true
-              }
-            }
-          },
-          {
-            loader: "less-loader",
-              options: {}
-          }
-        ]
+        use: [MiniCssExtractPlugin.loader, "css-loader", "less-loader"]
       },
       // Inline images smaller than 10k
       {
-        test: /\.(png|jpe?g|gif|svg)(\?.*)?$/,
+        test: /\.(png|cur|jpe?g|gif|svg)(\?.*)?$/,
         use: [
           {
             loader: require.resolve("url-loader"),
@@ -223,7 +193,7 @@ var webpackConfig = {
       chunkFilename: "css/[name].[contenthash].css"
     }),
     // Removes the dist folder before each run.
-    new CleanWebpackPlugin(config.build.assetsPath, { allowExternal: true }),
+    new CleanWebpackPlugin({ dangerouslyAllowCleanPatternsOutsideProject: true }),
     // Automatically inject jquery
     new webpack.ProvidePlugin({
       jQuery: "jquery",
