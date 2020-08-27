@@ -8,6 +8,10 @@
 Changes
 =======
 
+Version 1.2.5 (released 2020-06-24)
+
+* Updates ``package.json`` dev dependencies.
+
 Version 1.2.4 (released 2020-06-24)
 
 * Pins less-loader to version 6.1.0.
