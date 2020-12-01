@@ -6,6 +6,7 @@
  * under the terms of the MIT License; see LICENSE file for more details.
  */
 
+const fs = require("fs");
 const path = require("path");
 const { CleanWebpackPlugin } = require("clean-webpack-plugin");
 const config = require("./config");
@@ -20,10 +21,11 @@ const webpack = require("webpack");
 let aliases = {};
 if (config.aliases) {
   aliases = Object.fromEntries(
-    Object.entries(config.aliases).map(
-      ([alias, alias_path]) => [alias, path.resolve(config.build.context, alias_path)]
-    )
-  )
+    Object.entries(config.aliases).map(([alias, alias_path]) => [
+      alias,
+      path.resolve(config.build.context, alias_path),
+    ])
+  );
 }
 
 var webpackConfig = {
@@ -39,7 +41,7 @@ var webpackConfig = {
     path: config.build.assetsPath,
     filename: "js/[name].[chunkhash].js",
     chunkFilename: "js/[id].[chunkhash].js",
-    publicPath: config.build.assetsURL
+    publicPath: config.build.assetsURL,
   },
   optimization: {
     minimizer: [
@@ -51,7 +53,7 @@ var webpackConfig = {
             // into invalid ecma 5 code. This is why the 'compress' and 'output'
             // sections only apply transformations that are ecma 5 safe
             // https://github.com/facebook/create-react-app/pull/4234
-            ecma: 8
+            ecma: 8,
           },
           compress: {
             ecma: 5,
@@ -65,39 +67,39 @@ var webpackConfig = {
             // https://github.com/facebook/create-react-app/issues/5250
             // Pending further investigation:
             // https://github.com/terser-js/terser/issues/120
-            inline: 2
+            inline: 2,
           },
           mangle: {
-            safari10: true
+            safari10: true,
           },
           output: {
             ecma: 5,
             comments: false,
             // Turned on because emoji and regex is not minified properly using default
             // https://github.com/facebook/create-react-app/issues/2488
-            ascii_only: true
-          }
+            ascii_only: true,
+          },
         },
         // Use multi-process parallel running to improve the build speed
         // Default number of concurrent runs: os.cpus().length - 1
         parallel: true,
-        cache: true
+        cache: true,
       }),
       new OptimizeCSSAssetsPlugin({
         cssProcessorOptions: {
           parser: safePostCssParser,
-          map: false
-        }
-      })
+          map: false,
+        },
+      }),
     ],
     splitChunks: {
-      chunks: "all"
+      chunks: "all",
     },
     // Extract webpack runtime and module manifest to its own file in order to
     // prevent vendor hash from being updated whenever app bundle is updated.
     runtimeChunk: {
-      name: "manifest"
-    }
+      name: "manifest",
+    },
   },
   module: {
     rules: [
@@ -107,10 +109,10 @@ var webpackConfig = {
           {
             loader: "expose-loader",
             options: {
-              exposes: ["$", "jQuery"]
-            }
+              exposes: ["$", "jQuery"],
+            },
           },
-        ]
+        ],
       },
       {
         test: /\.(js|jsx)$/,
@@ -122,11 +124,11 @@ var webpackConfig = {
               presets: ["@babel/preset-env", "@babel/preset-react"],
               plugins: [
                 "@babel/plugin-proposal-class-properties",
-                "@babel/plugin-transform-runtime"
-              ]
-            }
-          }
-        ]
+                "@babel/plugin-transform-runtime",
+              ],
+            },
+          },
+        ],
       },
       {
         test: /\.(js|jsx)$/,
@@ -138,19 +140,19 @@ var webpackConfig = {
               emitWarning: true,
               quiet: true,
               formatter: require("eslint-friendly-formatter"),
-              eslintPath: require.resolve("eslint")
+              eslintPath: require.resolve("eslint"),
             },
-            loader: require.resolve("eslint-loader")
-          }
-        ]
+            loader: require.resolve("eslint-loader"),
+          },
+        ],
       },
       {
         test: /\.(scss|css)$/,
-        use: [MiniCssExtractPlugin.loader, "css-loader", "sass-loader"]
+        use: [MiniCssExtractPlugin.loader, "css-loader", "sass-loader"],
       },
       {
         test: /\.(less)$/,
-        use: [MiniCssExtractPlugin.loader, "css-loader", "less-loader"]
+        use: [MiniCssExtractPlugin.loader, "css-loader", "less-loader"],
       },
       // Inline images smaller than 10k
       {
@@ -160,10 +162,10 @@ var webpackConfig = {
             loader: require.resolve("url-loader"),
             options: {
               limit: 10000,
-              name: "img/[name].[hash:7].[ext]"
-            }
-          }
-        ]
+              name: "img/[name].[hash:7].[ext]",
+            },
+          },
+        ],
       },
       // Inline webfonts smaller than 10k
       {
@@ -173,42 +175,45 @@ var webpackConfig = {
             loader: require.resolve("file-loader"),
             options: {
               limit: 10000,
-              name: "fonts/[name].[hash:7].[ext]"
-            }
-          }
-        ]
-      }
-    ]
+              name: "fonts/[name].[hash:7].[ext]",
+            },
+          },
+        ],
+      },
+    ],
   },
-  devtool: process.env.NODE_ENV === 'production' ? 'source-map' : 'inline-source-map',
+  devtool:
+    process.env.NODE_ENV === "production" ? "source-map" : "inline-source-map",
   plugins: [
     // Pragmas
     new webpack.DefinePlugin({
-      "process.env": process.env.NODE_ENV
+      "process.env": process.env.NODE_ENV,
     }),
     new MiniCssExtractPlugin({
       // Options similar to the same options in webpackOptions.output
       // both options are optional
       filename: "css/[name].[contenthash].css",
-      chunkFilename: "css/[name].[contenthash].css"
+      chunkFilename: "css/[name].[contenthash].css",
     }),
     // Removes the dist folder before each run.
-    new CleanWebpackPlugin({ dangerouslyAllowCleanPatternsOutsideProject: true }),
+    new CleanWebpackPlugin({
+      dangerouslyAllowCleanPatternsOutsideProject: true,
+    }),
     // Automatically inject jquery
     new webpack.ProvidePlugin({
       jQuery: "jquery",
       $: "jquery",
       jquery: "jquery",
-      "window.jQuery": "jquery"
+      "window.jQuery": "jquery",
     }),
     // Write manifest file which Python will read.
     new BundleTracker({
       path: config.build.assetsPath,
-      filename: './manifest.json',
+      filename: "./manifest.json",
       publicPath: config.build.assetsURL,
     }),
   ],
-  performance: { hints: false }
+  performance: { hints: false },
 };
 
 if (process.env.npm_config_report) {
