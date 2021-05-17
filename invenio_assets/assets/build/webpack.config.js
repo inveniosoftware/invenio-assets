@@ -209,7 +209,7 @@ var webpackConfig = {
     // Write manifest file which Python will read.
     new BundleTracker({
       path: config.build.assetsPath,
-      filename: "./manifest.json",
+      filename: path.join(config.build.assetsPath, "manifest.json") ,
       publicPath: config.build.assetsURL,
     }),
   ],

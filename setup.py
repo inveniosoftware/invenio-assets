@@ -36,6 +36,7 @@ setup_requires = [
 ]
 
 install_requires = [
+    'Flask>=1.0.4,<2.0',
     'Flask-Collect==1.2.2',
     'Flask-WebpackExt>=1.0.0',
     'invenio-base>=1.2.3',
