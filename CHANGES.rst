@@ -8,7 +8,7 @@
 Changes
 =======
 
-Version 1.2.6 (released 2020-05-18)
+Version 1.2.6 (released 2021-05-18)
 
 * Fixes missing "manifest.json". The issue was caused by the
   webpack-bundle-tracker changing behavior of where to output the manifest.json
