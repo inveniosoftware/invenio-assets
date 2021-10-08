@@ -22,3 +22,4 @@ Contributors
 - Sami Hiltunen
 - Tibor Simko
 - Yoan Blanc
+- Maximilian Moser

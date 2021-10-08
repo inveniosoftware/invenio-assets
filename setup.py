@@ -2,6 +2,7 @@
 #
 # This file is part of Invenio.
 # Copyright (C) 2015-2020 CERN.
+# Copyright (C) 2021      TU Wien.
 #
 # Invenio is free software; you can redistribute it and/or modify it
 # under the terms of the MIT License; see LICENSE file for more details.
@@ -36,8 +37,7 @@ setup_requires = [
 ]
 
 install_requires = [
-    'Flask>=1.0.4,<2.0',
-    'Flask-Collect==1.2.2',
+    'Flask-Collect-Invenio>=1.4.0',
     'Flask-WebpackExt>=1.0.0',
     'invenio-base>=1.2.3',
     'node-semver>=0.1.1,<0.2.0',  # FIXME troubleshooting#22
