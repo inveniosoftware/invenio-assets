@@ -8,6 +8,11 @@
 Changes
 =======
 
+Version 1.2.7 (released 2021-10-18)
+
+- Changed Flask-Collect (unmaintained since 2016) to Flask-Collect-Invenio and
+  fixed Flask v2 support. You may need to uninstall Flask-Collect manually.
+
 Version 1.2.6 (released 2020-05-18)
 
 * Fixes missing "manifest.json". The issue was caused by the

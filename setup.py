@@ -39,7 +39,7 @@ setup_requires = [
 install_requires = [
     'Flask-Collect-Invenio>=1.4.0',
     'Flask-WebpackExt>=1.0.0',
-    'invenio-base>=1.2.3',
+    'invenio-base>=1.2.5',
     'node-semver>=0.1.1,<0.2.0',  # FIXME troubleshooting#22
 ]
 
