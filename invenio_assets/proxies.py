@@ -11,5 +11,5 @@
 from flask import current_app
 from werkzeug.local import LocalProxy
 
-current_assets = LocalProxy(lambda: current_app.extensions['invenio-assets'])
+current_assets = LocalProxy(lambda: current_app.extensions["invenio-assets"])
 """Proxy to current InvenioAssets."""

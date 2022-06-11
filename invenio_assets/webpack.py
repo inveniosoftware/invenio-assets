@@ -15,14 +15,13 @@ from flask import current_app, request
 from flask_webpackext import WebpackBundle, WebpackBundleProject
 from flask_webpackext.manifest import JinjaManifest, JinjaManifestLoader
 from markupsafe import Markup
-from pywebpack import ManifestEntry, UnsupportedExtensionError, \
-    bundles_from_entry_point
+from pywebpack import ManifestEntry, UnsupportedExtensionError, bundles_from_entry_point
 
 project = WebpackBundleProject(
     __name__,
-    project_folder='assets',
-    config_path='build/config.json',
-    bundles=bundles_from_entry_point('invenio_assets.webpack'),
+    project_folder="assets",
+    config_path="build/config.json",
+    bundles=bundles_from_entry_point("invenio_assets.webpack"),
 )
 
 
@@ -46,14 +45,12 @@ class WebpackThemeBundle(object):
         self.themes = {}
         for theme, bundle in themes.items():
             self.themes[theme] = WebpackBundle(
-                import_name,
-                os.path.join(folder, theme),
-                **bundle
+                import_name, os.path.join(folder, theme), **bundle
             )
 
     @property
     def _active_theme_bundle(self):
-        themes = current_app.config.get('APP_THEME', [])
+        themes = current_app.config.get("APP_THEME", [])
         if not themes:
             return self.themes[self.default]
         for theme in themes:
@@ -66,8 +63,8 @@ class WebpackThemeBundle(object):
             return getattr(self._active_theme_bundle, attr)
         except RuntimeError:
             raise AttributeError(
-                '{}.{} is invalid because you are working outside an '
-                'application context.'.format(self.__class__.__name__, attr)
+                "{}.{} is invalid because you are working outside an "
+                "application context.".format(self.__class__.__name__, attr)
             )
 
 
@@ -76,17 +73,21 @@ class UniqueJinjaManifestEntry(ManifestEntry):
 
     def __html__(self):
         """Output chunk HTML tags that haven't been yet output."""
-        if not hasattr(request, '_jinja_webpack_entries'):
-            setattr(request, '_jinja_webpack_entries', {
-                '.js': OrderedDict(),
-                '.css': OrderedDict(),
-            })
+        if not hasattr(request, "_jinja_webpack_entries"):
+            setattr(
+                request,
+                "_jinja_webpack_entries",
+                {
+                    ".js": OrderedDict(),
+                    ".css": OrderedDict(),
+                },
+            )
 
         output = []
 
         # For debugging add from which entry the chunk came
         if current_app.debug:
-            output.append('<!-- {} -->'.format(self.name))
+            output.append("<!-- {} -->".format(self.name))
         for p in self._paths:
             _, ext = os.path.splitext(p.lower())
             # If we haven't come across the chunk yet, we add it to the output
@@ -100,16 +101,14 @@ class UniqueJinjaManifestEntry(ManifestEntry):
 
             # Mark the we have already output the chunk
             request._jinja_webpack_entries[ext][p] = None
-        return Markup('\n'.join(output))
+        return Markup("\n".join(output))
 
 
 class UniqueJinjaManifestLoader(JinjaManifestLoader):
     """Factory which uses the Jinja manifest entry."""
 
-    def __init__(self, manifest_cls=JinjaManifest,
-                 entry_cls=UniqueJinjaManifestEntry):
+    def __init__(self, manifest_cls=JinjaManifest, entry_cls=UniqueJinjaManifestEntry):
         """Initialize manifest loader."""
         super(UniqueJinjaManifestLoader, self).__init__(
-            manifest_cls=manifest_cls,
-            entry_cls=entry_cls
+            manifest_cls=manifest_cls, entry_cls=entry_cls
         )

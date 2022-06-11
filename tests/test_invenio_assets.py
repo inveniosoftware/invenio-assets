@@ -18,37 +18,39 @@ from invenio_assets import InvenioAssets
 def test_version():
     """Test version import."""
     from invenio_assets import __version__
+
     assert __version__
 
 
 def test_init(app):
     """Test module initialization."""
     InvenioAssets(app)
-    assets = app.extensions['invenio-assets']
+    assets = app.extensions["invenio-assets"]
     assert assets.collect
     assert assets.webpack
-    assert app.config['COLLECT_STATIC_ROOT'] == app.static_folder
-    assert 'WEBPACKEXT_PROJECT' in app.config
+    assert app.config["COLLECT_STATIC_ROOT"] == app.static_folder
+    assert "WEBPACKEXT_PROJECT" in app.config
 
 
 def test_init_post(app):
     """Test module initialization using init_app."""
     assets = InvenioAssets()
-    assert 'COLLECT_STATIC_ROOT' not in app.config
+    assert "COLLECT_STATIC_ROOT" not in app.config
     assets.init_app(app)
     assert assets.collect
     assert assets.webpack
-    assert 'COLLECT_STATIC_ROOT' in app.config
-    assert 'WEBPACKEXT_PROJECT' in app.config
-    assert app.config['WEBPACKEXT_STORAGE_CLS'] == FileStorage
+    assert "COLLECT_STATIC_ROOT" in app.config
+    assert "WEBPACKEXT_PROJECT" in app.config
+    assert app.config["WEBPACKEXT_STORAGE_CLS"] == FileStorage
 
 
 def test_init_cli(app):
     """Test cli registration."""
     from flask.cli import cli
+
     cli._load_plugin_commands()
-    assert 'collect' in cli.commands
-    assert 'webpack' in cli.commands
+    assert "collect" in cli.commands
+    assert "webpack" in cli.commands
 
 
 def test_init_debug(app):
@@ -56,4 +58,4 @@ def test_init_debug(app):
     app.debug = True
     InvenioAssets(app)
     # Storage class changed to LinkStorage when in debug mode.
-    assert app.config['WEBPACKEXT_STORAGE_CLS'] != FileStorage
+    assert app.config["WEBPACKEXT_STORAGE_CLS"] != FileStorage
