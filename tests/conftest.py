@@ -2,6 +2,7 @@
 #
 # This file is part of Invenio.
 # Copyright (C) 2015-2020 CERN.
+# Copyright (C) 2022 Graz University of Technology.
 #
 # Invenio is free software; you can redistribute it and/or modify it
 # under the terms of the MIT License; see LICENSE file for more details.
@@ -68,7 +69,7 @@ def app(instance_path):
 def script_info(app):
     """Get ScriptInfo object for testing CLI."""
     InvenioAssets(app)
-    yield ScriptInfo(create_app=lambda info: app)
+    yield ScriptInfo(create_app=lambda: app)
 
 
 @pytest.yield_fixture()
@@ -85,4 +86,4 @@ def script_info_assets(app, static_dir, testcss):
 
     Ext(app)
 
-    yield ScriptInfo(create_app=lambda info: app)
+    yield ScriptInfo(create_app=lambda: app)
