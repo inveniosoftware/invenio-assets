@@ -109,7 +109,7 @@ Additionally if we have some static files we should collect them:
 from .ext import InvenioAssets
 from .proxies import current_assets
 
-__version__ = "1.2.7"
+__version__ = "1.3.0"
 
 __all__ = (
     "__version__",

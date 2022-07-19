@@ -1,6 +1,6 @@
 ..
     This file is part of Invenio.
-    Copyright (C) 2015-2020 CERN.
+    Copyright (C) 2015-2022 CERN.
 
     Invenio is free software; you can redistribute it and/or modify it
     under the terms of the MIT License; see LICENSE file for more details.
@@ -8,12 +8,21 @@
 Changes
 =======
 
+Version 1.3.0 (released 2022-06-19)
+
+* Replaces the deprecated NPM dependency `node-sass` with `dart-sass`.
+* Upgrades `sass-loader` NPM dependency
+* Depends on minor releases for NPM dependencies
+* Migrates setup.py to setup.cfg
+* Increases minimal python version to 3.7
+* Introduces `black`` as code formatter
+
 Version 1.2.7 (released 2021-10-18)
 
-- Changed Flask-Collect (unmaintained since 2016) to Flask-Collect-Invenio and
+* Changed Flask-Collect (unmaintained since 2016) to Flask-Collect-Invenio and
   fixed Flask v2 support. You may need to uninstall Flask-Collect manually.
 
-Version 1.2.6 (released 2020-05-18)
+Version 1.2.6 (released 2021-05-18)
 
 * Fixes missing "manifest.json". The issue was caused by the
   webpack-bundle-tracker changing behavior of where to output the manifest.json
