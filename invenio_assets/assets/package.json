@@ -18,7 +18,7 @@
     "@babel/preset-env": "^7.18.0",
     "@babel/preset-react": "^7.18.0",
     "@babel/runtime": "^7.18.0",
-    "@inveniosoftware/eslint-config-invenio": "^1.0.5",
+    "@inveniosoftware/eslint-config-invenio": "^1.0.10",
     "autoprefixer": "^10.4.0",
     "babel-loader": "^8.2.0",
     "babel-register": "^6.26.0",
