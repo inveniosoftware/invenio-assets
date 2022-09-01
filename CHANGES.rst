@@ -8,6 +8,11 @@
 Changes
 =======
 
+Version 1.3.1 (released 2022-09-01)
+
+* Upgrade eslint dependencies
+* Add eslint-config-invenio for global linting
+
 Version 1.3.0 (released 2022-06-19)
 
 * Replaces the deprecated NPM dependency `node-sass` with `dart-sass`.
