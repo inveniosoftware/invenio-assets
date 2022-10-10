@@ -1,6 +1,7 @@
 /*
  * This file is part of Invenio.
  * Copyright (C) 2017-2018 CERN.
+ * Copyright (C) 2022 Graz University of Technology.
  *
  * Invenio is free software; you can redistribute it and/or modify it
  * under the terms of the MIT License; see LICENSE file for more details.
@@ -16,7 +17,7 @@ const OptimizeCSSAssetsPlugin = require("optimize-css-assets-webpack-plugin");
 const safePostCssParser = require("postcss-safe-parser");
 const TerserPlugin = require("terser-webpack-plugin");
 const webpack = require("webpack");
-const ESLintPlugin = require('eslint-webpack-plugin');
+const ESLintPlugin = require("eslint-webpack-plugin");
 
 // Load aliases from config and resolve their full path
 let aliases = {};
@@ -187,6 +188,8 @@ var webpackConfig = {
     }),
     // Removes the dist folder before each run.
     new CleanWebpackPlugin({
+      dry: false,
+      verbose: false,
       dangerouslyAllowCleanPatternsOutsideProject: true,
     }),
     // Automatically inject jquery

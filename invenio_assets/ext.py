@@ -10,7 +10,6 @@
 
 from functools import partial
 
-import pkg_resources
 from flask_collect import Collect
 from flask_webpackext import FlaskWebpackExt
 
