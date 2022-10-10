@@ -8,13 +8,7 @@
 
 """Click command-line interface for assets and collect."""
 
-import json
-import os
-import warnings
-from functools import partial
-
 import click
-from flask import current_app
 from flask.cli import with_appcontext
 
 from .proxies import current_assets
