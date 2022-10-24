@@ -8,6 +8,10 @@
 Changes
 =======
 
+Version 2.0.0 (released 2022-10-24)
+
+* upgrade dependencies to node 18 compliance
+
 Version 1.3.1 (released 2022-09-01)
 
 * Upgrade eslint dependencies
