@@ -1,23 +1,22 @@
 /*
  * This file is part of Invenio.
  * Copyright (C) 2017-2018 CERN.
- * Copyright (C) 2022 Graz University of Technology.
+ * Copyright (C) 2022-2023 Graz University of Technology.
+ * Copyright (C) 2023      TU Wien.
  *
  * Invenio is free software; you can redistribute it and/or modify it
  * under the terms of the MIT License; see LICENSE file for more details.
  */
 
-const fs = require("fs");
-const path = require("path");
-const { CleanWebpackPlugin } = require("clean-webpack-plugin");
-const config = require("./config");
 const BundleTracker = require("webpack-bundle-tracker");
-const MiniCssExtractPlugin = require("mini-css-extract-plugin");
-const OptimizeCSSAssetsPlugin = require("optimize-css-assets-webpack-plugin");
-const safePostCssParser = require("postcss-safe-parser");
-const TerserPlugin = require("terser-webpack-plugin");
-const webpack = require("webpack");
+const { CleanWebpackPlugin } = require("clean-webpack-plugin");
+const CssMinimizerPlugin = require("css-minimizer-webpack-plugin");
 const ESLintPlugin = require("eslint-webpack-plugin");
+const MiniCssExtractPlugin = require("mini-css-extract-plugin");
+const TerserPlugin = require("terser-webpack-plugin");
+const config = require("./config");
+const path = require("path");
+const webpack = require("webpack");
 
 // Load aliases from config and resolve their full path
 let aliases = {};
@@ -34,10 +33,26 @@ var webpackConfig = {
   mode: process.env.NODE_ENV,
   entry: config.entry,
   context: config.build.context,
+  stats: {
+    warnings: true,
+    errors: true,
+    errorsCount: true,
+    errorStack: true,
+    errorDetails: true,
+    children: true,
+  },
   resolve: {
     extensions: ["*", ".js", ".jsx"],
     symlinks: false,
     alias: aliases,
+    fallback: {
+      zlib: require.resolve("browserify-zlib"),
+      stream: require.resolve("stream-browserify"),
+      https: require.resolve("https-browserify"),
+      http: require.resolve("stream-http"),
+      url: false,
+      assert: false,
+    },
   },
   output: {
     path: config.build.assetsPath,
@@ -50,8 +65,8 @@ var webpackConfig = {
       new TerserPlugin({
         terserOptions: {
           parse: {
-            // we want terser to parse ecma 8 code. However, we don't want it
-            // to apply any minfication steps that turns valid ecma 5 code
+            // We want terser to parse ecma 8 code. However, we don't want it
+            // to apply any minification steps that turns valid ecma 5 code
             // into invalid ecma 5 code. This is why the 'compress' and 'output'
             // sections only apply transformations that are ecma 5 safe
             // https://github.com/facebook/create-react-app/pull/4234
@@ -82,17 +97,8 @@ var webpackConfig = {
             ascii_only: true,
           },
         },
-        // Use multi-process parallel running to improve the build speed
-        // Default number of concurrent runs: os.cpus().length - 1
-        parallel: true,
-        cache: true,
       }),
-      new OptimizeCSSAssetsPlugin({
-        cssProcessorOptions: {
-          parser: safePostCssParser,
-          map: false,
-        },
-      }),
+      new CssMinimizerPlugin(),
     ],
     splitChunks: {
       chunks: "all",
@@ -142,40 +148,54 @@ var webpackConfig = {
       },
       // Inline images smaller than 10k
       {
-        test: /\.(png|cur|jpe?g|gif|svg)(\?.*)?$/,
-        use: [
-          {
-            loader: require.resolve("url-loader"),
-            options: {
-              limit: 10000,
-              name: "img/[name].[hash:7].[ext]",
-            },
+        test: /\.(png|jpe?g|gif|svg)(\?.*)?$/,
+        type: "asset/inline",
+        parser: {
+          dataUrlCondition: {
+            maxSize: 10 * 1024, // 10kb
           },
-        ],
+        },
+      },
+      // no mimetype for ".cur" in mimetype database, specify it with `generator`
+      {
+        test: /\.(cur)(\?.*)?$/,
+        type: "asset/inline",
+        generator: {
+          dataUrl: {
+            encoding: "base64",
+            mimetype: "image/x-icon",
+          },
+        },
+        parser: {
+          dataUrlCondition: {
+            maxSize: 10 * 1024, // 10kb
+          },
+        },
       },
       // Inline webfonts smaller than 10k
       {
         test: /\.(woff2?|eot|ttf|otf)(\?.*)?$/,
-        use: [
-          {
-            loader: require.resolve("file-loader"),
-            options: {
-              limit: 10000,
-              name: "fonts/[name].[hash:7].[ext]",
-            },
+        type: "asset/resource",
+        generator: {
+          filename: "fonts/[name].[contenthash:7].[ext]",
+        },
+        parser: {
+          dataUrlCondition: {
+            maxSize: 10 * 1024, // 10kb
           },
-        ],
+        },
       },
     ],
   },
   devtool:
     process.env.NODE_ENV === "production" ? "source-map" : "inline-source-map",
   plugins: [
-    new ESLintPlugin({emitWarning: true,
-              quiet: true,
-              formatter: require("eslint-friendly-formatter"),
-              eslintPath: require.resolve("eslint")}
-    ),
+    new ESLintPlugin({
+      emitWarning: true,
+      quiet: true,
+      formatter: require("eslint-friendly-formatter"),
+      eslintPath: require.resolve("eslint"),
+    }),
     // Pragmas
     new webpack.DefinePlugin({
       "process.env": process.env.NODE_ENV,
@@ -203,16 +223,22 @@ var webpackConfig = {
     // Write manifest file which Python will read.
     new BundleTracker({
       path: config.build.assetsPath,
-      filename: path.join(config.build.assetsPath, "manifest.json") ,
+      filename: path.join(config.build.assetsPath, "manifest.json"),
       publicPath: config.build.assetsURL,
     }),
   ],
   performance: { hints: false },
+  snapshot: {
+    managedPaths: [],
+  },
+  watchOptions: {
+    followSymlinks: true,
+  },
 };
 
 if (process.env.npm_config_report) {
-  var BundleAnalyzerPlugin = require("webpack-bundle-analyzer")
-    .BundleAnalyzerPlugin;
+  var BundleAnalyzerPlugin =
+    require("webpack-bundle-analyzer").BundleAnalyzerPlugin;
   webpackConfig.plugins.push(new BundleAnalyzerPlugin());
 }
 
