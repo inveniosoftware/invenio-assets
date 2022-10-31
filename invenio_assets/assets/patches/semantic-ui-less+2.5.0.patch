@@ -1,0 +1,102 @@
+diff --git a/node_modules/semantic-ui-less/themes/default/collections/message.variables b/node_modules/semantic-ui-less/themes/default/collections/message.variables
+index 10d7f98..a596ffa 100644
+--- a/node_modules/semantic-ui-less/themes/default/collections/message.variables
++++ b/node_modules/semantic-ui-less/themes/default/collections/message.variables
+@@ -36,7 +36,7 @@
+ @headerFontWeight: @bold;
+ @headerDisplay: block;
+ @headerDistance: 0rem;
+-@headerMargin: -@headerLineHeightOffset 0em @headerDistance 0em;
++@headerMargin: (-@headerLineHeightOffset) 0em @headerDistance 0em;
+ @headerParagraphDistance: 0.25em;
+
+ /* Paragraph */
+diff --git a/node_modules/semantic-ui-less/themes/default/elements/header.variables b/node_modules/semantic-ui-less/themes/default/elements/header.variables
+index 885715b..58699eb 100644
+--- a/node_modules/semantic-ui-less/themes/default/elements/header.variables
++++ b/node_modules/semantic-ui-less/themes/default/elements/header.variables
+@@ -16,7 +16,7 @@
+ @bottomMargin: @headerBottomMargin;
+ @margin: @topMargin 0em @bottomMargin;
+
+-@firstMargin: -@lineHeightOffset;
++@firstMargin: (-@lineHeightOffset);
+ @lastMargin: 0em;
+ @horizontalPadding: 0em;
+ @verticalPadding: 0em;
+diff --git a/node_modules/semantic-ui-less/themes/default/globals/site.variables b/node_modules/semantic-ui-less/themes/default/globals/site.variables
+index f297aef..39f2555 100755
+--- a/node_modules/semantic-ui-less/themes/default/globals/site.variables
++++ b/node_modules/semantic-ui-less/themes/default/globals/site.variables
+@@ -390,34 +390,34 @@
+   This rounds @size values to the closest pixel then expresses that value in (r)em.
+   This ensures all size values round to exact pixels
+ */
+-@mini            : unit( round(@miniSize * @emSize) / @emSize, rem);
+-@tiny            : unit( round(@tinySize * @emSize) / @emSize, rem);
+-@small           : unit( round(@smallSize * @emSize) / @emSize, rem);
+-@medium          : unit( round(@mediumSize * @emSize) / @emSize, rem);
+-@large           : unit( round(@largeSize * @emSize) / @emSize, rem);
+-@big             : unit( round(@bigSize * @emSize) / @emSize, rem);
+-@huge            : unit( round(@hugeSize * @emSize) / @emSize, rem);
+-@massive         : unit( round(@massiveSize * @emSize) / @emSize, rem);
++@mini            : unit( (round(@miniSize * @emSize) / @emSize), rem);
++@tiny            : unit( (round(@tinySize * @emSize) / @emSize), rem);
++@small           : unit( (round(@smallSize * @emSize) / @emSize), rem);
++@medium          : unit( (round(@mediumSize * @emSize) / @emSize), rem);
++@large           : unit( (round(@largeSize * @emSize) / @emSize), rem);
++@big             : unit( (round(@bigSize * @emSize) / @emSize), rem);
++@huge            : unit( (round(@hugeSize * @emSize) / @emSize), rem);
++@massive         : unit( (round(@massiveSize * @emSize) / @emSize), rem);
+
+ /* em */
+-@relativeMini    : unit( round(@miniSize * @emSize) / @emSize, em);
+-@relativeTiny    : unit( round(@tinySize * @emSize) / @emSize, em);
+-@relativeSmall   : unit( round(@smallSize * @emSize) / @emSize, em);
+-@relativeMedium  : unit( round(@mediumSize * @emSize) / @emSize, em);
+-@relativeLarge   : unit( round(@largeSize * @emSize) / @emSize, em);
+-@relativeBig     : unit( round(@bigSize * @emSize) / @emSize, em);
+-@relativeHuge    : unit( round(@hugeSize * @emSize) / @emSize, em);
+-@relativeMassive : unit( round(@massiveSize * @emSize) / @emSize, em);
++@relativeMini    : unit( (round(@miniSize * @emSize) / @emSize), em);
++@relativeTiny    : unit( (round(@tinySize * @emSize) / @emSize), em);
++@relativeSmall   : unit( (round(@smallSize * @emSize) / @emSize), em);
++@relativeMedium  : unit( (round(@mediumSize * @emSize) / @emSize), em);
++@relativeLarge   : unit( (round(@largeSize * @emSize) / @emSize), em);
++@relativeBig     : unit( (round(@bigSize * @emSize) / @emSize), em);
++@relativeHuge    : unit( (round(@hugeSize * @emSize) / @emSize), em);
++@relativeMassive : unit( (round(@massiveSize * @emSize) / @emSize), em);
+
+ /* rem */
+-@absoluteMini    : unit( round(@miniSize * @emSize) / @emSize, rem);
+-@absoluteTiny    : unit( round(@tinySize * @emSize) / @emSize, rem);
+-@absoluteSmall   : unit( round(@smallSize * @emSize) / @emSize, rem);
+-@absoluteMedium  : unit( round(@mediumSize * @emSize) / @emSize, rem);
+-@absoluteLarge   : unit( round(@largeSize * @emSize) / @emSize, rem);
+-@absoluteBig     : unit( round(@bigSize * @emSize) / @emSize, rem);
+-@absoluteHuge    : unit( round(@hugeSize * @emSize) / @emSize, rem);
+-@absoluteMassive : unit( round(@massiveSize * @emSize) / @emSize, rem);
++@absoluteMini    : unit( (round(@miniSize * @emSize) / @emSize), rem);
++@absoluteTiny    : unit( (round(@tinySize * @emSize) / @emSize), rem);
++@absoluteSmall   : unit( (round(@smallSize * @emSize) / @emSize), rem);
++@absoluteMedium  : unit( (round(@mediumSize * @emSize) / @emSize), rem);
++@absoluteLarge   : unit( (round(@largeSize * @emSize) / @emSize), rem);
++@absoluteBig     : unit( (round(@bigSize * @emSize) / @emSize), rem);
++@absoluteHuge    : unit( (round(@hugeSize * @emSize) / @emSize), rem);
++@absoluteMassive : unit( (round(@massiveSize * @emSize) / @emSize), rem);
+
+ /*-------------------
+        Icons
+diff --git a/node_modules/semantic-ui-less/themes/default/modules/search.variables b/node_modules/semantic-ui-less/themes/default/modules/search.variables
+index 362bc13..e6668d5 100644
+--- a/node_modules/semantic-ui-less/themes/default/modules/search.variables
++++ b/node_modules/semantic-ui-less/themes/default/modules/search.variables
+@@ -51,7 +51,7 @@
+
+ /* Result Content */
+ @resultTitleFont: @headerFont;
+-@resultTitleMargin: -@headerLineHeightOffset 0em 0em;
++@resultTitleMargin: (-@headerLineHeightOffset) 0em 0em;
+ @resultTitleFontWeight: @bold;
+ @resultTitleFontSize: @relativeMedium;
+ @resultTitleColor: @darkTextColor;
