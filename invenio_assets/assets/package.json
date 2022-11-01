@@ -22,6 +22,7 @@
     "@babel/register": "^7.18.0",
     "@babel/runtime": "^7.18.0",
     "@inveniosoftware/eslint-config-invenio": "^2.0.0",
+    "@mapbox/node-pre-gyp": "^1.0.0",
     "autoprefixer": "^10.4.0",
     "babel-loader": "^9.0.0",
     "chalk": "^5.1.0",
