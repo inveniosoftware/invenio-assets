@@ -32,10 +32,21 @@ var webpackConfig = {
   mode: process.env.NODE_ENV,
   entry: config.entry,
   context: config.build.context,
+  stats: {
+    errorDetails: true,
+  },
   resolve: {
     extensions: ["*", ".js", ".jsx"],
     symlinks: false,
     alias: aliases,
+    fallback: {
+      zlib: require.resolve("browserify-zlib"),
+      stream: require.resolve("stream-browserify"),
+      https: require.resolve("https-browserify"),
+      http: require.resolve("stream-http"),
+      url: false,
+      assert: false,
+    },
   },
   output: {
     path: config.build.assetsPath,

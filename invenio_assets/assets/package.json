@@ -8,7 +8,13 @@
     "start": "NODE_PRESERVE_SYMLINKS=1 NODE_ENV=development webpack --watch --progress --config ./build/webpack.config.js",
     "build": "NODE_PRESERVE_SYMLINKS=1 NODE_ENV=production webpack --config ./build/webpack.config.js"
   },
-  "dependencies": {},
+  "dependencies": {
+    "browserify-zlib": "^0.2.0",
+    "https-browserify": "^1.0.0",
+    "stream-browserify": "^3.0.0",
+    "stream-http": "^3.2.0",
+    "patch-package": "^6.5.0"
+  },
   "@comment devDependencies": [
     "less: cannot upgrade to v4 until <https://github.com/Semantic-Org/Semantic-UI-LESS/pull/76> is merged and released."
   ],
