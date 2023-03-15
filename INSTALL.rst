@@ -22,12 +22,12 @@ and `Flask-Collect <https://flask-collect.readthedocs.io/en/latest/>`_.
 
 By choosing to use Flask-Assets, you will also have many filters which depend
 on existing command line tools to be installed such as RequireJS, UglifyJS,
-Node-SASS and CleanCSS. These tools are most easily installed with
+SASS and CleanCSS. These tools are most easily installed with
 `NPM <https://nodejs.org/en/download/>`_:
 
 .. code-block:: console
 
     $ npm update
-    $ npm install -g node-sass clean-css clean-css-cli uglify-js \
+    $ npm install -g sass clean-css clean-css-cli uglify-js \
         requirejs
 
