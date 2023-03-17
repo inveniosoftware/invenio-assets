@@ -8,6 +8,10 @@
 Changes
 =======
 
+Version 1.1.6 (released 2023-03-17)
+
+- Backport replacement of node-sass with sass for ARM-based CPUs.
+
 Version 1.1.5 (released 2020-04-28)
 
 * Webpack now uses by default in debug/development mode folder-level symlinking
