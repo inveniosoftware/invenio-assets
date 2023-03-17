@@ -8,6 +8,10 @@
 Changes
 =======
 
+Version 1.2.8 (released 2023-03-17)
+
+- Replaces node-sass with sass to support ARM-based CPUs.
+
 Version 1.2.7 (released 2021-10-18)
 
 - Changed Flask-Collect (unmaintained since 2016) to Flask-Collect-Invenio and
