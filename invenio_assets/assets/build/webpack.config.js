@@ -191,6 +191,7 @@ var webpackConfig = {
       dry: false,
       verbose: false,
       dangerouslyAllowCleanPatternsOutsideProject: true,
+      cleanStaleWebpackAssets: process.env.NODE_ENV === "production",   // keep stale assets in dev because of OS issues
     }),
     // Automatically inject jquery
     new webpack.ProvidePlugin({
