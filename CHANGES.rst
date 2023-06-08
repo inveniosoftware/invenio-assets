@@ -8,6 +8,12 @@
 Changes
 =======
 
+Version 3.0.0 (released 2023-06-08)
+
+* upgrade to webpack 5
+* upgrade js dependencies
+* upgrade webpack plugins
+
 Version 2.0.0 (released 2022-10-24)
 
 * upgrade dependencies to node 18 compliance
