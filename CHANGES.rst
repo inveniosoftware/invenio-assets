@@ -8,6 +8,10 @@
 Changes
 =======
 
+Version 1.3.2 (released 2023-07-25)
+
+- remove eslint dependencies that are coming already from eslint-config-invenio
+
 Version 1.3.1 (released 2022-09-01)
 
 * Upgrade eslint dependencies
