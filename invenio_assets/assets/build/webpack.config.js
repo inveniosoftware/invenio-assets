@@ -12,6 +12,7 @@ const BundleTracker = require("webpack-bundle-tracker");
 const { CleanWebpackPlugin } = require("clean-webpack-plugin");
 const CssMinimizerPlugin = require("css-minimizer-webpack-plugin");
 const ESLintPlugin = require("eslint-webpack-plugin");
+const CopyWebpackPlugin = require("copy-webpack-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const TerserPlugin = require("terser-webpack-plugin");
 const config = require("./config");
@@ -212,6 +213,23 @@ var webpackConfig = {
       verbose: false,
       dangerouslyAllowCleanPatternsOutsideProject: true,
       cleanStaleWebpackAssets: process.env.NODE_ENV === "production",   // keep stale assets in dev because of OS issues
+    }),
+    // Copying relevant CSS files as TinyMCE tries to import css files from the dist/js folder of static files
+    new CopyWebpackPlugin({
+      patterns: [
+        {
+          from: path.resolve(__dirname, '../node_modules/tinymce/skins/content/default/content.css'),
+          to: path.resolve(config.build.assetsPath, 'js/skins/content/default'),
+        },
+        {
+          from: path.resolve(__dirname, '../node_modules/tinymce/skins/ui/oxide/skin.min.css'),
+          to: path.resolve(config.build.assetsPath, 'js/skins/ui/oxide'),
+        },
+        {
+          from: path.resolve(__dirname, '../node_modules/tinymce/skins/ui/oxide/content.min.css'),
+          to: path.resolve(config.build.assetsPath, 'js/skins/ui/oxide'),
+        },
+      ],
     }),
     // Automatically inject jquery
     new webpack.ProvidePlugin({

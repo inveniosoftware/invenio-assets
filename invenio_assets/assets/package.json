@@ -63,7 +63,8 @@
     "webpack-hot-middleware": "^2.24.0",
     "webpack-livereload-plugin": "^3.0.0",
     "webpack-merge": "^5.1.0",
-    "webpack-yam-plugin": "^1.0.0"
+    "webpack-yam-plugin": "^1.0.0",
+    "copy-webpack-plugin": "^11.0.0"
   },
   "engines": {
     "node": ">=18",
