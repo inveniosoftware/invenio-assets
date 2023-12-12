@@ -8,6 +8,10 @@
 Changes
 =======
 
+Version 3.0.1 (released 2023-12-12)
+
+* replace ckeditor with tinymce due to license issue
+
 Version 3.0.0 (released 2023-06-08)
 
 * upgrade to webpack 5
