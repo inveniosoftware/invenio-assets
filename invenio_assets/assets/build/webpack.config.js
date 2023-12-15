@@ -214,9 +214,13 @@ var webpackConfig = {
       dangerouslyAllowCleanPatternsOutsideProject: true,
       cleanStaleWebpackAssets: process.env.NODE_ENV === "production",   // keep stale assets in dev because of OS issues
     }),
-    // Copying relevant CSS files as TinyMCE tries to import css files from the dist/js folder of static files
+    // Copying relevant CSS files as TinyMCE tries to import css files from the dist/js folder of static files   
     new CopyWebpackPlugin({
       patterns: [
+        {
+          from: path.resolve(__dirname, '../node_modules/@wiris/mathtype-tinymce6/plugin.min.js'),
+          to: path.resolve(config.build.assetsPath, 'js/mathtype-tinymce6/plugin.min.js'),
+        },
         {
           from: path.resolve(__dirname, '../node_modules/tinymce/skins/content/default/content.css'),
           to: path.resolve(config.build.assetsPath, 'js/skins/content/default'),
