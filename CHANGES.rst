@@ -8,6 +8,10 @@
 Changes
 =======
 
+Version 3.0.2 (released 2024-01-11)
+
+* add tinymce to dependencies list
+
 Version 3.0.1 (released 2023-12-12)
 
 * replace ckeditor with tinymce due to license issue
