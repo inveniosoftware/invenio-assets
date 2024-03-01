@@ -8,6 +8,10 @@
 Changes
 =======
 
+Version 1.2.9 (released 2024-03-01)
+
+- Pin Invenio upper dependencies in setup
+
 Version 1.2.8 (released 2023-03-17)
 
 - Replaces node-sass with sass to support ARM-based CPUs.
