@@ -1,6 +1,6 @@
 {
   "name": "invenio-assets",
-  "version": "1.0.0",
+  "version": "1.3.3",
   "description": "Invenio assets",
   "author": "CERN <info@inveniosoftware.org>",
   "private": true,

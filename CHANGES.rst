@@ -8,6 +8,10 @@
 Changes
 =======
 
+Version 1.3.3 (released 2024-03-01)
+
+- Pin Invenio upper dependencies in setup
+
 Version 1.3.2 (released 2023-07-25)
 
 - remove eslint dependencies that are coming already from eslint-config-invenio
