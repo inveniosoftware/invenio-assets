@@ -8,6 +8,10 @@
 Changes
 =======
 
+Version 2.0.1 (released 2024-03-01)
+
+* Pin Invenio upper dependencies in setup
+
 Version 2.0.0 (released 2022-10-24)
 
 * upgrade dependencies to node 18 compliance
