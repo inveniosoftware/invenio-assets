@@ -8,6 +8,12 @@
 Changes
 =======
 
+Version 3.0.3 (released 2024-03-04)
+
+* remove `node-semver`
+* add `pywebpack` as a direct dependency, as the list of JS deps versions
+  depends on the merging algorithm provided by pywebpack
+
 Version 3.0.2 (released 2024-01-11)
 
 * add tinymce to dependencies list
