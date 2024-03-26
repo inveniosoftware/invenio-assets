@@ -3,13 +3,13 @@
  * Copyright (C) 2017-2018 CERN.
  * Copyright (C) 2022-2023 Graz University of Technology.
  * Copyright (C) 2023      TU Wien.
+ * Copyright (C) 2024      KTH Royal Institute of Technology.
  *
  * Invenio is free software; you can redistribute it and/or modify it
  * under the terms of the MIT License; see LICENSE file for more details.
  */
 
 const BundleTracker = require("webpack-bundle-tracker");
-const { CleanWebpackPlugin } = require("clean-webpack-plugin");
 const CssMinimizerPlugin = require("css-minimizer-webpack-plugin");
 const ESLintPlugin = require("eslint-webpack-plugin");
 const CopyWebpackPlugin = require("copy-webpack-plugin");
@@ -18,7 +18,7 @@ const TerserPlugin = require("terser-webpack-plugin");
 const config = require("./config");
 const path = require("path");
 const webpack = require("webpack");
-
+const devMode = process.env.NODE_ENV !== "production";
 // Load aliases from config and resolve their full path
 let aliases = {};
 if (config.aliases) {
@@ -60,42 +60,17 @@ var webpackConfig = {
     filename: "js/[name].[chunkhash].js",
     chunkFilename: "js/[id].[chunkhash].js",
     publicPath: config.build.assetsURL,
+    clean: true,
   },
   optimization: {
+    minimize: true,
     minimizer: [
       new TerserPlugin({
         terserOptions: {
-          parse: {
-            // We want terser to parse ecma 8 code. However, we don't want it
-            // to apply any minification steps that turns valid ecma 5 code
-            // into invalid ecma 5 code. This is why the 'compress' and 'output'
-            // sections only apply transformations that are ecma 5 safe
-            // https://github.com/facebook/create-react-app/pull/4234
-            ecma: 8,
-          },
-          compress: {
-            ecma: 5,
-            warnings: false,
-            // Disabled because of an issue with Uglify breaking seemingly valid code:
-            // https://github.com/facebook/create-react-app/issues/2376
-            // Pending further investigation:
-            // https://github.com/mishoo/UglifyJS2/issues/2011
-            comparisons: false,
-            // Disabled because of an issue with Terser breaking valid code:
-            // https://github.com/facebook/create-react-app/issues/5250
-            // Pending further investigation:
-            // https://github.com/terser-js/terser/issues/120
-            inline: 2,
-          },
-          mangle: {
-            safari10: true,
-          },
+          compress: true,
+          mangle: true,
           output: {
-            ecma: 5,
             comments: false,
-            // Turned on because emoji and regex is not minified properly using default
-            // https://github.com/facebook/create-react-app/issues/2488
-            ascii_only: true,
           },
         },
       }),
@@ -188,8 +163,7 @@ var webpackConfig = {
       },
     ],
   },
-  devtool:
-    process.env.NODE_ENV === "production" ? "source-map" : "inline-source-map",
+  devtool: devMode ? "inline-source-map" : "source-map",
   plugins: [
     new ESLintPlugin({
       emitWarning: true,
@@ -206,13 +180,6 @@ var webpackConfig = {
       // both options are optional
       filename: "css/[name].[contenthash].css",
       chunkFilename: "css/[name].[contenthash].css",
-    }),
-    // Removes the dist folder before each run.
-    new CleanWebpackPlugin({
-      dry: false,
-      verbose: false,
-      dangerouslyAllowCleanPatternsOutsideProject: true,
-      cleanStaleWebpackAssets: process.env.NODE_ENV === "production",   // keep stale assets in dev because of OS issues
     }),
     // Copying relevant CSS files as TinyMCE tries to import css files from the dist/js folder of static files
     new CopyWebpackPlugin({
@@ -249,9 +216,11 @@ var webpackConfig = {
   snapshot: {
     managedPaths: [],
   },
+  watch: devMode,
   watchOptions: {
     followSymlinks: true,
-  },
+    },
+  cache: false,
 };
 
 if (process.env.npm_config_report) {
@@ -260,9 +229,5 @@ if (process.env.npm_config_report) {
   webpackConfig.plugins.push(new BundleAnalyzerPlugin());
 }
 
-if (process.env.NODE_ENV === "development") {
-  const LiveReloadPlugin = require("webpack-livereload-plugin");
-  webpackConfig.plugins.push(new LiveReloadPlugin());
-}
 
 module.exports = webpackConfig;
