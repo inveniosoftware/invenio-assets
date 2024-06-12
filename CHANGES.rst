@@ -8,6 +8,10 @@
 Changes
 =======
 
+Version 1.2.10 (released 2024-06-12)
+
+- Bump dependencies in setup
+
 Version 1.2.9 (released 2024-03-01)
 
 - Pin Invenio upper dependencies in setup
