@@ -11,7 +11,7 @@
 // const BundleTracker = require("webpack-bundle-tracker");
 const { CleanWebpackPlugin } = require("clean-webpack-plugin");
 const CssMinimizerPlugin = require("css-minimizer-webpack-plugin");
-// const ESLintPlugin = require("eslint-webpack-plugin");
+const ESLintPlugin = require("eslint-webpack-plugin");
 const TerserPlugin = require("terser-webpack-plugin");
 const config = require("./config");
 const path = require("path");
@@ -179,27 +179,49 @@ var webpackConfig = {
       //   ],
       // },
       {
-        test: /\.(js|jsx)$/,
-        exclude: [/node_modules/, /@babel(?:\/|\\{1,2})runtime/],
+        test: /\.(j|t)s$/,
+        exclude: [/[\\/]node_modules[\\/]/],
         loader: 'builtin:swc-loader',
         options: {
           jsc: {
             parser: {
-              syntax: 'ecmascript',
-              jsx: true,
+              syntax: 'typescript',
             },
             externalHelpers: true,
             transform: {
               react: {
+                runtime: 'automatic',
                 development: !prod,
-                useBuiltins: true,
-                // runtime: 'automatic',
-                // throwIfNamespace: true,
+                refresh: !prod,
               },
             },
           },
           env: {
             targets: 'Chrome >= 48',
+          },
+        },
+      },
+      {
+        test: /\.(j|t)sx$/,
+        loader: 'builtin:swc-loader',
+        exclude: [/[\\/]node_modules[\\/]/],
+        options: {
+          jsc: {
+            parser: {
+              syntax: 'typescript',
+              tsx: true,
+            },
+            transform: {
+              react: {
+                runtime: 'automatic',
+                development: !prod,
+                refresh: !prod,
+              },
+            },
+            externalHelpers: true,
+          },
+          env: {
+            targets: 'Chrome >= 48', // browser compatibility
           },
         },
       },
@@ -258,13 +280,12 @@ var webpackConfig = {
   devtool:
     process.env.NODE_ENV === "production" ? "source-map" : "inline-source-map",
   plugins: [
-    // RSpack compat
-    // new ESLintPlugin({
-    //   emitWarning: true,
-    //   quiet: true,
-    //   formatter: require("eslint-friendly-formatter"),
-    //   eslintPath: require.resolve("eslint"),
-    // }),
+    new ESLintPlugin({
+      emitWarning: true,
+      quiet: true,
+      formatter: require("eslint-friendly-formatter"),
+      eslintPath: require.resolve("eslint"),
+    }),
     // Pragmas
     new webpack.DefinePlugin({
       "process.env": process.env.NODE_ENV,
