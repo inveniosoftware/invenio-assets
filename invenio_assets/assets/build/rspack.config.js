@@ -11,7 +11,7 @@
 // const BundleTracker = require("webpack-bundle-tracker");
 const { CleanWebpackPlugin } = require("clean-webpack-plugin");
 const CssMinimizerPlugin = require("css-minimizer-webpack-plugin");
-// const ESLintPlugin = require("eslint-webpack-plugin");
+const ESLintPlugin = require("eslint-webpack-plugin");
 const TerserPlugin = require("terser-webpack-plugin");
 const config = require("./config");
 const path = require("path");
@@ -37,21 +37,7 @@ if (config.aliases) {
   );
 }
 
-// Create copy patterns from config
-let copyPatterns = [];
-if (config.copy) {
-  for (copy of config.copy) {
-    const copyPattern = {
-      from: path.resolve(__dirname, copy.from),
-      to: path.resolve(__dirname, copy.to),
-    };
-
-    copyPatterns.push(copyPattern);
-  }
-}
-
 const prod = process.env.NODE_ENV === "production";
-
 
 var webpackConfig = {
   mode: process.env.NODE_ENV,
@@ -193,27 +179,49 @@ var webpackConfig = {
       //   ],
       // },
       {
-        test: /\.(js|jsx)$/,
-        exclude: [/node_modules/, /@babel(?:\/|\\{1,2})runtime/],
+        test: /\.(j|t)s$/,
+        exclude: [/[\\/]node_modules[\\/]/],
         loader: 'builtin:swc-loader',
         options: {
           jsc: {
             parser: {
-              syntax: 'ecmascript',
-              jsx: true,
+              syntax: 'typescript',
             },
             externalHelpers: true,
             transform: {
               react: {
+                runtime: 'automatic',
                 development: !prod,
-                useBuiltins: true,
-                // runtime: 'automatic',
-                // throwIfNamespace: true,
+                refresh: !prod,
               },
             },
           },
           env: {
             targets: 'Chrome >= 48',
+          },
+        },
+      },
+      {
+        test: /\.(j|t)sx$/,
+        loader: 'builtin:swc-loader',
+        exclude: [/[\\/]node_modules[\\/]/],
+        options: {
+          jsc: {
+            parser: {
+              syntax: 'typescript',
+              tsx: true,
+            },
+            transform: {
+              react: {
+                runtime: 'automatic',
+                development: !prod,
+                refresh: !prod,
+              },
+            },
+            externalHelpers: true,
+          },
+          env: {
+            targets: 'Chrome >= 48', // browser compatibility
           },
         },
       },
@@ -272,13 +280,12 @@ var webpackConfig = {
   devtool:
     process.env.NODE_ENV === "production" ? "source-map" : "inline-source-map",
   plugins: [
-    // RSpack compat
-    // new ESLintPlugin({
-    //   emitWarning: true,
-    //   quiet: true,
-    //   formatter: require("eslint-friendly-formatter"),
-    //   eslintPath: require.resolve("eslint"),
-    // }),
+    new ESLintPlugin({
+      emitWarning: true,
+      quiet: true,
+      formatter: require("eslint-friendly-formatter"),
+      eslintPath: require.resolve("eslint"),
+    }),
     // Pragmas
     new webpack.DefinePlugin({
       "process.env": process.env.NODE_ENV,
@@ -295,6 +302,23 @@ var webpackConfig = {
       verbose: false,
       dangerouslyAllowCleanPatternsOutsideProject: true,
       cleanStaleWebpackAssets: process.env.NODE_ENV === "production",   // keep stale assets in dev because of OS issues
+    }),
+    // Copying relevant CSS files as TinyMCE tries to import css files from the dist/js folder of static files
+    new CopyWebpackPlugin({
+      patterns: [
+        {
+          from: path.resolve(__dirname, '../node_modules/tinymce/skins/content/default/content.css'),
+          to: path.resolve(config.build.assetsPath, 'js/skins/content/default'),
+        },
+        {
+          from: path.resolve(__dirname, '../node_modules/tinymce/skins/ui/oxide/skin.min.css'),
+          to: path.resolve(config.build.assetsPath, 'js/skins/ui/oxide'),
+        },
+        {
+          from: path.resolve(__dirname, '../node_modules/tinymce/skins/ui/oxide/content.min.css'),
+          to: path.resolve(config.build.assetsPath, 'js/skins/ui/oxide'),
+        },
+      ],
     }),
     // Automatically inject jquery
     new webpack.ProvidePlugin({
@@ -318,13 +342,6 @@ var webpackConfig = {
     followSymlinks: true,
   },
 };
-
-// Copying relevant CSS files as e.g. TinyMCE tries to import CSS files from the dist/js folder of static files
-// The copy plugin doesn't like being initialized with an empty list of patterns
-if (copyPatterns.length > 0) {
-  const copyPlugin = new CopyWebpackPlugin({ patterns: copyPatterns });
-  webpackConfig.plugins.push(copyPlugin);
-}
 
 if (process.env.npm_config_report) {
   var BundleAnalyzerPlugin =
