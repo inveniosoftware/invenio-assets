@@ -7,24 +7,16 @@
  * Invenio is free software; you can redistribute it and/or modify it
  * under the terms of the MIT License; see LICENSE file for more details.
  */
+// https://birtles.blog/2024/08/14/lessons-learned-switching-to-rspack/
 
-// const BundleTracker = require("webpack-bundle-tracker");
-const { CleanWebpackPlugin } = require("clean-webpack-plugin");
+const BundleTracker = require("webpack-bundle-tracker");
 const CssMinimizerPlugin = require("css-minimizer-webpack-plugin");
-// const ESLintPlugin = require("eslint-webpack-plugin");
-const TerserPlugin = require("terser-webpack-plugin");
 const config = require("./config");
 const path = require("path");
 
 // Use rspack
 const rspack = require("@rspack/core");
 
-// const webpack = require("webpack");
-const webpack = rspack;
-// const CopyWebpackPlugin = require("copy-webpack-plugin");
-// const MiniCssExtractPlugin = require("mini-css-extract-plugin");
-const MiniCssExtractPlugin = rspack.CssExtractRspackPlugin
-const CopyWebpackPlugin = rspack.CopyRspackPlugin
 
 // Load aliases from config and resolve their full path
 let aliases = {};
@@ -58,12 +50,13 @@ var webpackConfig = {
   entry: config.entry,
   context: config.build.context,
   stats: {
-    warnings: true,
-    errors: true,
-    errorsCount: true,
-    errorStack: true,
-    errorDetails: true,
-    children: true,
+    //preset: 'verbose',
+    // warnings: true,
+    // errors: true,
+    // errorsCount: true,
+    // errorStack: true,
+    // errorDetails: true,
+    // children: true,
   },
   resolve: {
     extensions: ["*", ".js", ".jsx"],
@@ -79,6 +72,7 @@ var webpackConfig = {
     },
   },
   output: {
+    clean: true, // replaces CleanWebpackPlugin
     path: config.build.assetsPath,
     filename: "js/[name].[chunkhash].js",
     chunkFilename: "js/[id].[chunkhash].js",
@@ -114,44 +108,18 @@ var webpackConfig = {
 
       }),
 
-      // Rspack
-      // new TerserPlugin({
-      //   terserOptions: {
-      //     parse: {
-      //       // We want terser to parse ecma 8 code. However, we don't want it
-      //       // to apply any minification steps that turns valid ecma 5 code
-      //       // into invalid ecma 5 code. This is why the 'compress' and 'output'
-      //       // sections only apply transformations that are ecma 5 safe
-      //       // https://github.com/facebook/create-react-app/pull/4234
-      //       ecma: 8,
-      //     },
-      //     compress: {
-      //       ecma: 5,
-      //       warnings: false,
-      //       // Disabled because of an issue with Uglify breaking seemingly valid code:
-      //       // https://github.com/facebook/create-react-app/issues/2376
-      //       // Pending further investigation:
-      //       // https://github.com/mishoo/UglifyJS2/issues/2011
-      //       comparisons: false,
-      //       // Disabled because of an issue with Terser breaking valid code:
-      //       // https://github.com/facebook/create-react-app/issues/5250
-      //       // Pending further investigation:
-      //       // https://github.com/terser-js/terser/issues/120
-      //       inline: 2,
-      //     },
-      //     mangle: {
-      //       safari10: true,
-      //     },
-      //     output: {
-      //       ecma: 5,
-      //       comments: false,
-      //       // Turned on because emoji and regex is not minified properly using default
-      //       // https://github.com/facebook/create-react-app/issues/2488
-      //       ascii_only: true,
-      //     },
+      // would be nice, but not workable at the moment, no idea why
+      //new rspack.LightningCssMinimizerRspackPlugin(
+      //{
+      //   minimizerOptions: {
+      //     targets: [
+      //       'last 2 Chrome versions',
+      //       'Firefox ESR',
+      //       'last 2 Safari versions',
+      //     ],
       //   },
-      // }),
-
+        // }
+      //),
       new CssMinimizerPlugin(),
     ],
     splitChunks: {
@@ -176,22 +144,6 @@ var webpackConfig = {
           },
         ],
       },
-      // {
-      //   test: /\.(js|jsx)$/,
-      //   exclude: [/node_modules/, /@babel(?:\/|\\{1,2})runtime/],
-      //   use: [
-      //     {
-      //       loader: "babel-loader",
-      //       options: {
-      //         presets: ["@babel/preset-env", "@babel/preset-react"],
-      //         plugins: [
-      //           "@babel/plugin-proposal-class-properties",
-      //           "@babel/plugin-transform-runtime",
-      //         ],
-      //       },
-      //     },
-      //   ],
-      // },
       {
         test: /\.(js|jsx)$/,
         exclude: [/node_modules/, /@babel(?:\/|\\{1,2})runtime/],
@@ -217,13 +169,14 @@ var webpackConfig = {
           },
         },
       },
+
       {
         test: /\.(scss|css)$/,
-        use: [MiniCssExtractPlugin.loader, "css-loader", "sass-loader"],
+        use: [rspack.CssExtractRspackPlugin.loader, "css-loader", "sass-loader"],
       },
       {
         test: /\.(less)$/,
-        use: [MiniCssExtractPlugin.loader, "css-loader", "less-loader"],
+        use: [rspack.CssExtractRspackPlugin.loader, "css-loader", "less-loader"],
       },
 
       // Rspack
@@ -280,35 +233,46 @@ var webpackConfig = {
     //   eslintPath: require.resolve("eslint"),
     // }),
     // Pragmas
-    new webpack.DefinePlugin({
+    new rspack.DefinePlugin({
       "process.env": process.env.NODE_ENV,
     }),
-    new MiniCssExtractPlugin({
+    new rspack.CssExtractRspackPlugin({
       // Options similar to the same options in webpackOptions.output
       // both options are optional
       filename: "css/[name].[contenthash].css",
       chunkFilename: "css/[name].[contenthash].css",
     }),
-    // Removes the dist folder before each run.
-    new CleanWebpackPlugin({
-      dry: false,
-      verbose: false,
-      dangerouslyAllowCleanPatternsOutsideProject: true,
-      cleanStaleWebpackAssets: process.env.NODE_ENV === "production",   // keep stale assets in dev because of OS issues
+
+    // Copying relevant CSS files as TinyMCE tries to import css files from the dist/js folder of static files
+    new rspack.CopyRspackPlugin({
+      patterns: [
+        {
+          from: path.resolve(__dirname, '../node_modules/tinymce/skins/content/default/content.css'),
+          to: path.resolve(config.build.assetsPath, 'js/skins/content/default'),
+        },
+        {
+          from: path.resolve(__dirname, '../node_modules/tinymce/skins/ui/oxide/skin.min.css'),
+          to: path.resolve(config.build.assetsPath, 'js/skins/ui/oxide'),
+        },
+        {
+          from: path.resolve(__dirname, '../node_modules/tinymce/skins/ui/oxide/content.min.css'),
+          to: path.resolve(config.build.assetsPath, 'js/skins/ui/oxide'),
+        },
+      ],
     }),
     // Automatically inject jquery
-    new webpack.ProvidePlugin({
+    new rspack.ProvidePlugin({
       jQuery: "jquery",
       $: "jquery",
       jquery: "jquery",
       "window.jQuery": "jquery",
     }),
     // Write manifest file which Python will read.
-    // new BundleTracker({
-    //   path: config.build.assetsPath,
-    //   filename: path.join(config.build.assetsPath, "manifest.json"),
-    //   publicPath: config.build.assetsURL,
-    // }),
+    new BundleTracker({
+      path: config.build.assetsPath,
+      filename: path.join(config.build.assetsPath, "manifest.json"),
+      publicPath: config.build.assetsURL,
+    }),
   ],
   performance: { hints: false },
   // snapshot: {
@@ -317,14 +281,11 @@ var webpackConfig = {
   watchOptions: {
     followSymlinks: true,
   },
+  experiments: {
+    css: false,
+  }
 };
 
-// Copying relevant CSS files as e.g. TinyMCE tries to import CSS files from the dist/js folder of static files
-// The copy plugin doesn't like being initialized with an empty list of patterns
-if (copyPatterns.length > 0) {
-  const copyPlugin = new CopyWebpackPlugin({ patterns: copyPatterns });
-  webpackConfig.plugins.push(copyPlugin);
-}
 
 if (process.env.npm_config_report) {
   var BundleAnalyzerPlugin =
