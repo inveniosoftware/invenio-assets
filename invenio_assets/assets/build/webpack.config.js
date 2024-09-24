@@ -30,6 +30,19 @@ if (config.aliases) {
   );
 }
 
+// Create copy patterns from config
+let copyPatterns = [];
+if (config.copy) {
+  for (copy of config.copy) {
+    const copyPattern = {
+      from: path.resolve(__dirname, copy.from),
+      to: path.resolve(__dirname, copy.to),
+    };
+
+    copyPatterns.push(copyPattern);
+  }
+}
+
 var webpackConfig = {
   mode: process.env.NODE_ENV,
   entry: config.entry,
@@ -214,23 +227,6 @@ var webpackConfig = {
       dangerouslyAllowCleanPatternsOutsideProject: true,
       cleanStaleWebpackAssets: process.env.NODE_ENV === "production",   // keep stale assets in dev because of OS issues
     }),
-    // Copying relevant CSS files as TinyMCE tries to import css files from the dist/js folder of static files
-    new CopyWebpackPlugin({
-      patterns: [
-        {
-          from: path.resolve(__dirname, '../node_modules/tinymce/skins/content/default/content.css'),
-          to: path.resolve(config.build.assetsPath, 'js/skins/content/default'),
-        },
-        {
-          from: path.resolve(__dirname, '../node_modules/tinymce/skins/ui/oxide/skin.min.css'),
-          to: path.resolve(config.build.assetsPath, 'js/skins/ui/oxide'),
-        },
-        {
-          from: path.resolve(__dirname, '../node_modules/tinymce/skins/ui/oxide/content.min.css'),
-          to: path.resolve(config.build.assetsPath, 'js/skins/ui/oxide'),
-        },
-      ],
-    }),
     // Automatically inject jquery
     new webpack.ProvidePlugin({
       jQuery: "jquery",
@@ -253,6 +249,13 @@ var webpackConfig = {
     followSymlinks: true,
   },
 };
+
+// Copying relevant CSS files as e.g. TinyMCE tries to import CSS files from the dist/js folder of static files
+// The copy plugin doesn't like being initialized with an empty list of patterns
+if (copyPatterns.length > 0) {
+  const copyPlugin = new CopyWebpackPlugin({ patterns: copyPatterns });
+  webpackConfig.plugins.push(copyPlugin);
+}
 
 if (process.env.npm_config_report) {
   var BundleAnalyzerPlugin =
