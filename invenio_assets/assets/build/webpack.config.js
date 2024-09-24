@@ -10,7 +10,6 @@
 // https://birtles.blog/2024/08/14/lessons-learned-switching-to-rspack/
 
 const BundleTracker = require("webpack-bundle-tracker");
-const CssMinimizerPlugin = require("css-minimizer-webpack-plugin");
 const config = require("./config");
 const path = require("path");
 
@@ -109,18 +108,17 @@ var webpackConfig = {
       }),
 
       // would be nice, but not workable at the moment, no idea why
-      //new rspack.LightningCssMinimizerRspackPlugin(
-      //{
-      //   minimizerOptions: {
-      //     targets: [
-      //       'last 2 Chrome versions',
-      //       'Firefox ESR',
-      //       'last 2 Safari versions',
-      //     ],
-      //   },
-        // }
-      //),
-      new CssMinimizerPlugin(),
+      new rspack.LightningCssMinimizerRspackPlugin(
+      {
+        minimizerOptions: {
+          targets: [
+            'last 2 Chrome versions',
+            'Firefox ESR',
+            'last 2 Safari versions',
+          ],
+        },
+        }
+      ),
     ],
     splitChunks: {
       chunks: "all",
