@@ -68,6 +68,7 @@
     "@inveniosoftware/eslint-config-invenio": "^2.0.0",
     "@rspack/cli": ">1.0.0",
     "@rspack/core": ">1.0.0",
+    "@rspack/dev-server": ">1.0.0",
     "@swc/core": "^1.6.13",
     "@swc/helpers": "^0.5.11",
     "ajv": "^8.12.0",
