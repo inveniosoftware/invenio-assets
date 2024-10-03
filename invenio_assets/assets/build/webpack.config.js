@@ -281,7 +281,11 @@ var webpackConfig = {
   },
   experiments: {
     css: false,
-  }
+  },
+  devServer: {
+    hot: true, // Enable Hot Module Replacement (HMR)
+    liveReload: true, // Enable live reload
+  },
 };
 
 
@@ -289,11 +293,6 @@ if (process.env.npm_config_report) {
   var BundleAnalyzerPlugin =
     require("webpack-bundle-analyzer").BundleAnalyzerPlugin;
   webpackConfig.plugins.push(new BundleAnalyzerPlugin());
-}
-
-if (process.env.NODE_ENV === "development") {
-  const LiveReloadPlugin = require("webpack-livereload-plugin");
-  webpackConfig.plugins.push(new LiveReloadPlugin());
 }
 
 module.exports = webpackConfig;
