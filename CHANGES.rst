@@ -1,12 +1,18 @@
 ..
     This file is part of Invenio.
-    Copyright (C) 2015-2022 CERN.
+    Copyright (C) 2015-2024 CERN.
 
     Invenio is free software; you can redistribute it and/or modify it
     under the terms of the MIT License; see LICENSE file for more details.
 
 Changes
 =======
+
+Version 3.1.0 (released 2024-11-28)
+
+* setup: pin dependencies
+* webpack: use CopyWebpackPlugin to copy assets defined in config.json
+* fix: resolve dependency warning
 
 Version 3.0.3 (released 2024-03-04)
 
