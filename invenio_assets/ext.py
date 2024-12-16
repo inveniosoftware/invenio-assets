@@ -2,6 +2,7 @@
 #
 # This file is part of Invenio.
 # Copyright (C) 2015-2020 CERN.
+# Copyright (C) 2024 Graz University of Technology.
 #
 # Invenio is free software; you can redistribute it and/or modify it
 # under the terms of the MIT License; see LICENSE file for more details.
@@ -11,7 +12,8 @@
 from functools import partial
 
 from flask_collect import Collect
-from flask_webpackext import FlaskWebpackExt
+from flask_webpackext import FlaskWebpackExt, WebpackBundleProject
+from pywebpack import bundles_from_entry_point
 
 from .collect import collect_staticroot_removal
 from .webpack import UniqueJinjaManifestLoader
@@ -39,6 +41,13 @@ class InvenioAssets(object):
         .. versionchanged:: 1.0.0b2
            The *entrypoint* has been renamed to *entry_point_group*.
         """
+        self.project = WebpackBundleProject(
+            "invenio_assets.webpack",
+            project_folder="assets",
+            config_path="build/config.json",
+            bundles=bundles_from_entry_point("invenio_assets.webpack"),
+            app=app,
+        )
         self.init_config(app)
 
         self.collect = Collect(app)
@@ -59,7 +68,7 @@ class InvenioAssets(object):
         )
 
         # Flask-WebpackExt config
-        app.config.setdefault("WEBPACKEXT_PROJECT", "invenio_assets.webpack:project")
+        app.config.setdefault("WEBPACKEXT_PROJECT", self.project)
         app.config.setdefault("WEBPACKEXT_MANIFEST_LOADER", UniqueJinjaManifestLoader)
         if app.debug:  # for development use 2-level deep symlinking
             from pywebpack.storage import LinkStorage

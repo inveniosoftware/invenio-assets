@@ -2,6 +2,7 @@
 #
 # This file is part of Invenio.
 # Copyright (C) 2017-2020 CERN.
+# Copyright (C) 2024 Graz University of Technology.
 #
 # Invenio is free software; you can redistribute it and/or modify it
 # under the terms of the MIT License; see LICENSE file for more details.
@@ -16,13 +17,6 @@ from flask_webpackext import WebpackBundle, WebpackBundleProject
 from flask_webpackext.manifest import JinjaManifest, JinjaManifestLoader
 from markupsafe import Markup
 from pywebpack import ManifestEntry, UnsupportedExtensionError, bundles_from_entry_point
-
-project = WebpackBundleProject(
-    __name__,
-    project_folder="assets",
-    config_path="build/config.json",
-    bundles=bundles_from_entry_point("invenio_assets.webpack"),
-)
 
 
 class WebpackThemeBundle(object):
@@ -50,7 +44,7 @@ class WebpackThemeBundle(object):
 
     @property
     def _active_theme_bundle(self):
-        themes = current_app.config.get("APP_THEME", [])
+        themes = ["semantic-ui"]  # current_app.config.get("APP_THEME", [])
         if not themes:
             return self.themes[self.default]
         for theme in themes:
