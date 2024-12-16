@@ -17,13 +17,6 @@ from flask_webpackext.manifest import JinjaManifest, JinjaManifestLoader
 from markupsafe import Markup
 from pywebpack import ManifestEntry, UnsupportedExtensionError, bundles_from_entry_point
 
-project = WebpackBundleProject(
-    __name__,
-    project_folder="assets",
-    config_path="build/config.json",
-    bundles=bundles_from_entry_point("invenio_assets.webpack"),
-)
-
 
 class WebpackThemeBundle(object):
     """Webpack themed bundle."""
