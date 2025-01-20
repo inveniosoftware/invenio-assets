@@ -13,10 +13,10 @@ import os
 from collections import OrderedDict
 
 from flask import current_app, request
-from flask_webpackext import WebpackBundle, WebpackBundleProject
+from flask_webpackext import WebpackBundle
 from flask_webpackext.manifest import JinjaManifest, JinjaManifestLoader
 from markupsafe import Markup
-from pywebpack import ManifestEntry, UnsupportedExtensionError, bundles_from_entry_point
+from pywebpack import ManifestEntry, UnsupportedExtensionError
 
 
 class WebpackThemeBundle(object):
@@ -34,7 +34,6 @@ class WebpackThemeBundle(object):
             are the keyword arguments passed to the ``WebpackBundle`` class.
 
         """
-
         assert default and default in themes
         self.default = default
         self.themes = {}
