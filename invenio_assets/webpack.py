@@ -17,6 +17,7 @@ from flask_webpackext import WebpackBundle
 from flask_webpackext.manifest import JinjaManifest, JinjaManifestLoader
 from markupsafe import Markup
 from pywebpack import ManifestEntry, UnsupportedExtensionError
+from pywebpack import WebpackBundle as PyWebpackBundle
 
 
 class WebpackThemeBundle(object):
@@ -107,3 +108,58 @@ class UniqueJinjaManifestLoader(JinjaManifestLoader):
         super(UniqueJinjaManifestLoader, self).__init__(
             manifest_cls=manifest_cls, entry_cls=entry_cls
         )
+
+
+class WebpackBuilderBundle:
+    """Webpack builder bundle."""
+
+    webpack = PyWebpackBundle(
+        path=None,
+        scripts={
+            "start": "NODE_PRESERVE_SYMLINKS=1 NODE_ENV=development webpack --watch --config ./build/webpack.config.js",
+            "build": "NODE_PRESERVE_SYMLINKS=1 NODE_ENV=production webpack --config ./build/webpack.config.js",
+        },
+        devDependencies={
+            "clean-webpack-plugin": "^4.0.0",
+            "copy-webpack-plugin": "^11.0.0",
+            "css-minimizer-webpack-plugin": "^4.2.0",
+            "mini-css-extract-plugin": "^2.0.0",
+            "terser-webpack-plugin": "^5.0.0",
+            "webpack": "^5.0.0",
+            "webpack-bundle-analyzer": "^4.0.0",
+            "webpack-bundle-tracker": "^1.0.0",
+            "webpack-cli": "^5.0.0",
+            "webpack-dev-middleware": "^6.0.0",
+            "webpack-hot-middleware": "^2.24.0",
+            "webpack-livereload-plugin": "^3.0.0",
+            "webpack-merge": "^5.1.0",
+            "webpack-yam-plugin": "^1.0.0",
+        },
+    )
+
+    rspack = PyWebpackBundle(
+        path=None,
+        scripts={
+            "start": "NODE_PRESERVE_SYMLINKS=1 NODE_ENV=development rspack --watch --config ./build/rspack.config.js",
+            "build": "NODE_PRESERVE_SYMLINKS=1 NODE_ENV=production rspack --config ./build/rspack.config.js",
+        },
+        devDependencies={
+            "@rspack/cli": ">1.0.0",
+            "@rspack/core": ">1.0.0",
+            "@rspack/dev-server": ">1.0.0",
+            "webpack-bundle-analyzer": "^4.0.0",
+            "webpack-bundle-tracker": "^1.0.0",
+        },
+    )
+
+    def __init__(self, app=None):
+        self.app = app or current_app
+
+    def __getattr__(self, attr):
+        """Get the assets builder by configuration."""
+        builder_cfg = self.app.config.get("ASSETS_BUILDER", "webpack")
+        bundle = getattr(self, builder_cfg)
+        return getattr(bundle, attr)
+
+
+builder_bundle = WebpackBuilderBundle()
