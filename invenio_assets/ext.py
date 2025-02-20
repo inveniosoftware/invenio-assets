@@ -59,7 +59,9 @@ class InvenioAssets(object):
         )
 
         # Flask-WebpackExt config
-        app.config.setdefault("WEBPACKEXT_PROJECT", "invenio_assets.webpack:project")
+        app.config.setdefault(
+            "WEBPACKEXT_PROJECT", "invenio_assets.webpack:webpack_project"
+        )
         app.config.setdefault("WEBPACKEXT_MANIFEST_LOADER", UniqueJinjaManifestLoader)
         if app.debug:  # for development use 2-level deep symlinking
             from pywebpack.storage import LinkStorage
