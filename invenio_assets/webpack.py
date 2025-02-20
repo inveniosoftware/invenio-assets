@@ -2,6 +2,7 @@
 #
 # This file is part of Invenio.
 # Copyright (C) 2017-2020 CERN.
+# Copyright (C) 2024-2025 Graz University of Technology.
 #
 # Invenio is free software; you can redistribute it and/or modify it
 # under the terms of the MIT License; see LICENSE file for more details.
@@ -12,23 +13,17 @@ import os
 from collections import OrderedDict
 
 from flask import current_app, request
-from flask_webpackext import WebpackBundle, WebpackBundleProject
+from flask_webpackext import WebpackBundle
 from flask_webpackext.manifest import JinjaManifest, JinjaManifestLoader
 from markupsafe import Markup
-from pywebpack import ManifestEntry, UnsupportedExtensionError, bundles_from_entry_point
-
-project = WebpackBundleProject(
-    __name__,
-    project_folder="assets",
-    config_path="build/config.json",
-    bundles=bundles_from_entry_point("invenio_assets.webpack"),
-)
+from pywebpack import ManifestEntry, UnsupportedExtensionError
+from pywebpack import WebpackBundle as PyWebpackBundle
 
 
 class WebpackThemeBundle(object):
     """Webpack themed bundle."""
 
-    def __init__(self, import_name, folder, default=None, themes=None):
+    def __init__(self, import_name, folder, default=None, themes=None, app=None):
         """Initialize webpack bundle.
 
         :param import_name: Name of the module where the WebpackBundle class
@@ -43,6 +38,7 @@ class WebpackThemeBundle(object):
         assert default and default in themes
         self.default = default
         self.themes = {}
+        self.app = app or current_app
         for theme, bundle in themes.items():
             self.themes[theme] = WebpackBundle(
                 import_name, os.path.join(folder, theme), **bundle
@@ -50,7 +46,7 @@ class WebpackThemeBundle(object):
 
     @property
     def _active_theme_bundle(self):
-        themes = current_app.config.get("APP_THEME", [])
+        themes = self.app.config.get("APP_THEME", [])
         if not themes:
             return self.themes[self.default]
         for theme in themes:
@@ -112,3 +108,58 @@ class UniqueJinjaManifestLoader(JinjaManifestLoader):
         super(UniqueJinjaManifestLoader, self).__init__(
             manifest_cls=manifest_cls, entry_cls=entry_cls
         )
+
+
+class WebpackBuilderBundle:
+    """Webpack builder bundle."""
+
+    webpack = PyWebpackBundle(
+        path=None,
+        scripts={
+            "start": "NODE_PRESERVE_SYMLINKS=1 NODE_ENV=development webpack --watch --config ./build/webpack.config.js",
+            "build": "NODE_PRESERVE_SYMLINKS=1 NODE_ENV=production webpack --config ./build/webpack.config.js",
+        },
+        devDependencies={
+            "clean-webpack-plugin": "^4.0.0",
+            "copy-webpack-plugin": "^11.0.0",
+            "css-minimizer-webpack-plugin": "^4.2.0",
+            "mini-css-extract-plugin": "^2.0.0",
+            "terser-webpack-plugin": "^5.0.0",
+            "webpack": "^5.0.0",
+            "webpack-bundle-analyzer": "^4.0.0",
+            "webpack-bundle-tracker": "^1.0.0",
+            "webpack-cli": "^5.0.0",
+            "webpack-dev-middleware": "^6.0.0",
+            "webpack-hot-middleware": "^2.24.0",
+            "webpack-livereload-plugin": "^3.0.0",
+            "webpack-merge": "^5.1.0",
+            "webpack-yam-plugin": "^1.0.0",
+        },
+    )
+
+    rspack = PyWebpackBundle(
+        path=None,
+        scripts={
+            "start": "NODE_PRESERVE_SYMLINKS=1 NODE_ENV=development rspack --watch --config ./build/rspack.config.js",
+            "build": "NODE_PRESERVE_SYMLINKS=1 NODE_ENV=production rspack --config ./build/rspack.config.js",
+        },
+        devDependencies={
+            "@rspack/cli": ">1.0.0",
+            "@rspack/core": ">1.0.0",
+            "@rspack/dev-server": ">1.0.0",
+            "webpack-bundle-analyzer": "^4.0.0",
+            "webpack-bundle-tracker": "^1.0.0",
+        },
+    )
+
+    def __init__(self, app=None):
+        self.app = app or current_app
+
+    def __getattr__(self, attr):
+        """Get the assets builder by configuration."""
+        builder_cfg = self.app.config.get("ASSETS_BUILDER", "webpack")
+        bundle = getattr(self, builder_cfg)
+        return getattr(bundle, attr)
+
+
+builder_bundle = WebpackBuilderBundle()
