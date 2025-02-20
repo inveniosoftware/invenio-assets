@@ -2,6 +2,7 @@
 #
 # This file is part of Invenio.
 # Copyright (C) 2017-2020 CERN.
+# Copyright (C) 2024-2025 Graz University of Technology.
 #
 # Invenio is free software; you can redistribute it and/or modify it
 # under the terms of the MIT License; see LICENSE file for more details.
@@ -21,7 +22,7 @@ from pywebpack import ManifestEntry, UnsupportedExtensionError, bundles_from_ent
 class WebpackThemeBundle(object):
     """Webpack themed bundle."""
 
-    def __init__(self, import_name, folder, default=None, themes=None):
+    def __init__(self, import_name, folder, default=None, themes=None, app=None):
         """Initialize webpack bundle.
 
         :param import_name: Name of the module where the WebpackBundle class
@@ -33,9 +34,11 @@ class WebpackThemeBundle(object):
             are the keyword arguments passed to the ``WebpackBundle`` class.
 
         """
+
         assert default and default in themes
         self.default = default
         self.themes = {}
+        self.app = app or current_app
         for theme, bundle in themes.items():
             self.themes[theme] = WebpackBundle(
                 import_name, os.path.join(folder, theme), **bundle
@@ -43,7 +46,7 @@ class WebpackThemeBundle(object):
 
     @property
     def _active_theme_bundle(self):
-        themes = current_app.config.get("APP_THEME", [])
+        themes = self.app.config.get("APP_THEME", [])
         if not themes:
             return self.themes[self.default]
         for theme in themes:
