@@ -14,15 +14,29 @@ from collections import OrderedDict
 from flask import current_app, request
 from flask_webpackext import WebpackBundle, WebpackBundleProject
 from flask_webpackext.manifest import JinjaManifest, JinjaManifestLoader
+from invenio_base.utils import obj_or_import_string
 from markupsafe import Markup
 from pywebpack import ManifestEntry, UnsupportedExtensionError, bundles_from_entry_point
+from werkzeug.local import LocalProxy
 
-project = WebpackBundleProject(
+webpack_project = WebpackBundleProject(
     __name__,
     project_folder="assets",
     config_path="build/config.json",
     bundles=bundles_from_entry_point("invenio_assets.webpack"),
+    package_json_source_path="package.json",
 )
+
+rspack_project = WebpackBundleProject(
+    __name__,
+    project_folder="assets",
+    config_path="build/config.json",
+    bundles=bundles_from_entry_point("invenio_assets.webpack"),
+    package_json_source_path="rspack-package.json",
+)
+
+# For backwards compatibility
+project = webpack_project
 
 
 class WebpackThemeBundle(object):
