@@ -22,6 +22,7 @@ recursive-include docs *.py
 recursive-include docs *.rst
 recursive-include docs Makefile
 recursive-include .github/workflows *.yml
+recursive-include invenio_assets pnpm-workspace.yaml
 recursive-include invenio_assets *.babelrc
 recursive-include invenio_assets *.eslintignore
 recursive-include invenio_assets *.js
