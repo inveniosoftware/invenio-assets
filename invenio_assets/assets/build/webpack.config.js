@@ -162,7 +162,7 @@ var webpackConfig = {
       },
       // Inline images smaller than 10k
       {
-        test: /\.(png|jpe?g|gif|svg)(\?.*)?$/,
+        test: /\.(avif|webp|png|jpe?g|gif|svg)(\?.*)?$/,
         type: "asset/inline",
         parser: {
           dataUrlCondition: {
