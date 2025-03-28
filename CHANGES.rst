@@ -9,6 +9,12 @@
 Changes
 =======
 
+Version 4.1.0 (released 2025-03-28)
+
+* webpack: add `invenio_assets.webpack:rspack_project`
+* build: remove duplicate dependencies from the base `package.json` files
+* build: add `avif` & `webp` to the list of image types in the build configs
+
 Version 4.0.0 (released 2024-12-02)
 
 * setup: bump invenio dependencies
