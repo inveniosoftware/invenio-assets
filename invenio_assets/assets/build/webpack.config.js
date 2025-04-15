@@ -1,6 +1,6 @@
 /*
  * This file is part of Invenio.
- * Copyright (C) 2017-2018 CERN.
+ * Copyright (C) 2017-2025 CERN.
  * Copyright (C) 2022-2023 Graz University of Technology.
  * Copyright (C) 2023      TU Wien.
  *
@@ -75,6 +75,10 @@ var webpackConfig = {
     publicPath: config.build.assetsURL,
   },
   optimization: {
+    // Keep unminimized assets in development mode (i.e. `watch` and not `build`)
+    // so that components inspection with the React Developer Tools browser extension
+    // shows full component names.
+    minimize: process.env.NODE_ENV === "production",
     minimizer: [
       new TerserPlugin({
         terserOptions: {
