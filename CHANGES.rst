@@ -9,6 +9,10 @@
 Changes
 =======
 
+Version v4.2.0 (released 2025-04-24)
+
+- webpack: unminimized assets in development mode
+
 Version 4.1.0 (released 2025-03-28)
 
 * webpack: add `invenio_assets.webpack:rspack_project`
