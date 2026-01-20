@@ -238,6 +238,9 @@ var webpackConfig = {
       jquery: "jquery",
       "window.jQuery": "jquery",
     }),
+    new webpack.ProvidePlugin({
+      React: "react",
+    }),
     // Write manifest file which Python will read.
     new BundleTracker({
       path: config.build.assetsPath,

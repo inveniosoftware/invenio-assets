@@ -222,6 +222,9 @@ var webpackConfig = {
       jquery: "jquery",
       "window.jQuery": "jquery",
     }),
+    new rspack.ProvidePlugin({
+      React: "react",
+    }),
     // Write manifest file which Python will read.
     new BundleTracker({
       path: config.build.assetsPath,
@@ -232,7 +235,7 @@ var webpackConfig = {
   performance: { hints: false },
   watchOptions: {
     followSymlinks: true,
-    ignored: '**/.git', // The default would also ignore "node_modules" which we don't want
+    ignored: "**/.git", // The default would also ignore "node_modules" which we don't want
   },
   experiments: {
     css: false,
