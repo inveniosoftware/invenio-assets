@@ -6,6 +6,11 @@
 Changes
 =======
 
+Version v4.2.2 (released 2026-06-19)
+
+- chore: use SPDX for the license headers
+- pnpm: relax error regarding ignored build scripts to warning for PNPM v11
+
 Version v4.2.1 (released 2026-01-08)
 
 - setup: pin rspack
