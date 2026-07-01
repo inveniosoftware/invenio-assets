@@ -6,6 +6,10 @@
 Changes
 =======
 
+Version v4.2.3 (released 2026-07-01)
+
+- chore: migrate build from setuptools to hatchling
+
 Version v4.2.2 (released 2026-06-19)
 
 - chore: use SPDX for the license headers
