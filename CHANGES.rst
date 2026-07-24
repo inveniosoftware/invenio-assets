@@ -6,6 +6,10 @@
 Changes
 =======
 
+Version v4.2.4 (released 2026-07-24)
+
+- webpack: fix: set experiments.typescript to false
+
 Version v4.2.3 (released 2026-07-01)
 
 - chore: migrate build from setuptools to hatchling
