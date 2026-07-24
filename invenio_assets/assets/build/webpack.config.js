@@ -249,6 +249,11 @@ var webpackConfig = {
   watchOptions: {
     followSymlinks: true,
   },
+  // Starting from webpack v5.109.0, `experiments.typescript` defaults to `auto`,
+  // but it is causing ModuleNotFoundError with some modules where a TSConfig file cannot be found.
+  experiments: {
+    typescript: false,
+  },
 };
 
 // Copying relevant CSS files as e.g. TinyMCE tries to import CSS files from the dist/js folder of static files
