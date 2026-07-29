@@ -6,6 +6,10 @@
 Changes
 =======
 
+Version v4.2.6 (released 2026-08-04)
+
+- fix: deprecation warning from less
+
 Version v4.2.5 (released 2026-07-29)
 
 - setup: upgrade rspack to v2
