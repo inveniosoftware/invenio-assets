@@ -6,6 +6,10 @@
 Changes
 =======
 
+Version v4.2.5 (released 2026-07-29)
+
+- setup: upgrade rspack to v2
+
 Version v4.2.4 (released 2026-07-24)
 
 - webpack: fix: set experiments.typescript to false
