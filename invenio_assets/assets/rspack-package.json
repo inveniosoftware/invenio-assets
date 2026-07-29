@@ -10,9 +10,9 @@
     "postinstall": "patch-package"
   },
   "devDependencies": {
-    "@rspack/cli": ">1.0.0",
-    "@rspack/core": "<1.7.0",
-    "@rspack/dev-server": ">1.0.0",
+    "@rspack/cli": "^2.0.0",
+    "@rspack/core": "^2.0.0",
+    "@rspack/dev-server": "^2.0.0",
     "@swc/core": "^1.6.13",
     "@swc/helpers": "^0.5.11",
     "sass-loader": "^16.0.0",
@@ -21,7 +21,7 @@
     "@inveniosoftware/eslint-config-invenio": "^2.0.0",
     "autoprefixer": "^10.4.0",
     "babel-loader": "^9.0.0",
-    "css-loader": "^6.0.0",
+    "css-loader": "^7.1.4",
     "eventsource-polyfill": "^0.9.0",
     "expose-loader": "^4.0.0",
     "file-loader": "^6.0.0",
