@@ -1,3 +1,5 @@
+packages:
+  - "."
 allowBuilds:
   '@fortawesome/fontawesome-free': false
   '@parcel/watcher': false
