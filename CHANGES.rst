@@ -1,10 +1,15 @@
 ..
     SPDX-FileCopyrightText: 2015-2024 CERN.
     SPDX-FileCopyrightText: 2024-2026 Graz University of Technology.
+    SPDX-FileCopyrightText: 2026 KTH Royal Institute of Technology.
     SPDX-License-Identifier: MIT
 
 Changes
 =======
+
+Version v4.2.7 (released 2026-11-10)
+
+- fix: enable automatic JSX runtime in rspack
 
 Version v4.2.6 (released 2026-08-04)
 
