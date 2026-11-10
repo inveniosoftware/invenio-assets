@@ -1,5 +1,6 @@
 # SPDX-FileCopyrightText: 2015-2020 CERN.
 # SPDX-FileCopyrightText: 2024-2026 Graz University of Technology.
+# SPDX-FileCopyrightText: 2026 KTH Royal Institute of Technology.
 # SPDX-License-Identifier: MIT
 
 """Media assets management for Invenio.
@@ -105,7 +106,7 @@ Additionally if we have some static files we should collect them:
 from .ext import InvenioAssets
 from .proxies import current_assets
 
-__version__ = "4.2.6"
+__version__ = "4.2.7"
 
 __all__ = (
     "__version__",
