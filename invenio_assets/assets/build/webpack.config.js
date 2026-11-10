@@ -2,6 +2,7 @@
  * SPDX-FileCopyrightText: 2017-2025 CERN.
  * SPDX-FileCopyrightText: 2022-2023 Graz University of Technology.
  * SPDX-FileCopyrightText: 2023 TU Wien.
+ * SPDX-FileCopyrightText: 2026 KTH Royal Institute of Technology.
  * SPDX-License-Identifier: MIT
  */
 
@@ -144,7 +145,10 @@ var webpackConfig = {
           {
             loader: "babel-loader",
             options: {
-              presets: ["@babel/preset-env", "@babel/preset-react"],
+              presets: [
+                "@babel/preset-env",
+                ["@babel/preset-react", { runtime: "automatic" }],
+              ],
               plugins: [
                 "@babel/plugin-proposal-class-properties",
                 "@babel/plugin-transform-runtime",

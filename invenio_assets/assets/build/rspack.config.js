@@ -2,6 +2,7 @@
  * SPDX-FileCopyrightText: 2017-2018 CERN.
  * SPDX-FileCopyrightText: 2022-2023 Graz University of Technology.
  * SPDX-FileCopyrightText: 2023-2025 TU Wien.
+ * SPDX-FileCopyrightText: 2026 KTH Royal Institute of Technology.
  * SPDX-License-Identifier: MIT
  */
 // https://birtles.blog/2024/08/14/lessons-learned-switching-to-rspack/
@@ -140,6 +141,7 @@ var webpackConfig = {
             externalHelpers: true,
             transform: {
               react: {
+                runtime: "automatic",
                 development: !prod,
                 useBuiltins: true,
               },
