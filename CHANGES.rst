@@ -7,6 +7,10 @@
 Changes
 =======
 
+Version v4.2.8 (released 2026-11-11)
+
+- fix(pnpm): exempt maintained packages from age checks
+
 Version v4.2.7 (released 2026-11-10)
 
 - fix: enable automatic JSX runtime in rspack
