@@ -7,6 +7,10 @@
 Changes
 =======
 
+Version v4.2.9 (released 2026-11-12)
+
+- feat: exclude react-overridable and eslint-config-invenio in pnpm
+
 Version v4.2.8 (released 2026-11-11)
 
 - fix(pnpm): exempt maintained packages from age checks
