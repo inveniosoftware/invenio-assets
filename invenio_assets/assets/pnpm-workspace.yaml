@@ -8,5 +8,9 @@ strictDepBuilds: false
 nodeLinker: hoisted
 shamefullyHoist: true
 minimumReleaseAgeExclude:
+  - "@inveniosoftware/eslint-config-invenio"
+  - "@inveniosoftware/react-invenio-app-ils"
   - react-invenio-forms
   - react-searchkit
+  - react-overridable
+
